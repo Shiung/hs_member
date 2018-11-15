@@ -1,0 +1,19 @@
+.report{
+  .md-button{
+    outline: none;
+  }
+  .reportDis{
+    .md-card-header{
+      &.d-block{
+        .md-title{
+          margin: 0;
+          line-height: initial;
+          font-size: 18px;
+        } 
+      }
+    }
+    .md-card-content{
+      padding: 55px 15px 15px;
+    }
+  }
+}

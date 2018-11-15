@@ -1,0 +1,234 @@
+<div class="couponEdit col-12 tablelist unUseServer">
+  <div class="row">
+    <div class="col-12">
+      <md-card>
+        <md-card-header class="d-inline-block" >
+          <div class="md-title d-flex justify-content-center align-items-center">
+            <md-button class="md-icon-button md-dense md-raised mr-2" @click="cancel">
+              <md-icon>keyboard_arrow_left</md-icon>
+              <md-tooltip md-direction="bottom">回上一頁</md-tooltip>
+            </md-button>
+            {{pageTitle}}
+          </div>
+        </md-card-header>
+        <md-card-content>
+          <div class="row">
+            <div class="col-6">
+              <md-field :class="{'md-invalid' : errors.has('name')}">
+                <label>優惠卷標題</label>
+                <md-input v-model.trim="couponName" md-counter="10" name="name" maxlength="10" v-validate="'required'" autocomplete="off"></md-input>
+                <span class="md-error">優惠卷標題不能留空</span> 
+              </md-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <md-field :class="{'md-invalid' : errors.has('title')}">
+                <label>優惠卷副標題</label>
+                <md-input v-model.trim="couponTitle" name="title" v-validate="'required'" autocomplete="off"></md-input>
+                <span class="md-error">優惠卷副標題不能留空</span>
+              </md-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <md-field  :class="{'md-invalid' : errors.has('decribe')}">
+                <label>優惠卷簡述</label>
+                <md-input v-model.trim="couponDescription" name="decribe" v-validate="'required'" autocomplete="off"></md-input>
+                <span class="md-error">優惠卷簡述不能留空</span>
+              </md-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12">
+              <md-field :class="{'md-invalid' : errors.has('content')}">
+                <label>優惠卷內容</label>
+                <md-textarea style="min-height:150px;" v-model="couponContent" name="content" v-validate="'required'" autocomplete="off"></md-textarea>
+                <span class="md-error">優惠卷簡述不能留空</span>
+              </md-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mb-5" v-if="couponID != 'new'">
+              <label class="cus">圖片</label>
+              <!-- vue2 dropzone -->
+              <vue-dropzone 
+                :options="dropzoneOptions" 
+                :destroyDropzone="destroy"
+                :useCustomSlot=true 
+                id="dropzone"
+                class="cusWidthHeight" 
+                @vdropzone-max-files-exceeded="maxExceed" 
+                @vdropzone-success="uploadImgSuccess"
+                @vdropzone-error="uploadImgError"
+                @vdropzone-removed-file="removeImg"
+                ref="couponDZ">
+                <div class="dropzone-custom-content">
+                  <h3 class="dropzone-custom-title">Drag and drop to upload content!</h3>
+                  <div class="subtitle">...or click to select a file from your computer</div>
+                </div>
+              </vue-dropzone>
+            </div>
+          </div>
+
+          <div class="row mb-5">
+            <div class="col-6">
+              <div class="row">
+                <div class="col-12">
+                  <md-field :class="{'md-invalid' : errors.has('point')}" class="cus-input-150">
+                    <label>兌換點數設定</label>
+                    <md-input v-model.number="couponPoint" type="number" name="point" v-validate="'required|numeric'" autocomplete="off"></md-input>
+                    <span class="md-error">點數不能留空</span>
+                  </md-field>
+                </div>
+                <div class="col-12">
+                  <md-field :class="{'md-invalid' : errors.has('price')}" class="cus-input-150">
+                    <label>折抵價格設定</label>
+                    <span class="md-prefix">$</span>
+                    <md-input v-model.number="couponValue" type="number" name="price" v-validate="'required|numeric'" autocomplete="off"></md-input>
+                    <span class="md-error">價格不能留空</span>
+                  </md-field>
+                </div>
+              </div>
+            </div>   
+
+            <div class="col-6">
+              <!-- vue datetime -->
+                <div class="row">
+                  <div class="col-12 expireDate mb-4">
+                    <label class="mb-0" :class="{'text-danger' : errors.has('date')}">有效時間</label>
+                    <datetime 
+                      type="datetime" 
+                      v-model="datetimeExpire" 
+                      class="theme-customer"
+                      placeholder="請選擇結束日"
+                      :min-datetime="datetimeStart"
+                      name="date" v-validate="'required'"
+                    >
+                    </datetime>
+                    <span class="md-error" v-if="errors.has('date')" :class="{'text-danger' : errors.has('date')}">到期日不能空白</span>
+                  </div>
+
+                  <div class="col-12 d-flex flex-column mb-5" v-if="couponID != 'new'">
+                    <label class="cus">優惠卷狀態</label>
+                    <md-switch v-model="couponStatus" class="md-primary mt-0"></md-switch>
+                  </div>
+                </div>
+            </div>
+          </div> 
+          
+          
+         
+          <div class="row">
+            
+          </div> 
+          
+          
+          <div class="row">
+            <div class="col-12 d-flex flex-column">
+              <label class="cus">全館聽別使用</label>
+              <md-switch v-model="coverageAllStatus" class="md-primary m-0"></md-switch>
+            </div>
+          </div> 
+
+
+
+          <div class="row">
+              <transition name="scale" mode="out-in" appear>
+                <md-card class="col-12 cus-bg" v-if="!coverageAllStatus">
+                  <md-card-content>
+                    <div class="col-12">
+                      <!-- <label class="cus">適用聽別</label> -->
+                      <div class='d-flex align-items-center justify-content-between select-options'>
+                        <label class="cus mb-0">適用廳別</label>
+                          
+                        <md-button class="md-icon-button md-dense md-raised md-primary" @click="showDialog = true"> 
+                            <!-- @click="addCoverageSelect" -->
+                          <md-icon>add</md-icon>
+                          <md-tooltip md-direction="bottom">增加廳別</md-tooltip>
+                        </md-button>
+                        
+                        
+                      </div>
+                      <v-client-table 
+                        :data="datatables"
+                        :columns="columns" 
+                        :options="options"
+                        ref=""
+                      >
+                        <!-- remove -->
+                        <md-button 
+                          slot="action"
+                          slot-scope="props"
+                          class="md-icon-button md-dense md-raised md-accent"
+                          @click="deleteCoverage(props.row.id)"
+                        >
+                          <md-icon>delete_forever</md-icon>
+                          <md-tooltip md-direction="bottom">刪除</md-tooltip>
+                        </md-button>
+                      </v-client-table>
+                    </div>
+                  </md-card-content>
+                </md-card>
+             </transition>
+            
+            
+          </div>
+          
+        </md-card-content> 
+        <md-card-actions>
+          <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
+          <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
+        </md-card-actions>       
+      </md-card>
+    </div>
+  </div>
+
+
+  <!-- 加入聽別 -->
+  <md-dialog :md-active.sync="showDialog">
+    <md-dialog-title class="text-center">
+      <div>加入廳別</div>
+    </md-dialog-title>
+    <md-dialog-content>
+        
+        <div class="row">
+          <div class="d-flex align-items-center justify-content-between col-12">
+              <md-field>
+                <label for="coverageCompany">公司篩選</label>
+                <md-select v-model="coverageCompany" name="coverageCompany" id="coverageCompany" @md-opened="openOptionCompany">
+                    <md-option key="0" value="0">顯示所有廳別</md-option>
+                    <md-option v-for="item in coverageCompanyData" :key="item.id" :value="item.id">{{item.name}}</md-option>
+                    
+                    <md-button v-if="readMoreCompanyShow" @click="readCompanyMore">
+                      <md-progress-spinner v-if="loadingCompanyShow" class="md-primary" :md-stroke="3" :md-diameter="15" md-mode="indeterminate"></md-progress-spinner>
+                      顯示更多
+                    </md-button>
+                </md-select>
+              </md-field>  
+          </div>
+          <div class="d-flex align-items-center justify-content-between col-12">
+            <md-field>
+              <label for="coverageSelect">廳別選擇</label>
+              <md-select v-model="coverageSelect" name="coverageSelect" id="coverageSelect" md-dense multiple @md-opened="openOptionCoverage">
+                <md-option v-for="item in coverageData" :key="item.id" :value="item.id">{{item.full_name}}</md-option>   
+                <md-button v-if="selectNoneVale" disabled>所有廳別已綁定於此優惠卷</md-button>          
+                <md-button v-if="readMoreShow" @click="readMore">
+                  <md-progress-spinner v-if="loadingShow" class="md-primary" :md-stroke="3" :md-diameter="15" md-mode="indeterminate"></md-progress-spinner>
+                  顯示更多
+                </md-button>
+              </md-select>
+            </md-field>
+
+          </div>  
+        </div>
+    </md-dialog-content>
+    
+
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="addCoverageSelectCancel">取消</md-button>
+      <md-button class="md-primary" @click="addCoverageSelectConfirm">加入</md-button>
+    </md-dialog-actions>
+  </md-dialog>
+
+</div>

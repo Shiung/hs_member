@@ -1,0 +1,152 @@
+<div class="shopInfo row tablelist">
+  <div class="col-12">
+    <div class="row d-flex align-items-center mb-4">
+      <div class="col-md-4 col-4 order-md-1 order-1">
+        <div class="shop-pic-area">
+          <div class="pic embed-responsive embed-responsive-1by1"></div> 
+          <div class="edit-area d-flex justify-content-center align-items-center">編輯</div> 
+        </div>
+      </div>
+      <div class="col-md-8 d-flex flex-column order-md-2 shopInfo-a-2 order-3">
+        <div class="d-flex s-2-1">
+          <md-field class="">
+            <label>商家編號 :</label>
+            <md-input v-model="shopID" readonly></md-input>
+          </md-field>
+          <!-- <label>商家編號 :</label>
+          {{shopID}} -->
+        </div>
+        <div class="d-flex align-items-center s-2-2">
+          <md-field :md-toggle-password="false">
+            <label>密碼 :</label>
+            <md-input v-model="shopPsw" type="password" readonly></md-input>
+          </md-field>
+          <md-button class="md-dense md-raised md-primary">變更密碼</md-button>
+        </div>
+      </div>
+      <div class="text-danger col-12 order-md-3 order-2 mt-2 mb-4">*商家照片會顯示於APP中，務必上傳照片*</div>
+
+      <div class="col-12 order-4">
+        <div class="form-group">
+          <label>會員狀態 :</label>
+          <span class="badge text-capitalize ml-3" :class="{'badge-success' : shopStatus ,'badge-secondary' : !shopStatus}">{{shopStatusShow}}</span>
+        </div>
+
+        <div class="form-group">
+          <label>有效期限 :</label>
+          <div class="d-flex align-items-center">
+            <md-progress-bar class="w-100" md-mode="buffer" :md-value="expiry" :md-buffer="buffer"></md-progress-bar>
+            <div class="flex-shrink-0 pl-3">2018/12/31 到期</div>
+          </div>
+          
+        </div>
+      </div>
+    </div>
+  
+    
+
+    <!-- <div class="row sticky-top select-options-top">
+      <div class="col-12 d-flex align-items-center justify-content-between flex-wrap-reverse">
+          <div class='d-flex align-items-center justify-content-between select-options'>
+              <md-checkbox class="checkbtnArea" v-model="checkbtn" style="margin:0 0 0 10px" indeterminate></md-checkbox>
+              <md-menu md-size="medium" md-align-trigger>
+                  <md-button md-menu-trigger style="min-width: 0;width:20px;"><md-icon>arrow_drop_down</md-icon></md-button>
+                  <md-menu-content>
+                    <md-menu-item @click="checkAll">全選</md-menu-item>
+                    <md-menu-item @click="uncheckAll">全不選</md-menu-item>
+                  </md-menu-content>
+              </md-menu>
+              
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="refreshData">
+                  <md-icon>refresh</md-icon>
+                  <md-tooltip md-direction="bottom">refresh</md-tooltip>
+              </md-button>
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="addNew">
+                <md-icon>add</md-icon>
+                <md-tooltip md-direction="bottom">add</md-tooltip>
+              </md-button>
+              <transition name="selectOption" mode="out-in" appear>
+                <md-button v-if="checkarray.length === 1" class="md-icon-button md-dense md-raised md-primary" @click="editChoose">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="bottom">edit</md-tooltip>
+                </md-button>
+              </transition>  
+              <transition name="selectOption" mode="out-in" appear>
+                <md-button v-if="checkarray.length >= 1" class="md-icon-button md-dense md-raised md-primary" @click="deleteChoose">
+                  <md-icon>delete</md-icon>
+                  <md-tooltip md-direction="bottom">delete</md-tooltip>
+                </md-button>
+              </transition>
+              <md-menu md-size="auto" md-align-trigger md-direction="bottom-start" >
+                <md-button class="md-icon-button md-dense md-raised md-primary" md-menu-trigger>
+                    <md-icon>settings</md-icon>
+                    <md-tooltip md-direction="bottom">more</md-tooltip>
+                </md-button>  
+                <md-menu-content>
+                    <md-list>
+                      <md-list-item @click="addNew">
+                        <md-icon class="m-0">move_to_inbox</md-icon>
+                        <span class="md-list-item-text mx-2">download</span>
+                        <md-badge class="md-primary md-square" :md-content="selectLength" />
+                      </md-list-item>
+                
+                      <md-list-item v-if="selectLength == 1"  @click="showTagDialog = true">
+                        <md-icon class="m-0">local_offer</md-icon>
+                        <span class="md-list-item-text mx-2">標籤設定</span>
+                        <md-badge class="md-primary md-square" :md-content="selectLength" />
+                      </md-list-item>                              
+
+                      <md-list-item  @click="showDialog = true">
+                        <md-icon class="m-0">search</md-icon>
+                        <span class="md-list-item-text mx-2">類別搜尋</span>
+                        <md-badge class="md-primary md-square" md-content="All" />
+                      </md-list-item>
+                    </md-list>
+                  </md-menu-content> 
+              </md-menu>
+              
+          </div>
+          
+          <div class="d-flex align-items-center justify-content-between col-12 col-sm-6 col-lg-4 mb-sm-0 mb-2">
+            <md-field class="search-field">
+              <label>
+                  <md-icon>search</md-icon> search
+              </label>
+              <md-input v-model="searchOption"></md-input>
+            </md-field>
+            <div class="perPg-field">
+              <md-menu md-size="small" md-align-trigger md-direction="bottom-end">
+                <md-button md-menu-trigger class="md-raised md-primary">{{ perPageOption }}
+                  <md-tooltip md-direction="bottom">perPage</md-tooltip>
+                </md-button>
+                
+        
+                <md-menu-content>
+                  <md-menu-item :value="item" v-for="(item,key) in options.perPageValues" :key="key" @click="perPageOption = item">{{ item }}</md-menu-item>
+                </md-menu-content>
+              </md-menu>
+            </div> 
+          </div>
+          
+        
+      </div>
+
+
+    </div> -->
+    <loading 
+      :active.sync="isLoadingShop"
+      color="rgba(36, 94, 96,1)"
+      loader="dots"
+      :is-full-page="isFullPage" 
+    >
+    </loading>
+    <v-client-table 
+      :data="datatables"
+      :columns="columns" 
+      :options="options"
+      ref="shopInfoTable"
+    >
+    </v-client-table>
+  </div>
+
+</div>

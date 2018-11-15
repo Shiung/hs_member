@@ -1,0 +1,49 @@
+.shopInfo{
+  @media screen and (min-width: 768px){
+    .shopInfo-a-2{
+      .md-field{
+        flex:160px;
+        flex-grow: 0;
+      }
+    }
+  }
+  
+  .shop-pic-area{
+    width: 100%;
+    height: 100%;
+    max-width: 200px;
+    border-radius: 50%;
+    position: relative;
+    overflow: hidden;
+    .pic{
+      background-image: url('../../../static/img/20150702-5543-01.jpg');
+      background-size: cover;
+      background-position: 50% 50%; 
+      border-radius: 50%;
+      transition: .2s .2s;
+    }
+    .edit-area{
+      position: absolute;
+      width: 100%;
+      height: 35%;
+      background-color: rgba(0,0,0,.6);
+      color:#fff;
+      bottom: -35%;
+      transition: .2s ;
+      overflow: hidden;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+    &:hover{
+      .pic{
+        transition: .2s;
+        filter: blur(5px);
+      }
+      .edit-area{
+        bottom:0%;
+        transition: .2s .2s;
+      }
+    }
+    
+  }
+}

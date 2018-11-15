@@ -1,0 +1,465 @@
+{
+  "data-graph-mouth": [
+    {
+      "label": "Mouthly Sales 1",
+      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "data": [40, 20, 30, 50, 90, 10, 20, 40, 50, 70, 90, 100]
+    },
+    {
+      "label": "Mouthly Sales 2",
+      "labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "data": [140, 50, 130, 70, 10, 90, 100, 10, 80, 10, 20, 30]
+    }
+  ],
+  "data-graph-daily": [
+    {
+      "label": "Daily Sales",
+      "labels": ["9/7","9/8","9/9","9/10","9/11","9/12"],
+      "data": [40, 20, 30,140, 20, 10]
+    }
+  ],
+  "data-graph-pie": [
+    {
+      "label": "Pie Sales",
+      "labels": ["Apple", "Google", "Samsung"],
+      "data": [300, 200, 150]
+    }
+  ],
+  "datatable": [
+    {
+      "id": "1",
+      "name": "Thriller",
+      "album": "Thriller",
+      "tag": ["美食","自助餐","服飾","自助旅行"],
+      "status": 1
+    },
+    {
+      "id": "2",
+      "name": "Dangerous",
+      "album": "Dangerous",
+      "tag": ["美食","服飾"],
+      "status": 0
+    },
+    {
+      "id": "3",
+      "name": "Stranger In Moscow",
+      "album": "History",
+      "tag": ["美食","服飾"],
+      "status": 1
+    },
+    {
+      "id": "4",
+      "name": "Smooth Criminal",
+      "album": "BAD",
+      "tag": [],
+      "status": 1
+    },
+    {
+      "id": "5",
+      "name": "BAD",
+      "album": "BAD",
+      "tag": ["美食"],
+      "status": 0
+    },
+    {
+      "id": "6",
+      "name": "Black or White",
+      "album": "Dangerous",
+      "tag": ["服飾"],
+      "status": 1
+    },
+    {
+      "id": "7",
+      "name": "You rock My World",
+      "album": "Invincible",
+      "tag": [],
+      "status": 1
+    },
+    {
+      "id": "8",
+      "name": "Hold My Hand",
+      "album": "Michael",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "9",
+      "name": "Rock With You",
+      "album": "Off The Wall",
+      "tag": ["服飾"],
+      "status": 0
+    },
+    {
+      "id": "10",
+      "name": "Billy Jean",
+      "album": "Thriller",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 0
+    },
+    {
+      "id": "11",
+      "name": "They don't really care about us",
+      "album": "History",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 0
+    },
+    {
+      "id": "12",
+      "name": "Thriller",
+      "album": "Thriller",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "13",
+      "name": "Dangerous",
+      "album": "Dangerous",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 0
+    },
+    {
+      "id": "14",
+      "name": "Stranger In Moscow",
+      "album": "History",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "15",
+      "name": "Smooth Criminal",
+      "album": "BAD",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 0
+    },
+    {
+      "id": "16",
+      "name": "BAD",
+      "album": "BAD",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "17",
+      "name": "Black or White",
+      "album": "Dangerous",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "18",
+      "name": "You rock My World",
+      "album": "Invincible",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "19",
+      "name": "Hold My Hand",
+      "album": "Michael",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "20",
+      "name": "Rock With You",
+      "album": "Off The Wall",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "21",
+      "name": "Billy Jean",
+      "album": "Thriller",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    },
+    {
+      "id": "22",
+      "name": "They don't really care about us",
+      "album": "History",
+      "tag": ["美食","自助餐","服飾"],
+      "status": 1
+    }
+  ],
+  "shopInfoDatatable":[
+    {
+      "id":"A001",
+      "info":"優質廠商方案",
+      "date":"2018/10/17",
+      "price":"12000"
+    },
+    {
+      "id":"A002",
+      "info":"優質廠商方案2",
+      "date":"2018/10/17",
+      "price":"12000"
+    },
+    {
+      "id":"A003",
+      "info":"優質廠商方案3",
+      "date":"2018/10/17",
+      "price":"12000"
+    },
+    {
+      "id":"A004",
+      "info":"優質廠商方案4",
+      "date":"2018/10/17",
+      "price":"12000"
+    }
+  ],
+  "shopCompanyDatatable":[
+    {
+      "id":"A001001",
+      "comp":"高雄分公司",
+      "uni":"12344321",
+      "address":"高雄市前鎮區xx路xx號",
+      "contact":"Peter",
+      "tel":"0932123123"
+    },
+    {
+      "id":"A001002",
+      "comp":"巨蛋分公司",
+      "uni":"12344321",
+      "address":"高雄市鹽埕區xx路xx號",
+      "contact":"Nikki",
+      "tel":"0932123123"
+    },
+    {
+      "id":"A001003",
+      "comp":"佛陀分公司",
+      "uni":"12344321",
+      "address":"台北市中山區xx路xx號",
+      "contact":"Jack",
+      "tel":"0932123123"
+    },
+    {
+      "id":"A001004",
+      "comp":"台中分公司",
+      "uni":"12344321",
+      "address":"台中市鹽埕區xx路xx號",
+      "contact":"Josephine",
+      "tel":"0932123123"
+    }
+  ],
+  "note": [
+    {
+      "id": "n001",
+      "title": "週年慶活動",
+      "date": "2018/10/17",
+      "status": 0
+    },
+    {
+      "id": "n002",
+      "title": "換季大拍賣",
+      "date": "2018/10/12",
+      "status": 1
+    },
+    {
+      "id": "n003",
+      "title": "好禮三重送",
+      "date": "2018/09/15",
+      "status": 2
+    },
+    {
+      "id": "n004",
+      "title": "滿額活動",
+      "date": "2018/09/12",
+      "status": 2
+    }
+  ],
+  "coupon": [
+    {
+      "id": "c001",
+      "title": "週年慶活動1",
+      "startDate": "2018/01/01",
+      "endDate": "2018/12/31",
+      "point": "30000",
+      "discount": "200",
+      "status": 0
+    },
+    {
+      "id": "c002",
+      "title": "週年慶活動2",
+      "startDate": "2018/01/01",
+      "endDate": "2018/12/31",
+      "point": "30000",
+      "discount": "200",
+      "status": 1
+    },
+    {
+      "id": "c003",
+      "title": "週年慶活動3",
+      "startDate": "2018/01/01",
+      "endDate": "2018/12/31",
+      "point": "30000",
+      "discount": "200",
+      "status": 1
+    },
+    {
+      "id": "c004",
+      "title": "週年慶活動4",
+      "startDate": "2018/01/01",
+      "endDate": "2018/12/31",
+      "point": "30000",
+      "discount": "200",
+      "status": 0
+    }
+  ],
+  "tags": [
+    {
+      "name": "美食"
+    },
+    {
+      "name": "自助餐"
+    },
+    {
+      "name": "服飾"
+    },
+    {
+      "name": "自助旅行"
+    }
+  ],
+  "transaction": [
+    {
+      "id": "t001",
+      "memId": "M010212",
+      "price": "1200",
+      "point": "12",
+      "describe": "一般消費累點",
+      "date": "2018/10/5"
+    },
+    {
+      "id": "t002",
+      "memId": "M010213",
+      "price": "4500",
+      "point": "10",
+      "describe": "一般消費累點",
+      "date": "2018/10/4"
+    },
+    {
+      "id": "t003",
+      "memId": "M010217",
+      "price": "5600",
+      "point": "6",
+      "describe": "一般消費累點",
+      "date": "2018/10/3"
+    },
+    {
+      "id": "t004",
+      "memId": "M010210",
+      "price": "300",
+      "point": "7",
+      "describe": "一般消費累點",
+      "date": "2018/10/2"
+    },
+    {
+      "id": "t005",
+      "memId": "M010216",
+      "price": "400",
+      "point": "1",
+      "describe": "一般消費累點",
+      "date": "2018/10/1"
+    }
+  ],
+  "reportCoupon": [
+    {
+      "id": "cr001",
+      "memId": "M010212",
+      "couponName": "週年慶百元卷系列",
+      "price": "200",
+      "point": "20000",
+      "status": 0,
+      "date": "2018/10/5"
+    },
+    {
+      "id": "cr002",
+      "memId": "M010213",
+      "couponName": "週年慶百元卷系列",
+      "price": "200",
+      "point": "0",
+      "describe": "一般消費累點",
+      "status": 1,
+      "date": "2018/10/4"
+    },
+    {
+      "id": "cr003",
+      "memId": "M010217",
+      "couponName": "週年慶百元卷系列",
+      "price": "500",
+      "point": "0",
+      "describe": "一般消費累點",
+      "status": 1,
+      "date": "2018/10/3"
+    },
+    {
+      "id": "cr004",
+      "memId": "M010210",
+      "couponName": "週年慶百元卷系列",
+      "price": "300",
+      "point": "30000",
+      "describe": "一般消費累點",
+      "status": 0,
+      "date": "2018/10/2"
+    },
+    {
+      "id": "cr005",
+      "memId": "M010216",
+      "couponName": "週年慶百元卷系列",
+      "price": "400",
+      "point": "40000",
+      "describe": "一般消費累點",
+      "status": 0,
+      "date": "2018/10/1"
+    }
+  ],
+  "admin": [
+    {
+      "id":"1",
+      "email": "admin@email.com",
+      "psw" : "123456",
+      "name": "張大頭",
+      "authLevel": 1,
+      "status" : 1 ,
+      "lastLogIn" : "2018/08/01"
+    },
+    {
+      "id":"2",
+      "email": "admin1@email.com",
+      "psw" : "654321",
+      "name": "李大頭",
+      "authLevel": 2,
+      "status" : 0 ,
+      "lastLogIn" : "2018/08/01"
+    },
+    {
+      "id":"3",
+      "email": "admin2@email.com",
+      "psw" : "123456adjio",
+      "name": "陳小花",
+      "authLevel": 3,
+      "status" : 1 ,
+      "lastLogIn" : "2018/08/01"
+    },
+    {
+      "id":"4",
+      "email": "admin3@email.com",
+      "psw" : "123456adj",
+      "name": "王大頭",
+      "authLevel": 3,
+      "status" : 1 ,
+      "lastLogIn" : "2018/08/01"
+    },
+    {
+      "id":"5",
+      "email": "admin4@email.com",
+      "psw" : "123456a",
+      "name": "邱大頭",
+      "authLevel": 4,
+      "status" : 1 ,
+      "lastLogIn" : "2018/08/01"
+    }      
+  ],
+  "test": [
+    
+  ]
+}

@@ -1,0 +1,173 @@
+<div class="member col-12 tablelist">
+    <div class="row">
+      <div class="col-12">
+          <!-- {{ checkarray }} -->
+          <md-card>
+            <md-card-header class="d-inline-block" >
+                <div class="md-title">會員清單</div>
+            </md-card-header>
+            <md-card-content>
+              <div class="row sticky-top select-options-top">
+                <div class="col-12 d-flex align-items-center justify-content-between flex-wrap-reverse">
+                    <div class='d-flex align-items-center justify-content-between select-options'>
+                        <md-checkbox class="checkbtnArea" v-model="checkbtn" style="margin:0 0 0 10px" indeterminate></md-checkbox>
+                        <md-menu md-size="medium" md-align-trigger>
+                            <md-button md-menu-trigger style="min-width: 0;width:20px;"><md-icon>arrow_drop_down</md-icon></md-button>
+                            <md-menu-content>
+                              <md-menu-item @click="checkAll">全選</md-menu-item>
+                              <md-menu-item @click="uncheckAll">全不選</md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                        
+                        <md-button class="md-icon-button md-dense md-raised md-primary" @click="refreshData(null)">
+                            <md-icon>refresh</md-icon>
+                            <md-tooltip md-direction="bottom">refresh</md-tooltip>
+                        </md-button>
+                        <transition name="selectOption" mode="out-in" appear>
+                          <md-badge :md-content="selectLength" md-dense v-if="checkarray.length > 0">
+                            <md-button class="md-icon-button md-dense md-raised md-primary" @click="disabledMem">
+                              <md-icon>person_add_disabled</md-icon>
+                              <md-tooltip md-direction="bottom">用戶停用</md-tooltip>
+                            </md-button>
+                          </md-badge>
+                        </transition>
+                        <transition name="selectOption" mode="out-in" appear>
+                          <md-badge :md-content="selectLength" md-dense v-if="checkarray.length > 0">
+                            <md-button class="md-icon-button md-dense md-raised md-primary" @click="downloadCSV">
+                              <md-icon>move_to_inbox</md-icon>
+                              <md-tooltip md-direction="bottom">CSV 下載</md-tooltip>
+                            </md-button>
+                          </md-badge>
+                        </transition> 
+                        <transition name="selectOption" mode="out-in" appear>
+                          <md-button  v-if="checkarray.length === 1" class="md-icon-button md-dense md-raised md-primary" @click="viewMemDetail(null)">
+                            <md-icon>visibility</md-icon>
+                            <md-tooltip md-direction="bottom">查看會員資料</md-tooltip>
+                          </md-button>
+                        </transition> 
+                    </div>
+                    
+                    <div class="d-flex align-items-center justify-content-end">
+                      <div class="search-box d-flex">
+                        <input class="search-txt" type="text" name="" placeholder="搜尋會員名稱" v-model.trim="searchStr">
+                        <md-button class="md-icon-button md-dense md-raised md-primary flex-shrink-0 mx-0" @click="searchAct">
+                          <md-icon>search</md-icon>
+                          <md-tooltip md-direction="bottom">search</md-tooltip>
+                        </md-button>
+                      </div>
+                    </div>
+                    
+                  
+                </div>
+              </div>
+              
+             
+              <v-client-table 
+                :data="datatables"
+                :columns="columns" 
+                :options="options"
+                :checkarray="checkarray"
+                ref="table"
+                >
+                <!-- header -->
+                <span slot="h__name" class="d-flex justify-content-between align-items-center">
+                會員名稱 
+                  <span 
+                    class="VueTables__sort-icon float-right sorticon sort" 
+                    @click="sort('name')" 
+                    :class="{'sort-up': paramsObj.sortedBy == 'asc' && paramsObj.orderBy == 'name', 'sort-down': paramsObj.sortedBy == 'desc' && paramsObj.orderBy == 'name'}">
+                  </span>
+                </span>
+                <span slot="h__birthday" class="d-flex justify-content-between align-items-center">
+                  生日 
+                  <span 
+                    class="VueTables__sort-icon float-right sorticon sort" 
+                    @click="sort('birthday')" 
+                    :class="{'sort-up': paramsObj.sortedBy == 'asc' && paramsObj.orderBy == 'birthday', 'sort-down': paramsObj.sortedBy == 'desc' && paramsObj.orderBy == 'birthday'}">
+                  </span>
+                </span>
+                <span slot="h__status" class="d-flex justify-content-between align-items-center">
+                  狀態 
+                  <span 
+                    class="VueTables__sort-icon float-right sorticon sort" 
+                    @click="sort('status')" 
+                    :class="{'sort-up': paramsObj.sortedBy == 'asc' && paramsObj.orderBy == 'status', 'sort-down': paramsObj.sortedBy == 'desc' && paramsObj.orderBy == 'status'}">
+                  </span>
+                </span>
+                <span slot="h__updated_at" class="d-flex justify-content-between align-items-center">
+                  最後登入時間 
+                  <span 
+                    class="VueTables__sort-icon float-right sorticon sort" 
+                    @click="sort('updated_at')" 
+                    :class="{'sort-up': paramsObj.sortedBy == 'asc' && paramsObj.orderBy == 'updated_at', 'sort-down': paramsObj.sortedBy == 'desc' && paramsObj.orderBy == 'updated_at'}">
+                  </span>
+                </span>
+
+                <!-- 選單 -->
+                <md-checkbox 
+                  slot="edit" 
+                  slot-scope="props" 
+                  v-model="checkarray" 
+                  class="md-primary" 
+                  :value="props.row.id" 
+                  style="margin:0;"
+                ></md-checkbox>
+                 <!-- 會員名稱 -->
+                <a 
+                  style="cursor: pointer;"
+                  slot="name" 
+                  slot-scope="props" 
+                  @click.prevent="viewMemDetail(props.row.id)">{{props.row.name}}</a>
+              </v-client-table>
+              <!-- pagenation-customer -->
+              <div class="row col-md-12 justify-content-center customer-pagination">
+                <nav class="text-center">
+                  <ul class="pagination" v-if="totalPages !== 1">
+                    <li class="page-item" @click="prevPage" :class="{'disabled' : currentPage === 1}">
+                      <a class="page-link" href="javascript:;" tabindex="-1">&lt;</a>
+                    </li>
+                    <li class="page-item">
+                      <div class="pageShow">
+                          <md-menu md-size="small" md-align-trigger md-direction="bottom-start" >
+                              <md-button class="md-raised md-primary" @click="showDialog = true">{{currentPage}} / {{totalPages}}
+                                <md-tooltip md-direction="bottom">pages</md-tooltip>
+                              </md-button>
+                          </md-menu>
+                      </div> 
+                    </li>
+                    <li class="page-item" @click="nextPage" :class="{'disabled' : totalPages === currentPage}">
+                      <a class="page-link" href="javascript:;">&gt;</a>
+                    </li>
+                  </ul>
+                  <p class="customer-pagination__count text-center col-md-12" >{{dataInfo}}</p>
+                </nav>
+              </div>  
+  
+            </md-card-content>
+            
+          </md-card>   
+  
+      </div>
+  
+      <!-- searchFilter box -->
+      <md-dialog :md-active.sync="showDialog">
+        <md-dialog-title>頁數搜尋</md-dialog-title>
+        <md-dialog-content>
+          <md-field>
+            <label>
+              <md-icon>search</md-icon>
+            </label>
+            <md-input v-model.number.lazy='pageNumber' type="number" min="1" :max="totalPages"></md-input>
+            <span class="md-helper-text">最小頁數:1 / 最大頁數:{{totalPages}}</span>
+          </md-field>
+        </md-dialog-content>
+        
+  
+        <md-dialog-actions>
+          <md-button class="md-primary" @click="showDialog = false">close</md-button>
+          <md-button class="md-primary" @click="searchPage">search</md-button>
+        </md-dialog-actions>
+      </md-dialog>
+
+    </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="report col-12">
+  <div class="row">
+    <div class="col-12">
+      <md-card>
+        <md-card-header class="d-inline-block" >
+          <div class="md-title">報表</div>
+        </md-card-header>
+        <md-card-content>
+          <div class="row">
+            <div class="col-12 d-flex justify-content-start align-items-center mb-4">
+              <datepicker 
+                :minimumView="'month'" 
+                :maximumView="'year'" 
+                :initialView="'year'"
+                :language="zh"
+                :format="format"
+                :fullMonthName="fullMonth"
+                v-model="monthSelect"
+              >
+              </datepicker>
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="monthSearch">
+                <md-icon>search</md-icon>
+                <md-tooltip md-direction="bottom">search</md-tooltip>
+              </md-button>
+            </div>
+          
+            <div class="col-xl-3 col-lg-4 col-6 reportDis">
+              <div class="row">
+                  <div class="col-12">
+                      <md-card class="data-info graph-bg-red">
+                          <md-card-header class="d-block">
+                              <div class="md-title">
+                                  <md-icon class="md-primary ">card_giftcard</md-icon>
+                                  本月會員累點
+                              </div>
+                          </md-card-header> 
+                          <md-card-area md-inset>
+                              <md-card-content>
+                                  <div class="d-flex justify-content-end align-items-center">
+                                        <div class="md-subheading">3,000點</div>
+                                  </div>
+                              </md-card-content> 
+                          </md-card-area>
+                      </md-card> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-6 reportDis">
+              <div class="row">
+                  <div class="col-12">
+                      <md-card class="data-info graph-bg-green">
+                          <md-card-header class="d-block">
+                              <div class="md-title">
+                                  <md-icon class="md-primary ">loyalty</md-icon>
+                                  本月售出折價卷
+                              </div>
+                          </md-card-header> 
+                          <md-card-area md-inset>
+                              <md-card-content>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="md-subheading">12張</div>
+                                        <div class="md-subheading">20,000點</div>
+                                    </div>
+                                    
+                                 
+                              </md-card-content> 
+                          </md-card-area>
+                      </md-card> 
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-4 col-6 reportDis">
+                <div class="row">
+                    <div class="col-12">
+                        <md-card class="data-info graph-bg-blue">
+                            <md-card-header class="d-block">
+                                <div class="md-title">
+                                    <md-icon class="md-primary ">gavel</md-icon>
+                                    本月核銷折價卷
+                                </div>
+                            </md-card-header> 
+                            <md-card-area md-inset>
+                                <md-card-content>
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="md-subheading">5張</div>
+                                        <div class="md-subheading">5,000點</div>
+                                    </div>
+                                </md-card-content> 
+                            </md-card-area>
+                        </md-card> 
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12 mb-4">
+                <router-link class="bookmark" :to="{name : 'transDetail' }">交易明細</router-link>
+                <router-link class="bookmark" :to="{name : 'reportCoupon' }">折價卷</router-link>
+                <!-- <router-link class="bookmark" :to="{name : 'shopCate' }">本月對帳單</router-link> -->
+            </div>
+
+            <div class="col-12">
+                <transition name="fade" mode="out-in" appear>
+                    <router-view></router-view>
+                </transition>
+            </div>    
+            
+
+          </div>
+        </md-card-content>
+        
+      </md-card>
+    </div>
+     
+  </div>
+</div>

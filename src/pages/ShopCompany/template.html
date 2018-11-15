@@ -1,0 +1,86 @@
+<div class="shopCompany tablelist row">
+  <div class="col-12">
+
+    <div class="row sticky-top select-options-top">
+      <div class="col-12 d-flex align-items-center justify-content-between flex-wrap-reverse">
+          <div class='d-flex align-items-center justify-content-between select-options'>
+              <md-checkbox class="checkbtnArea" v-model="checkbtn" style="margin:0 0 0 10px" indeterminate></md-checkbox>
+              <md-menu md-size="medium" md-align-trigger>
+                  <md-button md-menu-trigger style="min-width: 0;width:20px;"><md-icon>arrow_drop_down</md-icon></md-button>
+                  <md-menu-content>
+                    <md-menu-item @click="checkAll">全選</md-menu-item>
+                    <md-menu-item @click="uncheckAll">全不選</md-menu-item>
+                  </md-menu-content>
+              </md-menu>
+              
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="refreshData">
+                  <md-icon>refresh</md-icon>
+                  <md-tooltip md-direction="bottom">refresh</md-tooltip>
+              </md-button>
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="addNew">
+                <md-icon>add</md-icon>
+                <md-tooltip md-direction="bottom">新增公司資訊</md-tooltip>
+              </md-button>
+              <transition name="selectOption" mode="out-in" appear>
+                <md-button v-if="checkarray.length === 1" class="md-icon-button md-dense md-raised md-primary" @click="editChoose">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="bottom">edit</md-tooltip>
+                </md-button>
+              </transition>  
+              <transition name="selectOption" mode="out-in" appear>
+                <md-button v-if="checkarray.length >= 1" class="md-icon-button md-dense md-raised md-primary" @click="deleteChoose">
+                  <md-icon>delete</md-icon>
+                  <md-tooltip md-direction="bottom">delete</md-tooltip>
+                </md-button>
+              </transition>
+              
+          </div>
+          
+          <!-- <div class="d-flex align-items-center justify-content-end col-12 col-sm-6 col-lg-4 mb-sm-0 mb-2">
+            <div class="perPg-field">
+              <md-menu md-size="small" md-align-trigger md-direction="bottom-end">
+                <md-button md-menu-trigger class="md-raised md-primary">{{ perPageOption }}
+                  <md-tooltip md-direction="bottom">perPage</md-tooltip>
+                </md-button>
+                
+        
+                <md-menu-content>
+                  <md-menu-item :value="item" v-for="(item,key) in options.perPageValues" :key="key" @click="perPageOption = item">{{ item }}</md-menu-item>
+                </md-menu-content>
+              </md-menu>
+            </div> 
+          </div> -->
+          
+        
+      </div>
+    </div>
+
+
+    <v-client-table 
+      :data="datatables"
+      :columns="columns" 
+      :options="options"
+      :checkarray="checkarray"
+      ref="shopCompTable"
+    >
+      <!-- 選單 -->
+      <md-checkbox 
+        slot="edit" 
+        slot-scope="props" 
+        v-model="checkarray" 
+        class="md-primary" 
+        :value="props.row.id" 
+        style="margin:0;"
+      ></md-checkbox>
+      <!-- 標籤 -->
+      <template slot="tag" slot-scope="props">
+        <md-chip 
+          class="md-primary" 
+          v-for="item in props.row.tag"
+          :key="item"
+        >{{item}}</md-chip>
+      </template>
+
+    </v-client-table>
+  </div>  
+</div>

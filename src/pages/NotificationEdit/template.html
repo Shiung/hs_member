@@ -1,0 +1,97 @@
+<div class="notificationEdit col-12">
+  <div class="row">
+    <div class="col-12">
+      <md-card>
+        <md-card-header class="d-inline-block" >
+          <div class="md-title d-flex justify-content-center align-items-center">
+            <md-button class="md-icon-button md-dense md-raised mr-2" @click="cancel">
+              <md-icon>keyboard_arrow_left</md-icon>
+              <md-tooltip md-direction="bottom">回上一頁</md-tooltip>
+            </md-button>
+            {{pageTitle}}
+          </div>
+        </md-card-header>
+        <md-card-content>
+          <div class="row">
+            <div class="col-6">
+              <md-field :class="{'md-invalid' : errors.has('title')}">
+                <label>標題</label>
+                <md-input v-model.trim="notificationTitle"  name="title"  v-validate="'required'" autocomplete="off"></md-input>
+                <span class="md-error">標題不能留空</span> 
+              </md-field>
+            </div>
+          </div>
+          <div class="row mb-5">
+            <!-- <div class="col-12">
+              <md-field  :class="{'md-invalid' : errors.has('content')}">
+                <label>內容</label>
+                <md-input v-model.trim="notificationContent" name="content" v-validate="'required'" autocomplete="off"></md-input>
+                <span class="md-error">內容不能留空</span>
+              </md-field>
+            </div> -->
+            <div class="col-12">
+              <md-field :class="{'md-invalid' : errors.has('content')}">
+                <label>內容</label>
+                <md-textarea style="min-height:150px;" v-model="notificationContent" name="content" v-validate="'required'" autocomplete="off"></md-textarea>
+                <span class="md-error">內容不能留空</span>
+              </md-field>
+            </div>
+            <div class="col-12">
+              <md-field :class="{'md-invalid' : errors.has('contentUrl')}">
+                <label>連結網址</label>
+                <md-input v-model.trim="notificationURL"  name="contentUrl"  v-validate="'required'" autocomplete="off"></md-input>
+                <span class="md-error">連結網址不能留空</span> 
+              </md-field>
+            </div>
+            <div class="col-6 md-layout-item">
+              <md-field :class="{'md-invalid' : errors.has('contentType')}">
+                <label>訊息類別</label>
+                <md-select v-model.number="notificationType" name="contentType" v-validate="'required'" autocomplete="off">
+                    <md-option value="1">系統公告</md-option>
+                    <md-option value="2">優惠</md-option>
+                    <md-option value="3">推播訊息</md-option>
+                </md-select>
+                <span class="md-error">訊息類別不能留空</span> 
+              </md-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-12 mb-5" v-if="notificationID != 'new'">
+              <label class="cus">圖片</label>
+              <!-- vue2 dropzone -->
+              <vue-dropzone 
+                :options="dropzoneOptions" 
+                :destroyDropzone="destroy"
+                :useCustomSlot=true 
+                id="dropzone"
+                @vdropzone-max-files-exceeded="maxExceed" 
+                @vdropzone-success="uploadImgSuccess"
+                @vdropzone-error="uploadImgError"
+                @vdropzone-removed-file="removeImg"
+                ref="notificationDZ">
+                <div class="dropzone-custom-content">
+                  <h3 class="dropzone-custom-title">Drag and drop to upload content!</h3>
+                  <div class="subtitle">...or click to select a file from your computer</div>
+                </div>
+              </vue-dropzone>
+            </div>
+          </div>
+
+          <div class="row">  
+            <div class="col-12 d-flex flex-column mb-5" v-if="notificationID != 'new'">
+              <label class="cus">上架狀態</label>
+              <md-switch v-model="notificationStatus" class="md-primary mt-0"></md-switch>
+            </div>
+          </div> 
+          
+        
+          
+        </md-card-content> 
+        <md-card-actions>
+          <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
+          <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
+        </md-card-actions>       
+      </md-card>
+    </div>
+  </div>
+</div>
