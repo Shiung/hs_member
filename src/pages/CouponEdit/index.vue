@@ -562,7 +562,6 @@ export default {
     this.datetimeStart = DateTime.local().toISO()
 
     // vue2 Dropzone init (tokne)
-    // console.log('init token', this.tokenVal)
     this.dropzoneOptions.headers.Authorization = this.tokenVal
   },
   watch: {
@@ -570,7 +569,6 @@ export default {
       this.setInfoFromVUEX()
     },
     tokenVal (val) {
-      // console.log('token:', val)
       // vue2 Dropzone tokne更新
       this.dropzoneOptions.headers.Authorization = this.tokenVal
     },
