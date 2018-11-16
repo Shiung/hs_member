@@ -10,12 +10,12 @@
               
               <md-menu md-size="medium" md-align-trigger>
                 <md-button md-menu-trigger class="md-icon-button md-dense md-raised md-primary">
-                  <md-icon>filter_list</md-icon>
-                  <md-tooltip md-direction="bottom">類別塞選</md-tooltip>
+                  <md-icon>tune</md-icon>
+                  <md-tooltip md-direction="bottom">類別篩選</md-tooltip>
                 </md-button>
                 <md-menu-content>
-                  <md-menu-item class="active" @click="filterType('Coupon')">點數轉出</md-menu-item>
-                  <md-menu-item @click="filterType('TransactionRecord')">點數轉入</md-menu-item>
+                  <md-menu-item class="active" @click="filterType(0)">點數轉出</md-menu-item>
+                  <md-menu-item @click="filterType(1)">點數轉入</md-menu-item>
                 </md-menu-content>
               </md-menu>
           </div>

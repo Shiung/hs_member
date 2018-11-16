@@ -108,8 +108,9 @@ export default {
     },
     filterType (type) {
       const obj = {
-        search: type,
-        searchFields: 'targetable_type',
+        // search: type,
+        // searchFields: 'targetable_type',
+        search: `transfer_action:${type}`,
         page: null
       }
       this.refreshData(obj)
