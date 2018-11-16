@@ -102,6 +102,7 @@ export default {
   },
   computed: {
     ...mapGetters('notificationTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus']),
+    ...mapGetters(['tokenVal']),
     dataInfo () {
       let currentPage = this.currentPage
       let perPage = this.perPage
@@ -132,15 +133,7 @@ export default {
   methods: {
     // 資料 vuex
     ...mapActions('notificationTableMoudule', ['getDatatable', 'getRequestParams', 'setParamsStatus']),
-    // option 功能
-    notifiSend (id, status) {
-      console.log('id', id)
-      console.log('status', status)
-      this.$swal({
-        title: '系統施工中!!!',
-        icon: 'error'
-      })
-    },
+    ...mapActions(['token_update', 'remove_cookie']),
     filterType (type) {
       const obj = {
         page: null,
@@ -201,6 +194,64 @@ export default {
       // 關閉搜尋頁面光箱
       this.showDialog = false
       this.pageNumber = ''
+    },
+    // option 功能
+    notifiSend (id, status, title) {
+      if (status === 0) return null
+      this.$swal({
+        title: '發送推播!',
+        text: `"${title}"發送推播`,
+        icon: 'info',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            // 移除 es6 primse reject 沒有 new error
+            /* eslint-disable */
+            this.$snotify.async('呼叫伺服器', '發送推播', () => {
+              return new Promise((resolve, reject) => {
+                let data = {
+                  content_id: id
+                }
+                let url = `${process.env.API_HOST}v1/admin/content/content_notification`
+                return this.axios.post(url, data, {
+                  headers: {
+                    'Authorization': this.tokenVal,
+                    'Accept': 'application/json'
+                  }
+                }).then((res) => {
+                  if (res.headers.authorization) {
+                    this.token_update(res.headers.authorization)
+                  }
+                  resolve({
+                    title: '發送推播成功',
+                    body: `已經發送推播"${title}"`,
+                    config: {
+                      timeout: 5000
+                      // closeOnClick: true
+                    }
+                  })
+                }).catch((error) => {
+                  console.log(error)
+                  reject({
+                    title: '傳送失敗',
+                    body: '伺服器異常',
+                    config: {
+                      timeout: 5000
+                      // closeOnClick: true
+                    }
+                  })
+                })
+              })
+            })
+          }
+        })
     }
   },
   watch: {

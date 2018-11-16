@@ -24,8 +24,8 @@
                     
                     <md-menu md-size="medium" md-align-trigger>
                       <md-button md-menu-trigger class="md-icon-button md-dense md-raised md-primary">
-                        <md-icon>filter_list</md-icon>
-                        <md-tooltip md-direction="bottom">類別塞選</md-tooltip>
+                        <md-icon>tune</md-icon>
+                        <md-tooltip md-direction="bottom">類別篩選</md-tooltip>
                       </md-button>
                       <md-menu-content>
                         <md-menu-item class="active" @click="filterType(1)">系統公告</md-menu-item>
@@ -56,9 +56,10 @@
               slot-scope="props"
               :value="props.row.id"
               class="md-icon-button md-dense md-raised md-primary"
-              v-if="props.row.status == 1 && props.row.type == 3"
-              @click="notifiSend(props.row.id,props.row.status)"
+              v-if="props.row.status == 1"
+              @click="notifiSend(props.row.id,props.row.status,props.row.title)"
             >
+            <!-- v-if="props.row.status == 1 && props.row.type == 3" -->
               <md-icon>notifications_active</md-icon>
               <md-tooltip md-direction="bottom" >推播發送</md-tooltip>
             </md-button>
