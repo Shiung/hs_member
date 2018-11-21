@@ -13,6 +13,9 @@ import adminTableMoudule from './adminTable'
 import couponTableMoudule from './couponTable'
 import couponInfoMoudule from './couponInfo'
 import businessTableMoudule from './businessTable'
+import businessInfoMoudule from './businessInfo'
+import businessCounterTableMoudule from './businessCounterTable'
+import businessCounterInfoMoudule from './businessCounterInfo'
 import notificationTableMoudule from './notificationTable'
 import notificationInfoMoudule from './notificationInfo'
 
@@ -98,6 +101,9 @@ export default new Vuex.Store({
     couponTableMoudule,
     couponInfoMoudule,
     businessTableMoudule,
+    businessInfoMoudule,
+    businessCounterTableMoudule,
+    businessCounterInfoMoudule,
     notificationTableMoudule,
     notificationInfoMoudule
   }

@@ -1,23 +1,25 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { DateTime } from 'luxon'
 export default {
-  name: 'business',
+  name: 'businessCounter',
   data () {
     return {
-      columns: ['edit', 'id', 'name', 'account_name', 'vat', 'updated_at', 'status'],
+      columns: ['edit', 'business_id', 'name', 'full_name', 'vat', 'pos_id', 'updated_at'],
       options: {
         headings: {
-          edit: '#',
-          id: 'ID',
-          account_name: '帳號',
-          name: '公司名稱',
+          edit: '',
+          // id: 'ID',
+          business_id: '商家ID',
           vat: '統編',
-          pos_id: '廳別代號',
-          updated_at: '最後登入時間',
-          status: '狀態'
+          pos_id: 'POS ID / 帳號',
+          full_name: '廳別全名',
+          // account_name: '帳號',
+          name: '廳別名稱',
+          updated_at: '更新時間'
         },
         columnsClasses: {
-          // edit: 'width-fix',
+          // act: 'width-fix',
           // status: 'width-fix'
         },
         perPage: 15,
@@ -32,8 +34,8 @@ export default {
           last: '>|'
         },
         preserveState: true,
-        sortable: ['name123', 'album'],
-        // filterable: ['title'],
+        sortable: ['name123'],
+        // filterable: ['name', 'album'],
         filterable: false,
         sortIcon: {
           base: 'sorticon',
@@ -42,41 +44,26 @@ export default {
           is: 'sort'
         },
         templates: {
-          status: function (h, row, index) {
-            let s = row.status === 1 ? 'on' : 'off'
-            let className = s === 'on' ? 'badge badge-success text-capitalize' : 'badge badge-secondary text-capitalize'
-            return <span class={className}>{s}</span>
+          updated_at: function (h, row, index) {
+            if (!row.updated_at) return null
+            return DateTime.fromSQL(row.updated_at).setLocale('zh-TW').toFormat('yyyy/MM/dd HH:mm:ss')
           }
         }
       },
       showDialog: false,
       pageNumber: null,
       checkarray: [],
-      checkbtn: false,
-      searchOption: ''
+      checkbtn: false
     }
   },
   computed: {
-    ...mapGetters('businessTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus']),
-    selectLength () {
-      return this.checkarray.length > 0 ? this.checkarray.length : 'All'
+    ...mapGetters('businessCounterTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus']),
+    ...mapGetters(['tokenVal']),
+    shopID () {
+      return this.$route.params.id
     },
-    selectObject () {
-      let selectIDsLength = this.selectLength
-      let selectIDs = this.checkarray
-      let totalData = this.datatables
-      const obj = new Set()
-      if (selectIDsLength === 'All') return null
-      else {
-        totalData.forEach((item) => {
-          selectIDs.forEach((ID) => {
-            if (item.id === ID) {
-              obj.add(item)
-            }
-          })
-        })
-      }
-      return Array.from(obj)
+    bsCounterID () {
+      return this.$route.params.bsID
     },
     dataInfo () {
       let currentPage = this.currentPage
@@ -94,8 +81,8 @@ export default {
     }
   },
   methods: {
-    // 資料 vuex
-    ...mapActions('businessTableMoudule', ['getDatatable', 'getRequestParams', 'setParamsStatus']),
+    ...mapActions('businessCounterTableMoudule', ['getDatatable', 'getRequestParams', 'setParamsStatus']),
+    ...mapActions(['token_update', 'remove_cookie']),
     checkAll () {
       let allDataId = []
       this.datatables.forEach(function (item, index, array) {
@@ -106,35 +93,30 @@ export default {
     uncheckAll () {
       this.checkarray = []
     },
-    // option 功能
-    searchAct () {
-      let search = this.searchOption
-      // this.$refs.couponTable.setFilter(search)
-      console.log(search)
-      this.$swal({
-        title: '系統施工中!!!',
-        icon: 'error'
-      })
-    },
     addNew () {
-      this.$router.push({ name: 'businessEdit', params: { id: 'new' } })
+      this.$router.push({ name: 'businessCounterEdit', params: { bsID: 'new' } })
     },
-    viewBusiness (iduse) {
-      let id = ''
-      if (iduse) id = iduse
-      else id = this.checkarray.join()
-      // 開啟儲存狀態 toggle
-      this.setParamsStatus(true)
-      this.$router.push({ name: 'businessEdit', params: { id } })
+    editChoose (iduse) {
+      let bsID = ''
+      if (iduse) bsID = iduse
+      else bsID = this.checkarray.join()
+      // this.setParamsStatus(true)
+      this.$router.push({ name: 'businessCounterEdit', params: { bsID } })
+    },
+    initParamObj () {
+      return {
+        search: this.shopID,
+        searchFields: 'business_id'
+      }
     },
     refreshData (obj) {
+      if (!obj) obj = this.initParamObj()
       this.getRequestParams(obj)
-      this.getDatatable()
+      this.getDatatable(this.memberID)
       // check clear
       this.uncheckAll()
-      this.searchStr = ''
       // 更新vue-table-2 一樣顯示資料
-      this.$refs.businessTable.setLimit(this.perPage)
+      this.$refs.businessCounterTable.setLimit(this.perPage)
     },
     prevPage () {
       let current = this.currentPage
@@ -177,14 +159,14 @@ export default {
   mounted () {
     if (!this.paramsStatus) { // 有存狀態
       // 初始 params
-      this.getRequestParams()
+      this.getRequestParams(this.initParamObj())
     }
     // 關閉儲存狀態 toggle
     this.setParamsStatus(false)
     // 初始 data
     this.getDatatable()
     // 更新vue-table-2 一樣顯示資料
-    this.$refs.businessTable.setLimit(this.perPage)
+    this.$refs.businessCounterTable.setLimit(this.perPage)
   },
   watch: {
     checkarray (val) {

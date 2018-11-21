@@ -59,7 +59,7 @@ export default {
                 className = str.concat('badge-dark')
                 break
               case 2:
-                s = '優惠'
+                s = '最新消息'
                 className = str.concat('badge-danger')
                 break
               case 3:

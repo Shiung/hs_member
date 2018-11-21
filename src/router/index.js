@@ -78,11 +78,39 @@ export default new Router({
         },
         {
           path: 'business/:id',
+          name: 'businessEdit',
+          meta: { requiresAuth: true }, // 是否要驗證
+          // component: () => import('@/pages/Tablelist')
+          component: () => import('@/pages/BusinessEdit'),
+          redirect: 'business/:id',
+          children: [
+            {
+              path: '',
+              name: 'businessInfo',
+              meta: { requiresAuth: true }, // 是否要驗證
+              component: () => import('@/pages/BusinessInfo')
+            },
+            {
+              path: 'businessCounter',
+              name: 'businessCounter',
+              meta: { requiresAuth: true }, // 是否要驗證
+              component: () => import('@/pages/BusinessCounter')
+            },
+            {
+              path: 'businessCounter/edit/:bsID',
+              name: 'businessCounterEdit',
+              meta: { requiresAuth: true }, // 是否要驗證
+              component: () => import('@/pages/BusinessCounterEdit')
+            }
+          ]
+        },
+        {
+          path: 'shop',
           name: 'shop',
           meta: { requiresAuth: true }, // 是否要驗證
           // component: () => import('@/pages/Tablelist')
           component: () => import('@/pages/Shop'),
-          redirect: 'business/:id',
+          redirect: 'shop',
           children: [
             {
               path: '',

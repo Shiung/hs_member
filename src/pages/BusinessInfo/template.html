@@ -1,0 +1,103 @@
+<div class="businessInfo row d-flex">
+    <div class="col-md-12 order-md-1 order-2">
+      <div class="row">
+        <div class="col-lg-4 col-md-6">
+          <md-field :class="{'md-invalid' : errors.has('name')}">
+            <label>公司名稱</label>
+            <md-input v-model.trim="businessInfoName" name="name" v-validate="'required'" autocomplete="off"></md-input>
+            <span class="md-error">公司名稱不能留空</span> 
+          </md-field>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <md-field :class="{'md-invalid' : errors.has('vat')}">
+            <label>公司統編</label>
+            <md-input v-model.trim="businessInfoVat" name="vat" v-validate="'required'" autocomplete="off"></md-input>
+            <span class="md-error">公司統編不能留空</span> 
+          </md-field>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <md-field :class="{'md-invalid' : errors.has('phone')}">
+            <label>公司電話</label>
+            <md-input v-model.trim="businessInfoPhone" name="phone" v-validate="'required'" autocomplete="off"></md-input>
+            <span class="md-error">公司電話不能留空</span> 
+          </md-field>
+        </div>
+      </div>
+      <div class='row'>
+        <div class="col-lg-4 col-md-6">
+          <md-field :class="{'md-invalid' : errors.has('email')}">
+            <label>公司帳號/信箱</label>
+            <md-input v-model.trim="businessInfoEmail" name="email" v-validate="'required|email'" autocomplete="off"></md-input>
+            <span class="md-error">{{ errors.first('email') }}</span> 
+          </md-field>
+        </div>
+      </div>
+      <div class='row'>  
+        <div class="col-12 d-flex flex-row">
+          <div class="d-flex flex-column">
+              <label class="cus">重置密碼</label>
+              <md-switch v-model="businessInfoPswStatus" class="md-primary mt-0"></md-switch>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6">
+          <transition name="fade" mode="out-in" appear>
+            <md-card class="mt-0" v-if="businessInfoPswStatus">
+              <md-card-content>
+                <md-field :class="{'md-invalid' : errors.has('password')}">
+                  <label>新密碼</label>
+                  <md-input v-model.trim="businessInfoPswEdit" name="password" type="password" v-validate="'required|min:6'" autocomplete="off"></md-input>
+                  <span class="md-error">{{ errors.first('password') }}</span> 
+                </md-field>
+              </md-card-content>
+            </md-card>
+          </transition> 
+        </div>
+      </div>
+
+      <div class='row'>  
+        <!-- <div class="col-lg-4 col-md-6">
+          <md-field :class="{'md-invalid' : errors.has('accountName')}">
+            <label>公司帳號</label>
+            <md-input v-model.trim="businessInfoAccountName" name="accountName" v-validate="'required'" autocomplete="off"></md-input>
+            <span class="md-error">公司帳號不能留空</span> 
+          </md-field>
+        </div> -->
+        <div class="col-12">
+          <md-field :class="{'md-invalid' : errors.has('address')}">
+            <label>公司地址</label>
+            <md-input v-model.trim="businessInfoAddress" name="address" v-validate="'required'" autocomplete="off"></md-input>
+            <span class="md-error">公司地址不能留空</span> 
+          </md-field>
+        </div>
+        
+        <div class="col-12 d-flex flex-column">
+          <label class="cus">商家狀態</label>
+          <md-switch v-model="businessInfoStatus" class="md-primary mt-0"></md-switch>
+        </div>
+      </div> 
+    </div>
+
+    <!-- <div class="col-md-4 order-md-2 order-1 mb-3">
+      <label class="cus">商家圖片</label>
+      <vue-dropzone 
+        :options="dropzoneOptions" 
+        :destroyDropzone="destroy"
+        :useCustomSlot=true 
+        id="dropzone"
+        @vdropzone-max-files-exceeded="maxExceed" 
+        @vdropzone-success="uploadImgSuccess"
+        @vdropzone-error="uploadImgError"
+        @vdropzone-removed-file="removeImg"
+        ref="notificationDZ">
+        <div class="dropzone-custom-content">
+          <h3 class="dropzone-custom-title">請拖曳檔案</h3>
+          <div class="subtitle">...或者點擊上傳</div>
+        </div>
+      </vue-dropzone>
+    </div> -->
+
+    <div class="col-12 d-flex justify-content-end mt-5 order-3">
+        <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
+        <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
+    </div>
+</div>

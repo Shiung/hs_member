@@ -3,7 +3,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import 'bootstrap'
-import { MdField, MdSwitch, MdCard, MdRipple, MdButton, MdMenu, MdList, MdCheckbox, MdRadio, MdTable, MdTooltip, MdBadge, MdDialog, MdChips, MdProgress, MdContent, MdAutocomplete } from 'vue-material/dist/components'
+import { MdField, MdSwitch, MdCard, MdRipple, MdButton, MdMenu, MdList, MdCheckbox, MdRadio, MdTable, MdTooltip, MdBadge, MdDialog, MdChips, MdProgress, MdContent, MdAutocomplete, MdSteppers } from 'vue-material/dist/components'
 import 'vue-material/dist/vue-material.min.css'
 import { ClientTable, ServerTable } from 'vue-tables-2'
 import VueSwal from 'vue-swal'
@@ -57,6 +57,7 @@ Vue.use(MdChips)
 Vue.use(MdProgress)
 Vue.use(MdContent)
 Vue.use(MdAutocomplete)
+Vue.use(MdSteppers)
 // datatable
 Vue.use(ClientTable, {skin: 'table table-hover'}, false, 'bootstrap4')
 Vue.use(ServerTable, {skin: 'table table-hover'}, false, 'bootstrap4')

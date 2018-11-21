@@ -1,0 +1,121 @@
+<div class="businessCounterEdit col-12">
+  <div class="row">
+      <div class="col-md-12">
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <md-field :class="{'md-invalid' : errors.has('name')}">
+              <label>廳別名稱</label>
+              <md-input v-model.trim="businessCounterName" name="name" v-validate="'required'" autocomplete="off"></md-input>
+              <span class="md-error">廳別名稱不能留空</span> 
+            </md-field>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <md-field :class="{'md-invalid' : errors.has('fullName')}">
+              <label>廳別全名</label>
+              <md-input v-model.trim="businessCounterFullName" name="fullName" v-validate="'required'" autocomplete="off"></md-input>
+              <span class="md-error">廳別全名不能留空</span> 
+            </md-field>
+          </div>
+        </div>
+        <div class='row'>
+          <!-- <div class="col-lg-4 col-md-6">
+            <md-field :class="{'md-invalid' : errors.has('accountName')}">
+              <label>廳別帳號</label>
+              <md-input v-model.trim="businessCounterAccountName" name="accountName" v-validate="'required'" autocomplete="off"></md-input>
+              <span class="md-error">廳別帳號不能留空</span> 
+            </md-field>
+          </div> -->
+          <div class="col-lg-4 col-md-6 mb-2">
+            <md-field :class="{'md-invalid' : errors.has('postId')}">
+              <label>POS 機代號 / 帳號</label>
+              <md-input v-model.trim="businessCounterPostId" name="postId" v-validate="'required'" autocomplete="off"></md-input>
+              <span class="md-helper-text text-danger">*必須與POS機 代號相同*</span>
+              <span class="md-error">pos機代號不能留空</span> 
+            </md-field>
+          </div>
+          <div class="col-lg-4 col-md-6" v-if="bsCounterID == 'new'">
+            <md-field :class="{'md-invalid' : errors.has('password')}">
+              <label>密碼</label>
+              <md-input v-model.trim="businessCounterPsw" name="password" type="password" v-validate="'required|min:6'" autocomplete="off"></md-input>
+              <span class="md-error">{{ errors.first('password') }}</span> 
+            </md-field>
+          </div>
+        </div>
+        <div class='row' v-if="bsCounterID != 'new'">  
+          <div class="col-12 d-flex flex-row">
+            <div class="d-flex flex-column">
+                <label class="cus">重置密碼</label>
+                <md-switch v-model="businessCounterPswStatus" class="md-primary mt-0"></md-switch>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <transition name="fade" mode="out-in" appear>
+              <md-card class="mt-0" v-if="businessCounterPswStatus">
+                <md-card-content>
+                  <md-field :class="{'md-invalid' : errors.has('password')}">
+                    <label>新密碼</label>
+                    <md-input v-model.trim="businessCounterPswReset" name="password" type="password" v-validate="'required|min:6'" autocomplete="off"></md-input>
+                    <span class="md-error">{{ errors.first('password') }}</span> 
+                  </md-field>
+                </md-card-content>
+              </md-card>
+            </transition> 
+          </div>
+        </div>
+        <div class='row'>  
+          <div class="col-lg-4 col-md-6">
+            <md-field :class="{'md-invalid' : errors.has('vat')}">
+              <label>廳別統編</label>
+              <md-input v-model.trim="businessCounterVat" name="vat" v-validate="'required'" autocomplete="off"></md-input>
+              <span class="md-error">廳別統編不能留空</span> 
+            </md-field>
+          </div>
+          <div class="col-lg-4 col-md-6">
+            <md-field :class="{'md-invalid' : errors.has('phone')}">
+              <label>廳別電話</label>
+              <md-input v-model.trim="businessCounterPhone" name="phone" v-validate="'required'" autocomplete="off"></md-input>
+              <span class="md-error">廳別電話不能留空</span> 
+            </md-field>
+          </div>
+          <div class="col-12">
+            <md-field :class="{'md-invalid' : errors.has('address')}">
+              <label>廳別地址</label>
+              <md-input v-model.trim="businessCounterAddress" name="address" v-validate="'required'" autocomplete="off"></md-input>
+              <span class="md-error">廳別地址不能留空</span> 
+            </md-field>
+          </div>
+          
+          <div class="col-12 mt-3 mb-5" v-if="bsCounterID != 'new'">
+            <label class="cus">圖片</label>
+            <!-- vue2 dropzone -->
+            <vue-dropzone 
+              :options="dropzoneOptions" 
+              :destroyDropzone="destroy"
+              :useCustomSlot=true 
+              id="dropzone"
+              @vdropzone-max-files-exceeded="maxExceed" 
+              @vdropzone-success="uploadImgSuccess"
+              @vdropzone-error="uploadImgError"
+              @vdropzone-removed-file="removeImg"
+              ref="bsCounterDZ">
+              <div class="dropzone-custom-content">
+                <h3 class="dropzone-custom-title">請拖曳檔案</h3>
+                <div class="subtitle">...或者點擊上傳</div>
+              </div>
+            </vue-dropzone>
+          </div>  
+
+
+          <div class="col-12 d-flex flex-column mt-1" v-if="bsCounterID != 'new'">
+            <label class="cus">廳別狀態</label>
+            <md-switch v-model="businessCounterStatus" class="md-primary mt-0"></md-switch>
+          </div>
+        </div> 
+      </div>
+
+      <div class="col-12 d-flex justify-content-end mt-5">
+          <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
+          <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
+      </div>
+  </div> 
+</div>
