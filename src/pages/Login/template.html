@@ -23,11 +23,11 @@
                     <md-input v-model.trim="account" name="ID" v-validate="'required'" @keyup.enter="login"></md-input>
                     <span class="md-error">{{ errors.first('ID') }}</span> 
                 </md-field>
-                <md-field :md-toggle-password="false" :class="{'md-invalid' : errors.has('psw')}">
+                <md-field :md-toggle-password="false" :class="{'md-invalid' : errors.has('password')}">
                     <md-icon class="md-primary">lock_open</md-icon>
                     <label>使用者密碼</label>
-                    <md-input v-model.trim="password" type="password" name="psw" v-validate="'required'" @keyup.enter="login"></md-input>
-                    <span class="md-error">密碼不能空白</span>
+                    <md-input v-model.trim="password" type="password" name="password" v-validate="'required|min:6'" @keyup.enter="login"></md-input>
+                    <span class="md-error">{{ errors.first('password') }}</span>
                 </md-field>
             </md-card-content>
 
