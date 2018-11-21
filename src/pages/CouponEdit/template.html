@@ -212,7 +212,7 @@
               <label for="coverageSelect">廳別選擇</label>
               <md-select v-model="coverageSelect" name="coverageSelect" id="coverageSelect" md-dense multiple @md-opened="openOptionCoverage">
                 <md-option v-for="item in coverageData" :key="item.id" :value="item.id">{{item.full_name}}</md-option>   
-                <md-button v-if="selectNoneVale" disabled>所有廳別已綁定於此優惠卷</md-button>          
+                <md-button v-if="selectNoneVale" disabled>沒有多餘的廳別可使用於此優惠卷</md-button>          
                 <md-button v-if="readMoreShow" @click="readMore">
                   <md-progress-spinner v-if="loadingShow" class="md-primary" :md-stroke="3" :md-diameter="15" md-mode="indeterminate"></md-progress-spinner>
                   顯示更多

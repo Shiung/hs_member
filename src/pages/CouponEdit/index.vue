@@ -205,7 +205,21 @@ export default {
       }).then((res) => {
         // data path
         let dataPath = res.data
-        this.coverageCompanyData = dataPath.data
+        if (this.coverageCompanyData.length === 0) {
+          this.coverageCompanyData = dataPath.data
+        } else {
+          let newCoverageCompanyData = new Set() // 物件
+          // 原有資料
+          this.coverageCompanyData.forEach((item) => {
+            newCoverageCompanyData.add(item)
+          })
+          // 更多資料
+          dataPath.data.forEach((item) => {
+            newCoverageCompanyData.add(item)
+          })
+          // 獲得資料
+          this.coverageCompanyData = Array.from(newCoverageCompanyData)
+        }
         this.coverageCompanyMeta = dataPath.meta
         if (dataPath.meta.pagination.total_pages === dataPath.meta.pagination.current_page) {
           this.readMoreCompanyShow = false
