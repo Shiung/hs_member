@@ -14,7 +14,7 @@
           </md-card-header>
           <md-card-content>
             <!-- 1. 編輯公司 -->
-            <div class="mb-5" v-if="businessStatus">
+            <div class="mb-5 d-flex flex-row justify-content-center" v-if="businessStatus">
               <router-link class="bookmark" :to="{name : 'businessInfo' }" v-if="businessCounterEditStatus">商家資料</router-link>
               <router-link class="bookmark" :to="{name : 'businessCounter'}" v-if="businessCounterEditStatus">營業廳別</router-link>
             </div>
