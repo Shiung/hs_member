@@ -41,7 +41,7 @@ export default {
         },
         templates: {
           expire_at: function (h, row, index) {
-            if (!row.use_at) return null
+            if (!row.expire_at) return null
             return DateTime.fromSQL(row.expire_at).setLocale('zh-TW').toFormat('yyyy/MM/dd HH:mm:ss')
           },
           use_at: function (h, row, index) {
