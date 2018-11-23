@@ -200,6 +200,12 @@ export default new Router({
           name: 'account',
           meta: { requiresAuth: true }, // 是否要驗證
           component: () => import('@/pages/Account')
+        },
+        {
+          path: 'account/:id',
+          name: 'accountEdit',
+          meta: { requiresAuth: true }, // 是否要驗證
+          component: () => import('@/pages/AccountEdit')
         }
       ]
     }

@@ -4,13 +4,13 @@ export default {
   name: 'account',
   data () {
     return {
-      columns: ['edit', 'id', 'id_number', 'mobile', 'name', 'updated_at', 'status'],
+      columns: ['edit', 'id', 'id_number', 'name', 'level', 'updated_at', 'status'],
       options: {
         headings: {
           edit: '#',
           id: 'ID',
           id_number: '帳號',
-          mobile: '電話',
+          level: '權限',
           psw: '密碼',
           name: '名稱',
           authLevel: '權限',
@@ -51,9 +51,28 @@ export default {
           //   }
           //   return pswStr
           // },
+          level: function (h, row, index) {
+            let str = 'badge badge-pill text-capitalize '
+            let s = ''
+            let className = ''
+            switch (row.level) {
+              case 0:
+                s = '最高權限'
+                className = str.concat('badge-primary')
+                break
+              case 1:
+                s = '管理者'
+                // className = str.concat('badge-info')
+                className = str.concat('badge-secondary')
+                break
+              default:
+                break
+            }
+            return <span class={className}>{s}</span>
+          },
           status: function (h, row, index) {
             let s = row.status === 1 ? 'on' : 'off'
-            let className = s === 'on' ? 'badge badge-success text-capitalize' : 'badge badge-secondary text-capitalize'
+            let className = s === 'on' ? 'badge badge-success badge-pill text-capitalize' : 'badge badge-secondary badge-pill text-capitalize'
             return <span class={className}>{s}</span>
           }
         }
@@ -66,6 +85,7 @@ export default {
   },
   computed: {
     ...mapGetters('adminTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj']),
+    ...mapGetters(['tokenVal', 'userInfo']),
     selectLength () {
       return this.checkarray.length > 0 ? this.checkarray.length : 'All'
     },
@@ -165,16 +185,30 @@ export default {
       let search = this.searchOption
       console.log(search)
     },
-    addNew () {
-      this.$swal({
-        title: '系統施工中!',
-        icon: 'warning'
-      })
-        .then(() => {
-          this.$snotify.success('新增一筆資料')
+    levelCheck () {
+      if (this.userInfo.level !== 0) {
+        this.$swal({
+          title: '帳號權限不夠!',
+          icon: 'error'
         })
+        return false
+      } else return true
+    },
+    editChoose (iduse) {
+      if (!this.levelCheck()) return
+      let id = ''
+      if (iduse) id = iduse
+      else id = this.checkarray.join()
+      // 開啟儲存狀態 toggle
+      // this.setParamsStatus(true)
+      this.$router.push({ name: 'accountEdit', params: { id } })
+    },
+    addNew () {
+      if (!this.levelCheck()) return
+      this.$router.push({ name: 'accountEdit', params: { id: 'new' } })
     },
     disabledAdmin () {
+      if (!this.levelCheck()) return
       let id = this.checkarray.join()
       this.$swal({
         title: '系統施工中!',
@@ -195,6 +229,7 @@ export default {
         })
     },
     downloadCSV () {
+      if (!this.levelCheck()) return
       let id = this.checkarray.join()
       this.$swal({
         title: 'Good job!',

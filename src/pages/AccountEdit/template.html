@@ -1,0 +1,94 @@
+<div class="accountEdit col-12">
+  <div class="row">
+    <div class="col-12">
+      <md-card>
+        <md-card-header class="d-inline-block" >
+          <div class="md-title d-flex justify-content-center align-items-center">
+            <md-button class="md-icon-button md-dense md-raised mr-2" @click="cancel">
+              <md-icon>keyboard_arrow_left</md-icon>
+              <md-tooltip md-direction="bottom">回上一頁</md-tooltip>
+            </md-button>
+            {{pageTitle}}
+          </div>
+        </md-card-header>
+        <md-card-content>
+          <div class="row">
+            <div class="col-md-6">
+              <md-field :class="{'md-invalid' : errors.has('id_number')}">
+                <label>帳號</label>
+                <md-input v-model.trim="adminIDnumber"  name="id_number" v-validate="'required'" autocomplete="off"></md-input>
+                <span class="md-error">標題不能留空</span> 
+              </md-field>
+            </div>
+            <div class="col-md-6" v-if="adminID === 'new'">
+              <md-field :class="{'md-invalid' : errors.has('password')}">
+                <label>密碼</label>
+                <md-input v-model.trim="adminPswCreate" name="password" type="password" v-validate="'required|min:6'" autocomplete="off"></md-input>
+                <span class="md-error">{{ errors.first('password') }}</span> 
+              </md-field>
+            </div>
+            <div class="col-md-6">
+              <md-field :class="{'md-invalid' : errors.has('email')}">
+                <label>信箱</label>
+                <md-input v-model.trim="adminEmail"  name="email" v-validate="'required|email'" autocomplete="off"></md-input>
+                <span class="md-error">{{ errors.first('email') }}</span> 
+              </md-field>
+            </div>
+          </div>
+          <div class='row' v-if="adminID !== 'new'">  
+            <div class="col-12 d-flex flex-row">
+              <div class="d-flex flex-column">
+                  <label class="cus">重置密碼</label>
+                  <md-switch v-model="adminPswStatus" class="md-primary mt-0"></md-switch>
+              </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+              <transition name="fade" mode="out-in" appear>
+                <md-card class="mt-0" v-if="adminPswStatus">
+                  <md-card-content>
+                    <md-field :class="{'md-invalid' : errors.has('password')}">
+                      <label>新密碼</label>
+                      <md-input v-model.trim="adiminPswReset" name="password" type="password" v-validate="'required|min:6'" autocomplete="off"></md-input>
+                      <span class="md-error">{{ errors.first('password') }}</span> 
+                    </md-field>
+                  </md-card-content>
+                </md-card>
+              </transition> 
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <md-field :class="{'md-invalid' : errors.has('name')}">
+                <label>名稱</label>
+                <md-input v-model.trim="adminName"  name="name"  v-validate="'required'" autocomplete="off"></md-input>
+                <span class="md-error">名稱不能留空</span> 
+              </md-field>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 md-layout-item">
+              <md-field :class="{'md-invalid' : errors.has('contentType')}">
+                <label>權限</label>
+                <md-select v-model.number="adminLevel" name="contentType" v-validate="'required'" autocomplete="off">
+                    <md-option value="0">最高權限</md-option>
+                    <md-option value="1">管理者</md-option>
+                </md-select>
+                <span class="md-error">權限不能留空</span> 
+              </md-field>
+            </div>
+          </div>
+          <div class="row">  
+            <div class="col-12 d-flex flex-column mb-5" v-if="adminID != 'new'">
+              <label class="cus">狀態</label>
+              <md-switch v-model="adminStatus" class="md-primary mt-0"></md-switch>
+            </div>
+          </div>
+        </md-card-content> 
+        <md-card-actions>
+          <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
+          <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
+        </md-card-actions>       
+      </md-card>
+    </div>
+  </div>
+</div>

@@ -27,6 +27,12 @@
                     <md-tooltip md-direction="bottom">add</md-tooltip>
                   </md-button>
                   <transition name="selectOption" mode="out-in" appear>
+                    <md-button  v-if="checkarray.length === 1" class="md-icon-button md-dense md-raised md-primary" @click="editChoose(null)">
+                      <md-icon>edit</md-icon>
+                      <md-tooltip md-direction="bottom">修改</md-tooltip>
+                    </md-button>
+                  </transition> 
+                  <transition name="selectOption" mode="out-in" appear>
                     <md-badge :md-content="selectLength" md-dense v-if="checkarray.length > 0">
                       <md-button class="md-icon-button md-dense md-raised md-primary" @click="disabledAdmin">
                         <md-icon>person_add_disabled</md-icon>
@@ -74,7 +80,13 @@
               :value="props.row.id" 
               style="margin:0;"
             ></md-checkbox>   
-            
+            <!-- 標題名稱 -->
+            <a 
+              style="cursor: pointer;"
+              slot="id_number" 
+              slot-scope="props" 
+              @click.prevent="editChoose(props.row.id)">{{props.row.id_number}}</a>
+
           </v-client-table> 
           
           <!-- pagenation-customer -->

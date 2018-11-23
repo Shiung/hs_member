@@ -10,6 +10,7 @@ import memTransactionrecordsTableMoudule from './memTransactionrecordsTable'
 import memTicketholderTableMoudule from './memTicketholderTable'
 import memInfoMoudule from './memInfo'
 import adminTableMoudule from './adminTable'
+import adminInfoMoudule from './adminInfo'
 import couponTableMoudule from './couponTable'
 import couponInfoMoudule from './couponInfo'
 import businessTableMoudule from './businessTable'
@@ -100,6 +101,7 @@ export default new Vuex.Store({
     memTransactionrecordsTableMoudule,
     memTicketholderTableMoudule,
     adminTableMoudule,
+    adminInfoMoudule,
     couponTableMoudule,
     couponInfoMoudule,
     businessTableMoudule,
