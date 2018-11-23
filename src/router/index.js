@@ -157,6 +157,18 @@ export default new Router({
           component: () => import('@/pages/CouponEdit')
         },
         {
+          path: 'banner',
+          name: 'banner',
+          meta: { requiresAuth: true }, // 是否要驗證
+          component: () => import('@/pages/Banner')
+        },
+        {
+          path: 'banner/:id',
+          name: 'bannerEdit',
+          meta: { requiresAuth: true }, // 是否要驗證
+          component: () => import('@/pages/BannerEdit')
+        },
+        {
           path: 'report',
           name: 'report',
           meta: { requiresAuth: true }, // 是否要驗證

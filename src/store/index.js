@@ -18,6 +18,8 @@ import businessCounterTableMoudule from './businessCounterTable'
 import businessCounterInfoMoudule from './businessCounterInfo'
 import notificationTableMoudule from './notificationTable'
 import notificationInfoMoudule from './notificationInfo'
+import bannerTableMoudule from './bannerTable'
+import bannerInfoMoudule from './bannerInfo'
 
 Vue.use(Vuex)
 
@@ -105,6 +107,8 @@ export default new Vuex.Store({
     businessCounterTableMoudule,
     businessCounterInfoMoudule,
     notificationTableMoudule,
-    notificationInfoMoudule
+    notificationInfoMoudule,
+    bannerTableMoudule,
+    bannerInfoMoudule
   }
 })

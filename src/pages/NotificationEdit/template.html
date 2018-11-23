@@ -39,7 +39,7 @@
             <div class="col-12">
               <md-field :class="{'md-invalid' : errors.has('contentUrl')}">
                 <label>連結網址</label>
-                <md-input v-model.trim="notificationURL"  name="contentUrl"  v-validate="'required'" autocomplete="off"></md-input>
+                <md-input v-model.trim="notificationURL"  name="contentUrl"  v-validate="'required|url:require_protocol'" autocomplete="off"></md-input>
                 <span class="md-error">連結網址不能留空</span> 
               </md-field>
             </div>

@@ -1,0 +1,65 @@
+<div class="bannerEdit col-12">
+  <div class="row">
+    <div class="col-12">
+        <md-card>
+          <md-card-header class="d-inline-block" >
+            <div class="md-title d-flex justify-content-center align-items-center">
+              <md-button class="md-icon-button md-dense md-raised mr-2" @click="cancel">
+                <md-icon>keyboard_arrow_left</md-icon>
+                <md-tooltip md-direction="bottom">回上一頁</md-tooltip>
+              </md-button>
+              {{pageTitle}}
+            </div>
+          </md-card-header>
+          <md-card-content>
+            <div class="row">
+              <div class="col-md-6">
+                <md-field :class="{'md-invalid' : errors.has('title')}">
+                  <label>標題</label>
+                  <md-input v-model.trim="bannerTitle"  name="title"  v-validate="'required'" autocomplete="off"></md-input>
+                  <span class="md-error">標題不能留空</span> 
+                </md-field>
+              </div>
+              <div class="col-md-6">
+                <md-field :class="{'md-invalid' : errors.has('url')}">
+                  <label>URL</label>
+                  <md-input v-model.trim="bannerUrl"  name="url"  v-validate="'required|url:require_protocol'" autocomplete="off"></md-input>
+                  <span class="md-error">{{ errors.first('url') }}</span> 
+                </md-field>
+              </div>
+
+              <div class="col-12 mt-3 mb-5" v-if="bannerID != 'new'">
+                <label class="cus">圖片</label>
+                <!-- vue2 dropzone -->
+                <vue-dropzone 
+                  :options="dropzoneOptions" 
+                  :destroyDropzone="destroy"
+                  :useCustomSlot=true 
+                  id="dropzone"
+                  @vdropzone-max-files-exceeded="maxExceed" 
+                  @vdropzone-success="uploadImgSuccess"
+                  @vdropzone-error="uploadImgError"
+                  @vdropzone-removed-file="removeImg"
+                  ref="bannerDZ">
+                  <div class="dropzone-custom-content">
+                    <h3 class="dropzone-custom-title">請拖曳檔案</h3>
+                    <div class="subtitle">...或者點擊上傳</div>
+                  </div>
+                </vue-dropzone>
+              </div>
+            </div>
+            <div class="row">  
+              <div class="col-12 d-flex flex-column mb-5" v-if="bannerID != 'new'">
+                <label class="cus">狀態</label>
+                <md-switch v-model="bannerStatus" class="md-primary mt-0"></md-switch>
+              </div>
+            </div>
+          </md-card-content> 
+          <md-card-actions>
+            <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
+            <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
+          </md-card-actions>       
+        </md-card>
+    </div>
+  </div>  
+</div>
