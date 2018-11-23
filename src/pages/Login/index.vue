@@ -31,9 +31,17 @@ export default {
           this.isLoading = true
           this.axios.post(url, data).then((res) => {
             console.log(res.data)
-            this.user_info(res.data.data.member.data)
-            this.token_update(`Bearer ${res.data.data.access_token}`)
-            this.$router.push({name: 'homepage'})
+            // status == 1
+            if (res.data.data.member.data.status) {
+              this.user_info(res.data.data.member.data)
+              this.token_update(`Bearer ${res.data.data.access_token}`)
+              this.$router.push({name: 'homepage'})
+            } else {
+              this.$swal({
+                title: '帳密已被關閉!',
+                icon: 'error'
+              })
+            }
           }).catch((error) => {
             // handle error
             if (error.response.status === 401) {

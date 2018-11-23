@@ -10,7 +10,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['meueStatus', 'isLoading', 'isShowing', 'tokenVal'])
+    ...mapGetters(['meueStatus', 'isLoading', 'isShowing', 'tokenVal', 'userInfo'])
   },
   components: {
     sideBar: () => import('@/components/Sidebar'),
@@ -62,6 +62,16 @@ export default {
     } else {
       // this.isShowing = true
       this.$store.commit('ISSHOWING', true)
+    }
+  },
+  watch: {
+    // 確認登入管理者狀態
+    userInfo (val) {
+      // status
+      if (!val.status) {
+        this.remove_cookie()
+        this.$router.replace({name: 'login'})
+      }
     }
   }
 }
