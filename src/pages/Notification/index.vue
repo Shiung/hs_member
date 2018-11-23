@@ -5,9 +5,10 @@ export default {
   name: 'notification',
   data () {
     return {
-      columns: ['title', 'content', 'created_at', 'type', 'status', 'act'],
+      columns: ['edit', 'title', 'content', 'created_at', 'type', 'status', 'act'],
       options: {
         headings: {
+          edit: '',
           created_at: '建立時間',
           title: '標題',
           content: '內容',
@@ -96,6 +97,8 @@ export default {
           }
         }
       },
+      checkarray: [],
+      checkbtn: false,
       showDialog: false,
       pageNumber: null
     }
@@ -103,6 +106,9 @@ export default {
   computed: {
     ...mapGetters('notificationTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus']),
     ...mapGetters(['tokenVal']),
+    selectLength () {
+      return this.checkarray.length > 0 ? this.checkarray.length : 'All'
+    },
     dataInfo () {
       let currentPage = this.currentPage
       let perPage = this.perPage
@@ -134,6 +140,16 @@ export default {
     // 資料 vuex
     ...mapActions('notificationTableMoudule', ['getDatatable', 'getRequestParams', 'setParamsStatus']),
     ...mapActions(['token_update', 'remove_cookie']),
+    checkAll () {
+      let allDataId = []
+      this.datatables.forEach(function (item, index, array) {
+        allDataId.push(item.id)
+      })
+      this.checkarray = allDataId
+    },
+    uncheckAll () {
+      this.checkarray = []
+    },
     filterType (type) {
       const obj = {
         page: null,
@@ -141,12 +157,70 @@ export default {
       }
       this.refreshData(obj)
     },
+    deleteNote () {
+      let id = this.checkarray.join()
+      this.$swal({
+        title: '刪除Banner!',
+        text: `你選擇了ID: ${id}`,
+        icon: 'warning',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            // 移除 es6 primse reject 沒有 new error
+            /* eslint-disable */
+            this.$snotify.async('呼叫伺服器', '刪除最新消息', () => {
+              return new Promise((resolve, reject) => {
+                let url = `${process.env.API_HOST}v1/admin/content/${id}`
+                return this.axios.delete(url, {
+                  headers: {
+                    'Authorization': this.tokenVal,
+                    'Accept': 'application/json'
+                  }
+                }).then((res) => {
+                  if (res.headers.authorization) {
+                    this.token_update(res.headers.authorization)
+                  }
+                  this.refreshData()
+                  resolve({
+                    title: '最新消息刪除成功',
+                    body: `已經刪除 ID:"${id}" 的最新消息`,
+                    config: {
+                      timeout: 5000
+                      // closeOnClick: true
+                    }
+                  })
+                }).catch((error) => {
+                  console.log(error)
+                  this.refreshData()
+                  reject({
+                    title: '傳送失敗',
+                    body: '伺服器異常',
+                    config: {
+                      timeout: 5000
+                      // closeOnClick: true
+                    }
+                  })
+                })
+              })
+            })
+          }
+        })
+
+    },
     addNew () {
       this.$router.push({ name: 'notificationEdit', params: { id: 'new' } })
     },
     editChoose (iduse) {
       let id = ''
       if (iduse) id = iduse
+      else id = this.checkarray.join()
       this.setParamsStatus(true)
       this.$router.push({ name: 'notificationEdit', params: { id } })
     },
@@ -154,6 +228,7 @@ export default {
       this.getRequestParams(obj)
       this.getDatatable()
       // check clear
+      this.uncheckAll()
       this.searchStr = ''
       // 更新vue-table-2 一樣顯示資料
       this.$refs.notificationTable.setLimit(this.perPage)
@@ -255,6 +330,24 @@ export default {
     }
   },
   watch: {
+    checkarray (val) {
+      if (val.length === 0) {
+        this.checkbtn = false
+      } else {
+        this.checkbtn = true
+      }
+    },
+    checkbtn (val, oldval) {
+      if (!oldval) {
+        if (this.checkarray.length === 0) {
+          this.checkAll()
+        }
+      } else {
+        if (this.checkarray.length !== 0) {
+          this.uncheckAll()
+        }
+      }
+    },
     pageNumber (val) {
       if (val === '') return
       if (val > this.totalPages) {

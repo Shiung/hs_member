@@ -13,6 +13,14 @@
           <div class="row sticky-top select-options-top">
             <div class="col-12 d-flex align-items-center justify-content-between flex-wrap-reverse">
                 <div class='d-flex align-items-center justify-content-between select-options'>
+                    <md-checkbox class="checkbtnArea" v-model="checkbtn" style="margin:0 0 0 10px" indeterminate></md-checkbox>
+                    <md-menu md-size="medium" md-align-trigger>
+                        <md-button md-menu-trigger style="min-width: 0;width:20px;"><md-icon>arrow_drop_down</md-icon></md-button>
+                        <md-menu-content>
+                          <md-menu-item @click="checkAll">全選</md-menu-item>
+                          <md-menu-item @click="uncheckAll">全不選</md-menu-item>
+                        </md-menu-content>
+                    </md-menu>
                     <md-button class="md-icon-button md-dense md-raised md-primary" @click="refreshData(null)">
                       <md-icon>refresh</md-icon>
                       <md-tooltip md-direction="bottom">refresh</md-tooltip>
@@ -33,6 +41,21 @@
                         <md-menu-item @click="filterType(3)">推播訊息</md-menu-item>
                       </md-menu-content>
                     </md-menu>
+
+                    <transition name="selectOption" mode="out-in" appear>
+                      <md-badge :md-content="selectLength" md-dense v-if="selectLength === 1"> <!-- v-if="checkarray.length > 0" -->
+                        <md-button class="md-icon-button md-dense md-raised md-primary" @click="deleteNote">
+                          <md-icon>delete</md-icon>
+                          <md-tooltip md-direction="bottom">刪除</md-tooltip>
+                        </md-button>
+                      </md-badge>
+                    </transition>
+                    <transition name="selectOption" mode="out-in" appear>
+                      <md-button  v-if="checkarray.length === 1" class="md-icon-button md-dense md-raised md-primary" @click="editChoose(null)">
+                        <md-icon>edit</md-icon>
+                        <md-tooltip md-direction="bottom">修改</md-tooltip>
+                      </md-button>
+                    </transition> 
                 </div>
               
             </div>
@@ -44,6 +67,16 @@
             :options="options"
             ref="notificationTable"
           >
+
+            <!-- 選單 -->
+            <md-checkbox 
+              slot="edit" 
+              slot-scope="props" 
+              v-model="checkarray" 
+              class="md-primary" 
+              :value="props.row.id" 
+              style="margin:0;"
+            ></md-checkbox>
             <!-- 標題 -->
             <a 
             style="cursor: pointer;"
