@@ -108,12 +108,8 @@
           <div class="col-12 d-flex flex-column mt-1 mb-5" v-if="bsCounterID != 'new'">
             <label class="cus">背景顏色</label>
             <div class="d-flex flex-row align-items-center">
-              <md-button class="md-icon-button md-dense md-raised md-primary ml-0" @click="showDialog = true">
-                <md-icon>color_lens</md-icon>
-                <md-tooltip md-direction="bottom">選擇顏色</md-tooltip>
-              </md-button>
-              <div class="d-flex flex-row align-items-center"> 
-                <div class="color ml-2" :style="`background-color: ${colors.hex}`"></div> 
+              <div class="d-flex flex-row align-items-center" @click="showDialog = true" style="cursor: pointer;"> 
+                <div class="color" :style="`background-color: ${colors.hex}`"></div> 
                 <span>{{colorPick}}</span>
               </div>
             </div>
