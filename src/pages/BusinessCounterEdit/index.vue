@@ -1,7 +1,12 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { Chrome } from 'vue-color'
 export default {
   name: 'businessCounterEdit',
+  components: {
+    // 'photoshop-picker': Photoshop,
+    'chrome-picker': Chrome
+  },
   data () {
     return {
       businessCounterName: '',
@@ -13,6 +18,13 @@ export default {
       businessCounterAddress: '',
       businessCounterPsw: '',
       businessCounterStatus: false,
+      // color picker
+      showDialogFullSreen: false,
+      showDialog: false,
+      // colors: '',
+      colors: {
+        hex: ''
+      },
       // 密碼重置
       businessCounterPswStatus: false,
       businessCounterPswReset: '',
@@ -47,6 +59,13 @@ export default {
     },
     bsCounterID () {
       return this.$route.params.bsID
+    },
+    colorPick () {
+      if (this.colors.hex) {
+        return this.colors.hex
+      } else {
+        return '沒有選擇背景顏色'
+      }
     }
   },
   methods: {
@@ -62,6 +81,7 @@ export default {
       this.businessCounterAddress = this.businessCounterInfo.address
       let status = this.businessCounterInfo.status === 1
       this.businessCounterStatus = status
+      this.colors.hex = this.businessCounterInfo.color
 
       // vue2 dropZone
       this.initImg(this.businessCounterInfo.images)
@@ -104,12 +124,14 @@ export default {
         if (this.businessCounterPswStatus) {
           return {
             ...data,
+            'color': this.colors.hex,
             'status': this.businessCounterStatus ? 1 : 0,
             'password': this.businessCounterPswReset
           }
         } else {
           return {
             ...data,
+            'color': this.colors.hex,
             'status': this.businessCounterStatus ? 1 : 0
           }
         }

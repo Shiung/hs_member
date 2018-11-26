@@ -104,7 +104,21 @@
               </div>
             </vue-dropzone>
           </div>  
-
+ 
+          <div class="col-12 d-flex flex-column mt-1 mb-5" v-if="bsCounterID != 'new'">
+            <label class="cus">背景顏色</label>
+            <div class="d-flex flex-row align-items-center">
+              <md-button class="md-icon-button md-dense md-raised md-primary ml-0" @click="showDialog = true">
+                <md-icon>color_lens</md-icon>
+                <md-tooltip md-direction="bottom">選擇顏色</md-tooltip>
+              </md-button>
+              <div class="d-flex flex-row align-items-center"> 
+                <div class="color ml-2" :style="`background-color: ${colors.hex}`"></div> 
+                <span>{{colorPick}}</span>
+              </div>
+            </div>
+          </div>
+          
 
           <div class="col-12 d-flex flex-column mt-1" v-if="bsCounterID != 'new'">
             <label class="cus">廳別狀態</label>
@@ -118,4 +132,19 @@
           <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
       </div>
   </div> 
+
+
+  <!-- searchFilter box -->
+  <md-dialog :md-active.sync="showDialog" style="min-width: auto;" :md-fullscreen="showDialogFullSreen">
+    <!-- <md-dialog-title>背景顏色篩選</md-dialog-title> -->
+    <md-dialog-content class="p-0">
+      <chrome-picker v-model="colors" />  
+    </md-dialog-content>
+    
+
+    <!-- <md-dialog-actions>
+      <md-button class="md-primary" @click="showDialog = false">取消</md-button>
+      <md-button class="md-primary" @click="saveColor">確定</md-button>
+    </md-dialog-actions> -->
+  </md-dialog>
 </div>
