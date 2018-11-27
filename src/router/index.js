@@ -206,6 +206,12 @@ export default new Router({
           name: 'accountEdit',
           meta: { requiresAuth: true }, // 是否要驗證
           component: () => import('@/pages/AccountEdit')
+        },
+        {
+          path: 'system',
+          name: 'system',
+          meta: { requiresAuth: true }, // 是否要驗證
+          component: () => import('@/pages/System')
         }
       ]
     }

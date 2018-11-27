@@ -6,17 +6,18 @@ export default {
   name: 'memTransactionrecords',
   data () {
     return {
-      columns: ['transfer_action', 'description', 'created_at', 'total_sum', 'discount_value', 'actual_price'],
+      columns: ['transfer_action', 'description', 'updated_at', 'transaction_recordsable_data', 'total_sum', 'point', 'discount_value', 'actual_price'],
       options: {
         headings: {
-          created_at: '交易時間',
+          updated_at: '交易時間',
           description: '說明',
           balance: '剩餘點數',
           point: '點數',
           transfer_action: '交易狀態',
-          actual_price: '金額',
-          discount_value: '折抵金額',
-          total_sum: '消費總額'
+          transaction_recordsable_data: '櫃位名稱',
+          actual_price: '發票金額',
+          discount_value: '優惠折抵',
+          total_sum: '消費金額'
         },
         columnsClasses: {
           // act: 'width-fix',
@@ -44,13 +45,16 @@ export default {
           is: 'sort'
         },
         templates: {
-          created_at: function (h, row, index) {
-            return DateTime.fromSQL(row.created_at).setLocale('zh-TW').toFormat('yyyy/MM/dd HH:mm:ss')
+          updated_at: function (h, row, index) {
+            return DateTime.fromSQL(row.updated_at).setLocale('zh-TW').toFormat('yyyy/MM/dd HH:mm:ss')
           },
           point: function (h, row, index) {
-            // let transfer = row.transfer_action === 1 ? '+' : '-'
-            // return `${transfer} ${currencyFn(row.point)}`
-            return `${currencyFn(row.point)}`
+            let transfer = row.status === 0 ? '+' : '-'
+            return `${transfer} ${currencyFn(row.point)}`
+            // return `${currencyFn(row.point)}`
+          },
+          transaction_recordsable_data: function (h, row, index) {
+            return row.transaction_recordsable_data.data[0].full_name
           },
           balance: function (h, row, index) {
             return `${currencyFn(row.balance)}`

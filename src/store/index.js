@@ -21,6 +21,7 @@ import notificationTableMoudule from './notificationTable'
 import notificationInfoMoudule from './notificationInfo'
 import bannerTableMoudule from './bannerTable'
 import bannerInfoMoudule from './bannerInfo'
+import systemInfoMoudule from './systemInfo'
 
 Vue.use(Vuex)
 
@@ -111,6 +112,7 @@ export default new Vuex.Store({
     notificationTableMoudule,
     notificationInfoMoudule,
     bannerTableMoudule,
-    bannerInfoMoudule
+    bannerInfoMoudule,
+    systemInfoMoudule
   }
 })

@@ -1,0 +1,69 @@
+<div class="system col-12">
+    <div class="row">
+      <div class="col-12">
+        <md-card>
+          <md-card-header class="d-inline-block" >
+            <div class="md-title">系統參數</div>
+          </md-card-header>
+          <md-card-content>
+            <!-- <div class="row">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group" v-for="item in systemObj" :key="item.id">
+                  <label class="cus w-100 mb-0">{{item.name}}</label>
+                  {{item.value}}
+                </div>
+            </div>    -->
+
+            <div class="row">
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemReSendSMSTitle}}</label>
+                {{systemReSendSMSValue}} 分鐘
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemWaitSMSTitle}}</label>
+                {{systemWaitSMSValue}} 分鐘
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemPointRateTitle}}</label>
+                {{systemPointRateValue}}%
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemQRcodeExpireTitle}}</label>
+                {{systemQRcodeExpireValue}} 分鐘
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemSaleDisTitle}}</label>
+                {{systemSaleDisValue}} 公里
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemRegistTitle}}</label>
+                {{systemRegistValue}} 點
+              </div>
+            </div>    
+            <div class="row">
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemAnniversaryTitle}}</label>
+                NT ${{systemAnniversaryValue|currency}} 
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemAnniversary2Title}}</label>
+                NT ${{systemAnniversary2Value|currency}} 
+              </div>
+
+              <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                <label class="cus w-100 mb-0">{{systemAnniversary3Title}}</label>
+                NT ${{systemAnniversary3Value|currency}} 
+              </div>
+
+            </div> 
+
+          </md-card-content>     
+        </md-card>
+    </div>  
+</div>
+</div>
