@@ -15,36 +15,36 @@
           <div class="row">
             <div class="col-6">
               <md-field :class="{'md-invalid' : errors.has('name')}">
-                <label>優惠卷標題</label>
+                <label>優惠劵標題</label>
                 <md-input v-model.trim="couponName" md-counter="10" name="name" maxlength="10" v-validate="'required'" autocomplete="off"></md-input>
-                <span class="md-error">優惠卷標題不能留空</span> 
+                <span class="md-error">優惠劵標題不能留空</span> 
               </md-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <md-field :class="{'md-invalid' : errors.has('title')}">
-                <label>優惠卷副標題</label>
+                <label>優惠劵副標題</label>
                 <md-input v-model.trim="couponTitle" name="title" v-validate="'required'" autocomplete="off"></md-input>
-                <span class="md-error">優惠卷副標題不能留空</span>
+                <span class="md-error">優惠劵副標題不能留空</span>
               </md-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <md-field  :class="{'md-invalid' : errors.has('decribe')}">
-                <label>優惠卷簡述</label>
+                <label>優惠劵簡述</label>
                 <md-input v-model.trim="couponDescription" name="decribe" v-validate="'required'" autocomplete="off"></md-input>
-                <span class="md-error">優惠卷簡述不能留空</span>
+                <span class="md-error">優惠劵簡述不能留空</span>
               </md-field>
             </div>
           </div>
           <div class="row">
             <div class="col-12">
               <md-field :class="{'md-invalid' : errors.has('content')}">
-                <label>優惠卷內容</label>
+                <label>優惠劵內容</label>
                 <md-textarea style="min-height:150px;" v-model="couponContent" name="content" v-validate="'required'" autocomplete="off"></md-textarea>
-                <span class="md-error">優惠卷簡述不能留空</span>
+                <span class="md-error">優惠劵簡述不能留空</span>
               </md-field>
             </div>
           </div>
@@ -110,7 +110,7 @@
                   </div>
 
                   <div class="col-12 d-flex flex-column mb-5" v-if="couponID != 'new'">
-                    <label class="cus">優惠卷狀態</label>
+                    <label class="cus">優惠劵狀態</label>
                     <md-switch v-model="couponStatus" class="md-primary mt-0"></md-switch>
                   </div>
                 </div>

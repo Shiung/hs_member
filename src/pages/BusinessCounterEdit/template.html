@@ -4,7 +4,7 @@
         <div class="row">
           <div class="col-lg-4 col-md-6">
             <md-field :class="{'md-invalid' : errors.has('name')}">
-              <label>廳別名稱</label>
+              <label>廳別名稱(顯示於優惠劵上)</label>
               <md-input v-model.trim="businessCounterName" name="name" v-validate="'required'" autocomplete="off"></md-input>
               <span class="md-error">廳別名稱不能留空</span> 
             </md-field>
@@ -106,7 +106,7 @@
           </div>  
  
           <div class="col-12 d-flex flex-column mt-1 mb-5" v-if="bsCounterID != 'new'">
-            <label class="cus">背景顏色</label>
+            <label class="cus">優惠劵背景顏色</label>
             <div class="d-flex flex-row align-items-center">
               <div class="d-flex flex-row align-items-center" @click="showDialog = true" style="cursor: pointer;"> 
                 <div class="color" :style="`background-color: ${colors.hex}`"></div> 
