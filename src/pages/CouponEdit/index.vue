@@ -96,8 +96,8 @@ export default {
       return this.$route.params.id
     },
     pageTitle () {
-      if (this.couponID === 'new') return '新增優惠卷'
-      else return '編輯優惠卷'
+      if (this.couponID === 'new') return '新增優惠劵'
+      else return '編輯優惠劵'
     }
   },
   methods: {
@@ -510,7 +510,7 @@ export default {
           })
         } else console.log(error.response)
       }).then(() => {
-        this.$snotify.success(`新增一筆優惠卷 : ${this.couponName}`, {
+        this.$snotify.success(`新增一筆優惠劵 : ${this.couponName}`, {
           timeout: 10000
         })
         this.$router.replace({name: 'coupon'})
@@ -551,7 +551,7 @@ export default {
           })
         } else console.log(error.response)
       }).then(() => {
-        this.$snotify.success(`修改優惠卷 : ${this.couponName}`, {
+        this.$snotify.success(`修改優惠劵 : ${this.couponName}`, {
           timeout: 10000
         })
         this.$router.replace({name: 'coupon'})
