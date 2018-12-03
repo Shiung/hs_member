@@ -54,10 +54,14 @@ export default {
       checkarray: [],
       checkbtn: false,
       searchStr: null,
-      showDialog: false,
       status: '',
       pageNumber: null,
-      sortName: null
+      sortName: null,
+      // 過濾 搜尋
+      showDialog: false,
+      filterNum: 0, // 0: 姓名 1: 信箱 2: 身分證 3:電話
+      filterStr: '姓名',
+      searchFields: 'name' // 0: name, 1: email,2: id_number ,3: mobile
     }
   },
   computed: {
@@ -99,6 +103,9 @@ export default {
         let to = from + count - 1
         return `顯示 ${from} 到 ${to} 筆資料 ，  總共 ${totalCount} 筆資料`
       }
+    },
+    searchStrPlaceholder () {
+      return `搜尋${this.filterStr}`
     }
   },
   mounted () {
@@ -127,23 +134,49 @@ export default {
       this.checkarray = []
     },
     // option 功能
+    filter (type) {
+      switch (type) {
+        case 0:
+          this.filterNum = 0
+          this.filterStr = '姓名'
+          this.searchFields = 'name'
+          break
+        case 1:
+          this.filterNum = 1
+          this.filterStr = '信箱'
+          this.searchFields = 'email'
+          break
+        case 2:
+          this.filterNum = 2
+          this.filterStr = '身分證'
+          this.searchFields = 'id_number'
+          break
+        case 3:
+          this.filterNum = 3
+          this.filterStr = '電話'
+          this.searchFields = 'mobile'
+          break
+        default:
+          break
+      }
+    },
     searchAct () {
       let search = this.searchStr
+      let searchFields = this.searchFields
       if (search) {
         const obj = {
           orderBy: null,
           sortedBy: null,
           page: null,
           search: search,
-          searchFields: 'name:like'
+          searchFields: searchFields
         }
-        // // vuex
-        // this.getRequestParams(obj)
-        // this.getDatatable()
-        // // check clear
-        // this.uncheckAll()
-        // this.searchStr = ''
         this.refreshData(obj)
+      } else {
+        this.$swal({
+          title: '請輸入搜尋條件!',
+          icon: 'info'
+        })
       }
     },
     disabledMem () {
@@ -187,7 +220,11 @@ export default {
       this.getDatatable()
       // check clear
       this.uncheckAll()
-      this.searchStr = ''
+      // -----1. 全部刪除搜尋字串------
+      // this.searchStr = ''
+      // -----2. 檢查是否有搜尋字串----
+      if (obj && obj.search) this.searchStr = obj.search
+      else this.searchStr = ''
       // 更新vue-table-2 一樣顯示資料
       this.$refs.table.setLimit(this.perPage)
     },

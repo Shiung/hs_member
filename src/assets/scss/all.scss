@@ -194,3 +194,8 @@ body,html{
     border-color:$gold;
   }
 }
+
+//  rwd 點選視窗放大問題
+input, textarea {
+  font-size: initial;  
+}

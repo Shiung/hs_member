@@ -50,8 +50,25 @@
                     </div>
                     
                     <div class="d-flex align-items-center justify-content-end">
-                      <div class="search-box d-flex">
+                      <!-- <div class="search-box d-flex">
                         <input class="search-txt" type="text" name="" placeholder="搜尋會員名稱" v-model.trim="searchStr">
+                        <md-button class="md-icon-button md-dense md-raised md-primary flex-shrink-0 mx-0" @click="searchAct">
+                          <md-icon>search</md-icon>
+                          <md-tooltip md-direction="bottom">search</md-tooltip>
+                        </md-button>
+                      </div> -->
+                      <div class="search-box-filter d-flex align-items-center justify-content-center">
+                        <md-menu md-direction="bottom-start">
+                            <md-chip md-clickable md-menu-trigger>{{filterStr}}</md-chip>
+                      
+                            <md-menu-content>
+                              <md-menu-item @click="filter(0)">姓名</md-menu-item>
+                              <md-menu-item @click="filter(1)">信箱</md-menu-item>
+                              <md-menu-item @click="filter(2)">身分證</md-menu-item>
+                              <md-menu-item @click="filter(3)">電話</md-menu-item>
+                            </md-menu-content>
+                          </md-menu>
+                        <input class="search-txt" type="text" name="" :placeholder="searchStrPlaceholder" v-model.trim="searchStr" @keyup.enter="searchAct">
                         <md-button class="md-icon-button md-dense md-raised md-primary flex-shrink-0 mx-0" @click="searchAct">
                           <md-icon>search</md-icon>
                           <md-tooltip md-direction="bottom">search</md-tooltip>
