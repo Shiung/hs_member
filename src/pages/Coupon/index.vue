@@ -47,10 +47,15 @@ export default {
             let dateStart = ''
             let dateEnd = ''
             if (row.expire_at) {
-              dateStart = `${DateTime.fromSQL(row.updated_at).setLocale('zh-TW').toFormat('yyyy/LLL/dd')} -`
-              dateEnd = DateTime.fromSQL(row.expire_at).setLocale('zh-TW').toFormat('yyyy/LLL/dd')
+              // dateStart = `${DateTime.fromSQL(row.updated_at).setLocale('zh-TW').toFormat('yyyy/LLL/dd')} -`
+              // dateEnd = DateTime.fromSQL(row.expire_at).setLocale('zh-TW').toFormat('yyyy/LLL/dd')
+              dateStart = `${DateTime.fromSQL(row.updated_at).toFormat('yyyy/MM/dd HH:mm:ss')} -`
+              dateEnd = DateTime.fromSQL(row.expire_at).toFormat('yyyy/MM/dd HH:mm:ss')
             }
             return `${dateStart} ${dateEnd}`
+          },
+          point: function (h, row, index) {
+            return `${currencyFn(row.point)}`
           },
           value: function (h, row, index) {
             return `NT ${currencyFn(row.value)}`
