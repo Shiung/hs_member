@@ -65,6 +65,8 @@ export default {
                 className = str.concat('badge-success')
                 break
               default:
+                s = '過期'
+                className = str.concat('badge-danger')
                 break
             }
             return <span class={className}>{s}</span>
