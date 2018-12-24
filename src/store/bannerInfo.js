@@ -13,7 +13,7 @@ export default {
   actions: {
     getInfo( context, ID ){
       let cookieToken = getCookie()
-      const url = `${process.env.API_HOST}v1/banner/${ID}`
+      const url = `${process.env.API_HOST}v1/admin/banner/${ID}`
       context.commit('ISLOADING', true, {root: true})
       axios.get(url, {
         headers: {

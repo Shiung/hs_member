@@ -13,7 +13,7 @@ export default {
   actions: {
     getInfo( context, ID ){
       let cookieToken = getCookie()
-      const url = `${process.env.API_HOST}v1/coupon/${ID}`
+      const url = `${process.env.API_HOST}v1/admin/coupon/${ID}`
       axios.get(url, {
         headers: {
           'Authorization': `${cookieToken}`

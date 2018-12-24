@@ -20,7 +20,7 @@ export default {
   actions: {
     getDatatable( context ){
       let cookieToken = getCookie()
-      const url = `${process.env.API_HOST}v1/coupon`
+      const url = `${process.env.API_HOST}v1/admin/coupon`
       context.commit('ISLOADING', true, {root: true})
       let params = context.state.paramsObj
       axios.get(url, {
