@@ -13,6 +13,10 @@ import adminTableMoudule from './adminTable'
 import adminInfoMoudule from './adminInfo'
 import couponTableMoudule from './couponTable'
 import couponInfoMoudule from './couponInfo'
+import eventTableMoudule from './eventTable'
+import eventInfoMoudule from './eventInfo'
+import eventCsvListTableMoudule from './eventCsvListTable'
+import eventCsvHistoryTableMoudule from './eventCsvHistoryTable'
 import businessTableMoudule from './businessTable'
 import businessInfoMoudule from './businessInfo'
 import businessCounterTableMoudule from './businessCounterTable'
@@ -105,6 +109,10 @@ export default new Vuex.Store({
     adminInfoMoudule,
     couponTableMoudule,
     couponInfoMoudule,
+    eventTableMoudule,
+    eventInfoMoudule,
+    eventCsvListTableMoudule,
+    eventCsvHistoryTableMoudule,
     businessTableMoudule,
     businessInfoMoudule,
     businessCounterTableMoudule,

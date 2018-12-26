@@ -1,0 +1,165 @@
+<div class="eventCsv tablelist row">
+  <!-- 上傳檔案 -->
+  <div class="col-12">
+    <div class="col-12 mb-5" v-if="isfileExit == 0">
+      <!-- vue2 dropzone -->
+      <vue-dropzone 
+        class="text-center"
+        :options="dropzoneOptions" 
+        :destroyDropzone="destroy"
+        :useCustomSlot=true 
+        id="dropzone"
+        @vdropzone-max-files-exceeded="maxExceed" 
+        @vdropzone-sending="sendingEvent"
+        @vdropzone-success="uploadSuccess"
+        @vdropzone-error="uploadError"
+        @vdropzone-complete="uploadComplete"
+        ref="eventCsvDZ">
+        <div class="dropzone-custom-content">
+          <h3 class="dropzone-custom-title">請拖曳CSV檔案</h3>
+          <div class="subtitle">...或者點擊上傳CSV檔案</div>
+        </div>
+      </vue-dropzone>
+    </div>
+  </div>
+
+  <!-- 清單 -->
+  <div class="col-12" v-if="isfileExit != 0">
+    <div class="row sticky-top select-options-top">
+      <div class="col-12 d-flex align-items-center justify-content-between flex-wrap-reverse">
+          <div class='d-flex align-items-center justify-content-between select-options'>
+              <md-checkbox class="checkbtnArea mr-2" v-model="checkbtn" style="margin:0 0 0 10px" indeterminate></md-checkbox>
+               <!--<md-menu md-size="medium" md-align-trigger>
+                  <md-button md-menu-trigger style="min-width: 0;width:20px;"><md-icon>arrow_drop_down</md-icon></md-button>
+                  <md-menu-content>
+                    <md-menu-item @click="checkAll">全選</md-menu-item>
+                    <md-menu-item @click="uncheckAll">全不選</md-menu-item>
+                  </md-menu-content>
+              </md-menu> -->
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="refreshData(null)">
+                <md-icon>refresh</md-icon>
+                <md-tooltip md-direction="bottom">refresh</md-tooltip>
+              </md-button>
+          </div>
+          
+          <div class="d-flex align-items-center justify-content-end">
+              
+              <md-badge :md-content="selectLength" md-dense v-if="checkarray.length > 0 && eventInfo.status == 1">
+                <md-button class="md-icon-button md-dense md-raised md-primary" @click="sendPoint(null)">
+                  <md-icon>send</md-icon>
+                  <md-tooltip md-direction="bottom">發送點數給清單內所選擇之會員</md-tooltip>
+                </md-button>
+              </md-badge>
+              <md-badge md-content="All" md-dense v-if="eventInfo.status == 1 && checkarray.length == 0"> <!-- v-if="checkarray.length > 0" -->
+                <md-button class="md-icon-button md-dense md-raised md-primary" @click="sendPoint('all')">
+                  <md-icon>send</md-icon>
+                  <md-tooltip md-direction="bottom">全部清單發送點數</md-tooltip>
+                </md-button>
+              </md-badge>
+
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="showReSendCSVDialog = true">
+                <md-icon>cloud_upload</md-icon>
+                <md-tooltip md-direction="bottom">重新上傳CSV檔案</md-tooltip>
+              </md-button>
+          </div>
+
+      </div>
+    </div>
+
+    <v-client-table 
+      :data="datatables"
+      :columns="columns" 
+      :options="options"
+      ref="eventCsvListTable"
+    >
+      <!-- 選單 -->
+      <md-checkbox 
+        slot="edit" 
+        slot-scope="props" 
+        v-model="checkarray" 
+        class="md-primary" 
+        :value="props.row.id" 
+        style="margin:0;"
+      ></md-checkbox>
+    </v-client-table>
+    
+    <!-- pagenation-customer -->
+    <div class="row col-md-12 justify-content-center customer-pagination">
+      <nav class="text-center">
+        <ul class="pagination" v-if="totalPages !== 1">
+          <li class="page-item" @click="prevPage" :class="{'disabled' : currentPage === 1}">
+            <a class="page-link" href="javascript:;" tabindex="-1">&lt;</a>
+          </li>
+          <li class="page-item">
+            <div class="pageShow">
+                <md-menu md-size="small" md-align-trigger md-direction="bottom-start" >
+                    <md-button class="md-raised md-primary" @click="showDialog = true">{{currentPage}} / {{totalPages}}
+                      <md-tooltip md-direction="bottom">pages</md-tooltip>
+                    </md-button>
+                </md-menu>
+            </div> 
+          </li>
+          <li class="page-item" @click="nextPage" :class="{'disabled' : totalPages === currentPage}">
+            <a class="page-link" href="javascript:;">&gt;</a>
+          </li>
+        </ul>
+        <p class="customer-pagination__count text-center col-md-12" >{{dataInfo}}</p>
+      </nav>
+    </div>
+
+
+  </div>
+
+  <!-- searchFilter box -->
+  <md-dialog :md-active.sync="showDialog" v-if="isfileExit != 0">
+    <md-dialog-title>頁數搜尋</md-dialog-title>
+    <md-dialog-content>
+      <md-field>
+        <label>
+          <md-icon>search</md-icon>
+        </label>
+        <md-input v-model.number.lazy='pageNumber' type="number" min="1" :max="totalPages"></md-input>
+        <span class="md-helper-text">最小頁數:1 / 最大頁數:{{totalPages}}</span>
+      </md-field>
+    </md-dialog-content>
+    
+
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="showDialog = false">close</md-button>
+      <md-button class="md-primary" @click="searchPage">search</md-button>
+    </md-dialog-actions>
+  </md-dialog>
+
+
+  <!-- 重新上傳 csv -->
+  <md-dialog :md-active.sync="showReSendCSVDialog">
+    <md-dialog-title>上傳CSV檔案</md-dialog-title>
+    <md-dialog-content>
+      <md-field>
+        <vue-dropzone 
+          class="text-center"
+          :options="dropzoneOptions" 
+          :destroyDropzone="destroy"
+          :useCustomSlot=true 
+          id="dropzone"
+          @vdropzone-max-files-exceeded="maxExceed" 
+          @vdropzone-sending="sendingEvent"
+          @vdropzone-success="uploadSuccess"
+          @vdropzone-error="uploadError"
+          @vdropzone-complete="uploadComplete"
+          ref="eventCsvDZ">
+          <div class="dropzone-custom-content">
+            <h3 class="dropzone-custom-title">請拖曳CSV檔案</h3>
+            <div class="subtitle">...或者點擊上傳CSV檔案</div>
+          </div>
+        </vue-dropzone>
+      </md-field>
+    </md-dialog-content>
+    
+
+    <md-dialog-actions>
+      <!-- <md-button class="md-primary" @click="showReSendCSVDialog = false">close</md-button>
+      <md-button class="md-primary">search</md-button> -->
+    </md-dialog-actions>
+  </md-dialog>
+</div>

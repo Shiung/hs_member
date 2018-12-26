@@ -157,6 +157,33 @@ export default new Router({
           component: () => import('@/pages/CouponEdit')
         },
         {
+          path: 'event',
+          name: 'event',
+          meta: { requiresAuth: true }, // 是否要驗證
+          component: () => import('@/pages/Event')
+        },
+        {
+          path: 'event/:id',
+          name: 'eventEdit',
+          meta: { requiresAuth: true }, // 是否要驗證
+          component: () => import('@/pages/EventEdit'),
+          redirect: 'event/:id',
+          children: [
+            {
+              path: '',
+              name: 'eventCsv',
+              meta: { requiresAuth: true }, // 是否要驗證
+              component: () => import('@/pages/EventCsv')
+            },
+            {
+              path: 'eventCsvHistory',
+              name: 'eventCsvHistory',
+              meta: { requiresAuth: true }, // 是否要驗證
+              component: () => import('@/pages/EventCsvHistory')
+            }
+          ]
+        },
+        {
           path: 'banner',
           name: 'banner',
           meta: { requiresAuth: true }, // 是否要驗證

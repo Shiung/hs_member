@@ -1,0 +1,135 @@
+<div class="eventEdit col-12">
+  <div class="row">
+    <div class="col-12">
+        <md-card>
+          <md-card-header class="d-inline-block" >
+            <div class="md-title d-flex justify-content-center align-items-center">
+              <md-button class="md-icon-button md-dense md-raised mr-2" @click="cancel">
+                <md-icon>keyboard_arrow_left</md-icon>
+                <md-tooltip md-direction="bottom">回上一頁</md-tooltip>
+              </md-button>
+              {{pageTitle}}
+            </div>
+          </md-card-header>
+          <md-card-content>
+            <div class="row">
+              <div class="col-lg-6">
+                <md-field :class="{'md-invalid' : errors.has('title')}">
+                  <label>標題</label>
+                  <md-input v-model.trim="eventTitle"  name="title"  v-validate="'required'" autocomplete="off"></md-input>
+                  <span class="md-error">標題不能留空</span> 
+                </md-field>
+              </div>
+              <div class="col-lg-8">
+                <md-field >
+                  <label>活動說明</label>
+                  <md-textarea style="min-height:150px;" v-model="eventDescribe" name="content" autocomplete="off"></md-textarea>
+                </md-field>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-3 expireDate mb-4">
+                <label class="mb-0" :class="{'text-danger' : errors.has('startDate')}">開始時間</label>
+                <datetime 
+                  type="date" 
+                  v-model="datetimeStart" 
+                  class="theme-customer"
+                  placeholder="請選擇開始時間"
+                  format="yyyy/MM/dd"
+                  :max-datetime="datetimeExpire"
+                  name="startDate" v-validate="'required'"
+                >
+                </datetime>
+                <span class="md-error" v-if="errors.has('startDate')" :class="{'text-danger' : errors.has('startDate')}">開始日期不能空白</span>
+              </div>
+              <div class="col-lg-3 expireDate mb-4">
+                <label class="mb-0" :class="{'text-danger' : errors.has('endDate')}">結束時間</label>
+                <datetime 
+                  type="date" 
+                  v-model="datetimeExpire" 
+                  class="theme-customer"
+                  placeholder="請選擇結束時間"
+                  format="yyyy/MM/dd"
+                  :min-datetime="datetimeStart"
+                  name="endDate" v-validate="'required'"
+                >
+                </datetime>
+                <span class="md-error" v-if="errors.has('endDate')" :class="{'text-danger' : errors.has('endDate')}">結束日期不能空白</span>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-lg-8">
+                <div class="row">
+                  <div class="col-lg-4">
+                    <md-field  class="cus-input-150">
+                      <label>單次給點上限</label>
+                      <md-input v-model.number="eventPointlimit" type="number" name="eventPointlimit"  autocomplete="off"></md-input>
+                    </md-field>
+                  </div>
+                  <div class="col-lg-4">
+                    <md-field class="cus-input-150">
+                      <label>活動總點數上限</label>
+                      <md-input v-model.number="eventlimit" type="number" name="eventlimit" autocomplete="off"></md-input>
+                    </md-field>
+                  </div>
+                  <div class="col-lg-4">
+                    <md-field :class="{'md-invalid' : errors.has('point')}" class="cus-input-150">
+                      <label>點數</label>
+                      <md-input v-model.number="point" type="number" name="point" v-validate="'required|numeric'" autocomplete="off"></md-input>
+                      <span class="md-error">點數不能留空</span>
+                    </md-field>
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+
+            <div class="row my-4">
+              <div class="col-lg-8">
+                <div class="row">
+                  <div class="col-12 d-flex flex-column">
+                    <label class="cus">是否重複給點</label>
+                    <md-switch v-model="timesLimitStatus" class="md-primary m-0"></md-switch>
+                  </div>
+                  <div class="col-12 d-flex flex-column mt-4">
+                    <label class="cus">是否啟用</label>
+                    <md-switch v-model="eventStatus" class="md-primary m-0"></md-switch>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+
+            <div v-if="eventID != 'new'" class="row">
+              <div class="col-lg-8 d-flex justify-content-end mt-3 mb-5">
+                <md-button class="md-primary md-raised md-dense m-0" @click="save" :md-ripple="false">儲存設定</md-button>
+              </div> 
+            </div>
+
+
+           <hr v-if="eventID != 'new'">
+
+            <div v-if="eventID != 'new'" class="row mt-5">
+              <div class="col-12 mb-3 d-flex flex-row justify-content-center">
+                  <router-link class="bookmark" :to="{name : 'eventCsv' }">上傳名單</router-link>
+                  <router-link class="bookmark" :to="{name : 'eventCsvHistory' }">給點紀錄</router-link>
+              </div>
+              <div class="col-12">
+                  <transition name="fade" mode="out-in" appear>
+                    <router-view v-if="csvOpen"></router-view>
+                  </transition>
+              </div>
+            </div>
+
+          </md-card-content> 
+          <md-card-actions>
+            <div v-if="eventID == 'new'">
+              <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
+              <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
+            </div>
+            
+          </md-card-actions>       
+        </md-card>
+    </div>
+  </div>
+</div>
