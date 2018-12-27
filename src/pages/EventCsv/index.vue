@@ -160,7 +160,7 @@ export default {
       // check clear
       this.uncheckAll()
       // 更新vue-table-2 一樣顯示資料
-      this.$refs.eventCsvListTable.setLimit(this.perPage)
+      // this.$refs.eventCsvListTable.setLimit(this.perPage)
     },
     prevPage () {
       let current = this.currentPage
@@ -297,9 +297,10 @@ export default {
       let data = {
         'members': id
       }
+      this.$store.commit('ISLOADING', true) // 更新loading
       // 移除 es6 primse reject 沒有 new error
       /* eslint-disable */
-      this.$snotify.async('呼叫伺服器', '活動發送點數', () => {
+      this.$snotify.async('呼叫伺服器', '活動發送點數請求', () => {
         return new Promise((resolve, reject) => {
           let url = `${process.env.API_HOST}v1/admin/event/run/${this.eventID}`
           return this.axios.post(url, data,{
@@ -313,7 +314,7 @@ export default {
             }
             this.refreshData()
             resolve({
-              title: '活動發送點數成功',
+              title: '活動發送點數請求成功',
               // body: `已經刪除 ID:"${id}" 的最新消息`,
               config: {
                 timeout: 5000

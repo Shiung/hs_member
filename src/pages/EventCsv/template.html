@@ -20,6 +20,12 @@
           <div class="subtitle">...或者點擊上傳CSV檔案</div>
         </div>
       </vue-dropzone>
+      <div class="d-flex justify-content-center mt-2">
+        <a class="exampleDownload bg-light" href="https://hs_member.neplus.com.tw/AdminUI/download/sample.csv" download>
+          CSV範例下載
+        </a>
+      </div>
+      
     </div>
   </div>
 
@@ -50,7 +56,7 @@
                   <md-tooltip md-direction="bottom">發送點數給清單內所選擇之會員</md-tooltip>
                 </md-button>
               </md-badge>
-              <md-badge md-content="All" md-dense v-if="eventInfo.status == 1 && checkarray.length == 0"> <!-- v-if="checkarray.length > 0" -->
+              <md-badge md-content="All" md-dense v-if="eventInfo.status == 1 && checkarray.length == 0 && count != 0"> <!-- v-if="checkarray.length > 0" -->
                 <md-button class="md-icon-button md-dense md-raised md-primary" @click="sendPoint('all')">
                   <md-icon>send</md-icon>
                   <md-tooltip md-direction="bottom">全部清單發送點數</md-tooltip>
@@ -154,6 +160,11 @@
           </div>
         </vue-dropzone>
       </md-field>
+      <div class="d-flex justify-content-center mt-2">
+        <a class="exampleDownload bg-light" href="https://hs_member.neplus.com.tw/AdminUI/download/sample.csv" download>
+          CSV範例下載
+        </a>
+      </div>
     </md-dialog-content>
     
 

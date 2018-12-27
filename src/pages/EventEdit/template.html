@@ -111,8 +111,10 @@
 
             <div v-if="eventID != 'new'" class="row mt-5">
               <div class="col-12 mb-3 d-flex flex-row justify-content-center">
-                  <router-link class="bookmark" :to="{name : 'eventCsv' }">上傳名單</router-link>
-                  <router-link class="bookmark" :to="{name : 'eventCsvHistory' }">給點紀錄</router-link>
+                  <router-link class="bookmark" :to="{name : 'eventCsv' }">{{isfileExit == 0 ? '上傳名單' : 'CSV 可給點清單'}}</router-link>
+                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvOverSendList' }">CSV 無法給點清單</router-link>
+                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventProgressList' }">給點進度中</router-link>
+                  <router-link class="bookmark" :to="{name : 'eventCsvHistory' }">已給點紀錄</router-link>
               </div>
               <div class="col-12">
                   <transition name="fade" mode="out-in" appear>

@@ -29,6 +29,10 @@ export default {
     pageTitle () {
       if (this.eventID === 'new') return '新增活動'
       else return '編輯活動'
+    },
+    isfileExit () {
+      if (this.eventInfo.file) return this.eventInfo.file.data.length
+      else return 0
     }
   },
   methods: {
