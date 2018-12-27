@@ -42,6 +42,156 @@ export default {
     },
     cancel () {
       this.$router.push({name: 'member'})
+    },
+    sendSMS () {
+      this.$swal({
+        title: '發送簡訊認證碼!',
+        text: `發送至此電話號碼[${this.memTel}]?`,
+        icon: 'warning',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            this.sendSMSAxios()
+          }
+        })
+    },
+    statusSwitch () {
+      this.$swal({
+        title: '認證會員!',
+        text: `是否要認證此會員[${this.memName}]?`,
+        icon: 'warning',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            let data = {
+              'status': 2
+            }
+            this.updateAxios(data)
+          }
+        })
+    },
+    phoneChange () {
+      this.$swal({
+        title: `修改此會員[${this.memName}]電話號碼!`,
+        // text: `是否要修改此會員[${this.memName}]的電話?`,
+        content: {
+          element: 'input',
+          attributes: {
+            placeholder: '輸入電話號碼',
+            type: 'text'
+          }
+        },
+        icon: 'warning'
+      })
+        .then((value) => {
+          if (value === null) return
+          let input = value.trim()
+          if (input) {
+            this.$swal({
+              title: '電話號碼變更',
+              text: `${input}`,
+              icon: 'warning',
+              buttons: {
+                cancel: '取消變更!',
+                ok: {
+                  text: '確認變更!',
+                  value: true
+                }
+              }
+            })
+              .then((value) => {
+                if (value) {
+                  let data = {
+                    'mobile': input
+                  }
+                  this.updateAxios(data)
+                }
+              })
+          } else {
+            this.$swal({
+              title: '請輸入電話號碼!',
+              icon: 'error'
+            })
+          }
+        })
+    },
+    updateAxios (obj) {
+      let ID = this.memberID
+      let data = obj
+      this.$store.commit('ISLOADING', true) // 更新loading
+      // 更新
+      let url = `${process.env.API_HOST}v1/admin/member/${ID}`
+      this.axios.put(url, data, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 成功
+        this.$snotify.success(`修改會員資料成功`, {
+          timeout: 10000
+        })
+        this.getInfo(ID)
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '操作太多次',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+      })
+    },
+    sendSMSAxios () {
+      let ID = this.memberID
+      let url = `${process.env.API_HOST}v1/admin/member/verification_code/sms/${ID}`
+      this.axios.post(url, null, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 成功
+        this.$snotify.success(`簡訊已發送`, {
+          timeout: 10000
+        })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '請求太頻繁,請於兩分鐘後再試',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+      })
     }
   },
   mounted () {
