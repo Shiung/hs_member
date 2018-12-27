@@ -205,6 +205,7 @@ export default {
     },
     sendingEvent (file, xhr, formData) {
       formData.append('search_field', 'id_number')
+      this.$store.commit('ISLOADING', true) // 更新loading
     },
     uploadSuccess (file, response) {
       if (file.xhr.getResponseHeader('Authorization')) {
