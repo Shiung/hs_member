@@ -117,6 +117,7 @@ export default {
     },
     update () {
       let data = this.dataForm()
+      this.$store.commit('ISLOADING', true) // 更新loading
       // 更新
       let url = `${process.env.API_HOST}v1/admin/event/${this.eventID}`
       this.axios.put(url, data, {

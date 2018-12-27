@@ -384,6 +384,10 @@ export default {
             this.pageNumber = 1
           })
       }
+    },
+    eventInfo (val) {
+      // 活動資料有變動 reload csv list
+      this.refreshData(null)
     }
   }
 }
