@@ -141,27 +141,25 @@
   <md-dialog :md-active.sync="showReSendCSVDialog">
     <md-dialog-title>上傳CSV檔案</md-dialog-title>
     <md-dialog-content>
-      <md-field>
-        <vue-dropzone 
-          class="text-center"
-          :options="dropzoneOptions" 
-          :destroyDropzone="destroy"
-          :useCustomSlot=true 
-          id="dropzone"
-          @vdropzone-max-files-exceeded="maxExceed" 
-          @vdropzone-sending="sendingEvent"
-          @vdropzone-success="uploadSuccess"
-          @vdropzone-error="uploadError"
-          @vdropzone-complete="uploadComplete"
-          ref="eventCsvDZ">
-          <div class="dropzone-custom-content">
-            <h3 class="dropzone-custom-title">請拖曳CSV檔案</h3>
-            <div class="subtitle">...或者點擊上傳CSV檔案</div>
-          </div>
-        </vue-dropzone>
-      </md-field>
-      <div class="d-flex justify-content-center mt-2">
-        <a class="exampleDownload bg-light" href="https://hs_member.neplus.com.tw/AdminUI/download/sample.csv" download>
+      <vue-dropzone 
+        class="text-center"
+        :options="dropzoneOptions" 
+        :destroyDropzone="destroy"
+        :useCustomSlot=true 
+        id="dropzone"
+        @vdropzone-max-files-exceeded="maxExceed" 
+        @vdropzone-sending="sendingEvent"
+        @vdropzone-success="uploadSuccess"
+        @vdropzone-error="uploadError"
+        @vdropzone-complete="uploadComplete"
+        ref="eventCsvDZ">
+        <div class="dropzone-custom-content">
+          <h3 class="dropzone-custom-title">請拖曳CSV檔案</h3>
+          <div class="subtitle">...或者點擊上傳CSV檔案</div>
+        </div>
+      </vue-dropzone>
+      <div class="d-flex justify-content-center mt-4">
+        <a class="exampleDownload bg-light p-2" href="https://hs_member.neplus.com.tw/AdminUI/download/sample.csv" download style="text-decoration: none;">
           CSV範例下載
         </a>
       </div>
@@ -169,8 +167,8 @@
     
 
     <md-dialog-actions>
-      <!-- <md-button class="md-primary" @click="showReSendCSVDialog = false">close</md-button>
-      <md-button class="md-primary">search</md-button> -->
+      <md-button class="md-primary" @click="showReSendCSVDialog = false">close</md-button>
+      <!-- <md-button class="md-primary">search</md-button> -->
     </md-dialog-actions>
   </md-dialog>
 </div>
