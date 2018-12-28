@@ -118,7 +118,7 @@
             </div>
 
             <div v-if="eventID != 'new'" class="row">
-              <div class="col-12 mb-3 d-flex flex-row justify-content-center">
+              <div class="col-12 mb-3 d-flex flex-row justify-content-start">
                   <router-link class="bookmark" :to="{name : 'eventCsv' }">{{isfileExit == 0 ? '上傳名單' : '可給點'}}</router-link>
                   <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvUselessList' }">無效</router-link>
                   <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvOverSendList' }">不符合</router-link>
