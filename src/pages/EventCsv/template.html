@@ -1,33 +1,32 @@
 <div class="eventCsv tablelist row">
   <!-- 上傳檔案 -->
-  <div class="col-12">
-    <div class="col-12 mb-5" v-if="isfileExit == 0">
-      <!-- vue2 dropzone -->
-      <vue-dropzone 
-        class="text-center"
-        :options="dropzoneOptions" 
-        :destroyDropzone="destroy"
-        :useCustomSlot=true 
-        id="dropzone"
-        @vdropzone-max-files-exceeded="maxExceed" 
-        @vdropzone-sending="sendingEvent"
-        @vdropzone-success="uploadSuccess"
-        @vdropzone-error="uploadError"
-        @vdropzone-complete="uploadComplete"
-        ref="eventCsvDZ">
-        <div class="dropzone-custom-content">
-          <h3 class="dropzone-custom-title">請拖曳CSV檔案</h3>
-          <div class="subtitle">...或者點擊上傳CSV檔案</div>
-        </div>
-      </vue-dropzone>
-      <div class="d-flex justify-content-center mt-2">
-        <a class="exampleDownload bg-light" href="https://hs_member.neplus.com.tw/AdminUI/download/sample.csv" download>
-          CSV範例下載
-        </a>
+  <div class="col-12 mb-5" v-if="isfileExit == 0">
+    <!-- vue2 dropzone -->
+    <vue-dropzone 
+      class="text-center"
+      :options="dropzoneOptions" 
+      :destroyDropzone="destroy"
+      :useCustomSlot=true 
+      id="dropzone"
+      @vdropzone-max-files-exceeded="maxExceed" 
+      @vdropzone-sending="sendingEvent"
+      @vdropzone-success="uploadSuccess"
+      @vdropzone-error="uploadError"
+      @vdropzone-complete="uploadComplete"
+      ref="eventCsvDZ">
+      <div class="dropzone-custom-content">
+        <h3 class="dropzone-custom-title">請拖曳CSV檔案</h3>
+        <div class="subtitle">...或者點擊上傳CSV檔案</div>
       </div>
-      
+    </vue-dropzone>
+    <div class="d-flex justify-content-center mt-2">
+      <a class="exampleDownload bg-light" href="https://hs_member.neplus.com.tw/AdminUI/download/sample.csv" download>
+        CSV範例下載
+      </a>
     </div>
+    
   </div>
+
 
   <!-- 清單 -->
   <div class="col-12" v-if="isfileExit != 0">
@@ -50,13 +49,13 @@
           
           <div class="d-flex align-items-center justify-content-end">
               
-              <md-badge :md-content="selectLength" md-dense v-if="checkarray.length > 0 && eventInfo.status == 1">
+              <md-badge :md-content="selectLength" md-dense v-if="checkarray.length > 0 && eventInfo.status == 1 && isDateOver">
                 <md-button class="md-icon-button md-dense md-raised md-primary" @click="sendPoint(null)">
                   <md-icon>send</md-icon>
                   <md-tooltip md-direction="bottom">發送點數給清單內所選擇之會員</md-tooltip>
                 </md-button>
               </md-badge>
-              <md-badge md-content="All" md-dense v-if="eventInfo.status == 1 && checkarray.length == 0 && count != 0"> <!-- v-if="checkarray.length > 0" -->
+              <md-badge md-content="All" md-dense v-if="eventInfo.status == 1 && checkarray.length == 0 && count != 0 && isDateOver"> <!-- v-if="checkarray.length > 0" -->
                 <md-button class="md-icon-button md-dense md-raised md-primary" @click="sendPoint('all')">
                   <md-icon>send</md-icon>
                   <md-tooltip md-direction="bottom">全部清單發送點數</md-tooltip>

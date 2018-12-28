@@ -1,5 +1,7 @@
 <script>
 import { mapActions, mapGetters } from 'vuex'
+import { Settings, DateTime } from 'luxon'
+Settings.defaultLocale = 'local' // 時區
 export default {
   name: 'eventCsv',
   data () {
@@ -116,6 +118,11 @@ export default {
     isfileExit () {
       if (this.eventInfo.file) return this.eventInfo.file.data.length
       else return 0
+    },
+    isDateOver () {
+      if (DateTime.fromSQL(this.eventInfo.end_at).ts > DateTime.local().ts) {
+        return true
+      } else return false
     }
   },
   methods: {
@@ -313,7 +320,10 @@ export default {
             if (res.headers.authorization) {
               this.token_update(res.headers.authorization)
             }
-            this.refreshData()
+            // this.refreshData()
+            let id = this.eventID
+            this.getInfo(id)
+            this.$router.push({name: 'eventCsvHistory'})
             resolve({
               title: '活動發送點數請求成功',
               // body: `已經刪除 ID:"${id}" 的最新消息`,
