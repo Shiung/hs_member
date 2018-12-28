@@ -107,13 +107,22 @@
             </div>
 
 
-           <hr v-if="eventID != 'new'">
+            <!-- <hr v-if="eventID != 'new'"> -->
 
             <div v-if="eventID != 'new'" class="row mt-5">
+              <div class="col-12 d-flex flex-column mt-4">
+                <label class="cus mb-0">活動給點名單</label>   
+                <div class="mb-2" style="border-bottom: 3px double #efefef;"></div>
+                <!-- <hr class="w-100 mt-0">              -->
+              </div>  
+            </div>
+
+            <div v-if="eventID != 'new'" class="row">
               <div class="col-12 mb-3 d-flex flex-row justify-content-center">
-                  <router-link class="bookmark" :to="{name : 'eventCsv' }">{{isfileExit == 0 ? '上傳名單' : 'CSV 可給點清單'}}</router-link>
-                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvOverSendList' }">CSV 無法給點清單</router-link>
-                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventProgressList' }">給點進度中</router-link>
+                  <router-link class="bookmark" :to="{name : 'eventCsv' }">{{isfileExit == 0 ? '上傳名單' : '可給點'}}</router-link>
+                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvUselessList' }">無效</router-link>
+                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvOverSendList' }">不符合</router-link>
+                  <router-link class="bookmark" :to="{name : 'eventProgressList' }">給點進度中</router-link>
                   <router-link class="bookmark" :to="{name : 'eventCsvHistory' }">已給點紀錄</router-link>
               </div>
               <div class="col-12">
