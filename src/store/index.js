@@ -16,6 +16,7 @@ import couponInfoMoudule from './couponInfo'
 import eventTableMoudule from './eventTable'
 import eventInfoMoudule from './eventInfo'
 import eventCsvListTableMoudule from './eventCsvListTable'
+import eventCsvUselessTableMoudule from './eventCsvUselessTable'
 import eventCsvOverSendTableMoudule from './eventCsvOverSendTable'
 import eventProgressTableMoudule from './eventProgressTable'
 import eventCsvHistoryTableMoudule from './eventCsvHistoryTable'
@@ -114,6 +115,7 @@ export default new Vuex.Store({
     eventTableMoudule,
     eventInfoMoudule,
     eventCsvListTableMoudule,
+    eventCsvUselessTableMoudule,
     eventCsvOverSendTableMoudule,
     eventProgressTableMoudule,
     eventCsvHistoryTableMoudule,

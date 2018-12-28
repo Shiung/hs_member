@@ -176,6 +176,12 @@ export default new Router({
               component: () => import('@/pages/EventCsv')
             },
             {
+              path: 'eventCsvUselessList',
+              name: 'eventCsvUselessList',
+              meta: { requiresAuth: true }, // 是否要驗證
+              component: () => import('@/pages/EventCsvUselessList')
+            },
+            {
               path: 'eventCsvOverSendList',
               name: 'eventCsvOverSendList',
               meta: { requiresAuth: true }, // 是否要驗證
