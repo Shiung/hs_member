@@ -119,11 +119,21 @@
 
             <div v-if="eventID != 'new'" class="row">
               <div class="col-12 mb-3 d-flex flex-row justify-content-start">
-                  <router-link class="bookmark" :to="{name : 'eventCsv' }">{{isfileExit == 0 ? '上傳名單' : '可給點'}}</router-link>
-                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvUselessList' }">無效</router-link>
-                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvOverSendList' }">不符合</router-link>
-                  <router-link class="bookmark" :to="{name : 'eventProgressList' }">給點進度中</router-link>
-                  <router-link class="bookmark" :to="{name : 'eventCsvHistory' }">已給點紀錄</router-link>
+                  <router-link class="bookmark" :to="{name : 'eventCsv' }">{{isfileExit == 0 ? '上傳名單' : '有效名單'}}
+                    <md-tooltip v-if="isfileExit != 0" md-direction="right">檢查匯入CSV資料判定為H'S VIBE會員</md-tooltip>
+                  </router-link>
+                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvUselessList' }">無效名單
+                      <md-tooltip md-direction="bottom">檢查匯入CSV資料判定為非H'S VIBE會員</md-tooltip>
+                  </router-link>
+                  <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvOverSendList' }">贈點失敗
+                    <md-tooltip md-direction="bottom">請檢查活動設定，重複贈點會員，超過可贈點上限均會出現在此清單中</md-tooltip>
+                  </router-link>
+                  <router-link class="bookmark" :to="{name : 'eventProgressList' }">贈點排程中
+                    <md-tooltip md-direction="bottom">系統批次處理等待贈點的清單</md-tooltip>
+                  </router-link>
+                  <router-link class="bookmark" :to="{name : 'eventCsvHistory' }">贈點完成紀錄
+                    <md-tooltip md-direction="bottom">系統已經完成贈點的清單</md-tooltip>
+                  </router-link>
               </div>
               <div class="col-12">
                   <transition name="fade" mode="out-in" appear>
