@@ -159,8 +159,11 @@ export default {
   },
   watch: {
     eventInfo (val) {
-      this.setInfoFromVUEX()
-      this.csvOpen = true
+      this.csvOpen = false
+      this.$nextTick(() => {
+        this.setInfoFromVUEX()
+        this.csvOpen = true
+      })
     }
   }
 }

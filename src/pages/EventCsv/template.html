@@ -49,12 +49,21 @@
           
           <div class="d-flex align-items-center justify-content-end">
               
+            <!-- 1. 非活動開啟 時間超過   -->
+              <md-badge md-content="0" md-dense v-if="eventInfo.status == 0 || !isDateOver">
+                <md-button class="md-icon-button md-dense md-raised md-primary" disabled >
+                  <md-icon>send</md-icon>
+                </md-button>
+                <md-tooltip md-direction="bottom">僅活動期間且啟用時，才可發送</md-tooltip>
+              </md-badge>
+            <!-- 2. user select -->
               <md-badge :md-content="selectLength" md-dense v-if="checkarray.length > 0 && eventInfo.status == 1 && isDateOver">
                 <md-button class="md-icon-button md-dense md-raised md-primary" @click="sendPoint(null)">
                   <md-icon>send</md-icon>
                   <md-tooltip md-direction="bottom">發送點數給清單內所選擇之會員</md-tooltip>
                 </md-button>
               </md-badge>
+            <!-- 3. 全部發送 -->  
               <md-badge md-content="All" md-dense v-if="eventInfo.status == 1 && checkarray.length == 0 && count != 0 && isDateOver"> <!-- v-if="checkarray.length > 0" -->
                 <md-button class="md-icon-button md-dense md-raised md-primary" @click="sendPoint('all')">
                   <md-icon>send</md-icon>
@@ -65,6 +74,11 @@
               <md-button class="md-icon-button md-dense md-raised md-primary" @click="showReSendCSVDialog = true">
                 <md-icon>cloud_upload</md-icon>
                 <md-tooltip md-direction="bottom">重新上傳CSV檔案</md-tooltip>
+              </md-button>
+
+              <md-button class="md-icon-button md-dense md-raised md-primary" @click="deleteCSV">
+                <md-icon>delete</md-icon>
+                <md-tooltip md-direction="bottom">清除上傳CSV檔案</md-tooltip>
               </md-button>
           </div>
 

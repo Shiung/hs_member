@@ -301,6 +301,25 @@ export default {
           })
       }
     },
+    deleteCSV () {
+      this.$swal({
+        title: '清除CSV!',
+        text: `清除此活動的CSV清單?`,
+        icon: 'info',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            this.deleteCSVAxios()
+          }
+        })
+    },
     sendPointAxios (id) {
       let data = {
         'members': id
@@ -323,9 +342,53 @@ export default {
             // this.refreshData()
             let id = this.eventID
             this.getInfo(id)
-            this.$router.push({name: 'eventCsvHistory'})
+            // this.$router.push({name: 'eventCsvHistory'})
             resolve({
               title: '活動發送點數請求成功',
+              // body: `已經刪除 ID:"${id}" 的最新消息`,
+              config: {
+                timeout: 5000
+                // closeOnClick: true
+              }
+            })
+          }).catch((error) => {
+            console.log(error)
+            this.refreshData()
+            reject({
+              title: '傳送失敗',
+              body: '伺服器異常',
+              config: {
+                timeout: 5000
+                // closeOnClick: true
+              }
+            })
+          })
+        })
+      })
+    },
+    deleteCSVAxios () {
+      let fileID = this.eventInfo.file.data[0].id
+      this.$store.commit('ISLOADING', true) // 更新loading
+      // 移除 es6 primse reject 沒有 new error
+      /* eslint-disable */
+      this.$snotify.async('呼叫伺服器', '清除CSV列表請求', () => {
+        return new Promise((resolve, reject) => {
+          let url = `${process.env.API_HOST}v1/admin/event/${this.eventID}/images/${fileID}`
+          return this.axios.delete(url, {
+            headers: {
+              'Authorization': this.tokenVal,
+              'Accept': 'application/json'
+            }
+          }).then((res) => {
+            if (res.headers.authorization) {
+              this.token_update(res.headers.authorization)
+            }
+            // this.refreshData()
+            let id = this.eventID
+            this.getInfo(id)
+
+            resolve({
+              title: '成功清除CSV列表',
               // body: `已經刪除 ID:"${id}" 的最新消息`,
               config: {
                 timeout: 5000
@@ -399,7 +462,9 @@ export default {
     },
     eventInfo (val) {
       // 活動資料有變動 reload csv list
-      this.refreshData(null)
+      this.$nextTick(() => {
+        if (val.file.length === 0) this.refreshData(null)
+      })
     }
   }
 }

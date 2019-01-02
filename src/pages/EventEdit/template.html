@@ -99,28 +99,27 @@
               </div>
             </div>
 
-
-            <div v-if="eventID != 'new'" class="row">
-              <div class="col-lg-8 d-flex justify-content-end mt-3 mb-5">
-                <md-button class="md-primary md-raised md-dense m-0" @click="save" :md-ripple="false">儲存設定</md-button>
-              </div> 
+          </md-card-content> 
+          <md-card-actions>
+            <div>
+              <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
+              <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
             </div>
+            
+          </md-card-actions>       
+        </md-card>
 
 
-            <!-- <hr v-if="eventID != 'new'"> -->
 
-            <div v-if="eventID != 'new'" class="row mt-5">
-              <div class="col-12 d-flex flex-column mt-4">
-                <label class="cus mb-0">活動給點名單</label>   
-                <div class="mb-2" style="border-bottom: 3px double #efefef;"></div>
-                <!-- <hr class="w-100 mt-0">              -->
-              </div>  
-            </div>
-
-            <div v-if="eventID != 'new'" class="row">
-              <div class="col-12 mb-3 d-flex flex-row justify-content-start">
+        <md-card  v-if="eventID != 'new'" >
+          <md-card-header class="d-inline-block" >
+            <div class="md-title d-flex justify-content-center align-items-center">活動贈點名單</div>
+          </md-card-header>
+          <md-card-content>
+            <div class="row">
+              <div class="col-12 mb-3 d-flex flex-row justify-content-center">
                   <router-link class="bookmark" :to="{name : 'eventCsv' }">{{isfileExit == 0 ? '上傳名單' : '有效名單'}}
-                    <md-tooltip v-if="isfileExit != 0" md-direction="right">檢查匯入CSV資料判定為H'S VIBE會員</md-tooltip>
+                    <md-tooltip v-if="isfileExit != 0" md-direction="bottom">檢查匯入CSV資料判定為H'S VIBE會員</md-tooltip>
                   </router-link>
                   <router-link v-if="isfileExit != 0" class="bookmark" :to="{name : 'eventCsvUselessList' }">無效名單
                       <md-tooltip md-direction="bottom">檢查匯入CSV資料判定為非H'S VIBE會員</md-tooltip>
@@ -143,12 +142,7 @@
             </div>
 
           </md-card-content> 
-          <md-card-actions>
-            <div v-if="eventID == 'new'">
-              <md-button class="md-accent md-raised md-dense" @click="cancel" :md-ripple="false">取消</md-button>
-              <md-button class="md-primary md-raised md-dense" @click="save" :md-ripple="false">儲存設定</md-button>
-            </div>
-            
+          <md-card-actions>    
           </md-card-actions>       
         </md-card>
     </div>
