@@ -44,9 +44,16 @@ export default {
       this.$router.push({name: 'member'})
     },
     sendSMS () {
+      // 提示文字
+      let contentDIV = document.createElement('div')
+      contentDIV.className = 'text-danger font-14'
+      let contentText = document.createTextNode(`注意: 會員未認證狀態下開啟APP，會自動進入電話驗證流程，無需在此發送驗證碼。此功能僅給例外情況使用`)
+      contentDIV.appendChild(contentText)
+      // 提示文字 --end
       this.$swal({
         title: '發送簡訊認證碼!',
         text: `發送至此電話號碼[${this.memTel}]?`,
+        content: contentDIV,
         icon: 'warning',
         buttons: {
           cancel: '取消!',

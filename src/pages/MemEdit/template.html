@@ -67,10 +67,6 @@
                     <md-icon>build</md-icon>
                     <md-tooltip md-direction="bottom">修改</md-tooltip>
                   </md-button>
-                  <md-button v-if="memStatus == 0" class="md-icon-button md-dense md-raised md-primary" style="margin-top:-5px;" @click="sendSMS">
-                    <md-icon>send</md-icon>
-                    <md-tooltip md-direction="bottom">發送認證碼</md-tooltip>
-                  </md-button>
                   
                 </div>
               </div>
@@ -81,6 +77,10 @@
                   <md-button v-if="memStatus == 0" class="md-icon-button md-dense md-raised md-primary" style="margin-top:-5px;" @click="statusSwitch">
                     <md-icon>build</md-icon>
                     <md-tooltip md-direction="bottom">修改</md-tooltip>
+                  </md-button>
+                  <md-button v-if="memStatus == 0" class="md-icon-button md-dense md-raised md-primary" style="margin-top:-5px;" @click="sendSMS">
+                    <md-icon>send</md-icon>
+                    <md-tooltip md-direction="bottom">發送認證碼</md-tooltip>
                   </md-button>
                 </div>
               </div>
