@@ -71,7 +71,7 @@
                 </div>
               </div>
               <div class="row mb-5">
-                <div class="col-12 form-group">
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
                   <label class="cus w-100 mb-0">會員狀態</label>
                   <span class="badge text-capitalize" :class="{'badge-success' : memStatus == 2 , 'badge-secondary' :  memStatus != 2}">{{memStatus == 2 ? '已認證' : '未認證' }}</span>
                   <md-button v-if="memStatus == 0" class="md-icon-button md-dense md-raised md-primary" style="margin-top:-5px;" @click="statusSwitch">
@@ -81,6 +81,15 @@
                   <md-button v-if="memStatus == 0" class="md-icon-button md-dense md-raised md-primary" style="margin-top:-5px;" @click="sendSMS">
                     <md-icon>send</md-icon>
                     <md-tooltip md-direction="bottom">發送認證碼</md-tooltip>
+                  </md-button>
+                </div>
+
+                <div class="col-lg-3 col-md-4 col-sm-6 col-12 form-group">
+                  <label class="cus w-100 mb-0">是否員工</label>
+                  <span class="badge text-capitalize" :class="{'badge-info' : employedStatus == 1 , 'badge-secondary' :  employedStatus == 0}">{{employedStatus == 1 ? '員工' : '非員工' }}</span>
+                  <md-button class="md-icon-button md-dense md-raised md-primary" style="margin-top:-5px;" @click="employedStatusSwitch">
+                    <md-icon>build</md-icon>
+                    <md-tooltip md-direction="bottom">修改</md-tooltip>
                   </md-button>
                 </div>
               </div>

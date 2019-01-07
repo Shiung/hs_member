@@ -121,6 +121,14 @@
                     :class="{'sort-up': paramsObj.sortedBy == 'asc' && paramsObj.orderBy == 'updated_at', 'sort-down': paramsObj.sortedBy == 'desc' && paramsObj.orderBy == 'updated_at'}">
                   </span>
                 </span>
+                <span slot="h__is_employed" class="d-flex justify-content-between align-items-center">
+                  是否員工 
+                  <span 
+                    class="VueTables__sort-icon float-right sorticon sort" 
+                    @click="sort('is_employed')" 
+                    :class="{'sort-up': paramsObj.sortedBy == 'asc' && paramsObj.orderBy == 'is_employed', 'sort-down': paramsObj.sortedBy == 'desc' && paramsObj.orderBy == 'is_employed'}">
+                  </span>
+                </span>
 
                 <!-- 選單 -->
                 <md-checkbox 

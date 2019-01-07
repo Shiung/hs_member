@@ -4,7 +4,7 @@ export default {
   name: 'member',
   data () {
     return {
-      columns: ['edit', 'id', 'name', 'nickname', 'id_number', 'birthday', 'mobile', 'updated_at', 'status'],
+      columns: ['edit', 'id', 'name', 'nickname', 'id_number', 'birthday', 'mobile', 'updated_at', 'is_employed', 'status'],
       tableData: [],
       options: {
         headings: {
@@ -16,6 +16,7 @@ export default {
           birthday: '生日',
           status: '狀態',
           mobile: '電話',
+          is_employed: '員工',
           updated_at: '最後登入時間'
         },
         columnsClasses: {
@@ -44,9 +45,14 @@ export default {
           is: 'sort'
         },
         templates: {
+          is_employed: function (h, row, index) {
+            let s = row.is_employed === 1 ? '員工' : '非員工'
+            let className = row.is_employed === 1 ? 'badge badge-info badge-pill text-capitalize' : 'badge badge-pill badge-secondary text-capitalize'
+            return <span class={className}>{s}</span>
+          },
           status: function (h, row, index) {
             let s = row.status === 2 ? '已認證' : '未認證'
-            let className = row.status === 2 ? 'badge badge-success text-capitalize' : 'badge badge-secondary text-capitalize'
+            let className = row.status === 2 ? 'badge badge-pill badge-success text-capitalize' : 'badge badge-pill badge-secondary text-capitalize'
             return <span class={className}>{s}</span>
           }
         }
@@ -296,6 +302,9 @@ export default {
           break
         case 'updated_at':
           orderBy = {orderBy: 'updated_at'}
+          break
+        case 'is_employed':
+          orderBy = {orderBy: 'is_employed'}
           break
         default:
           break

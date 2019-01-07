@@ -11,6 +11,7 @@ export default {
       memMail: '',
       memTel: '',
       memStatus: '',
+      employedStatus: '',
       memBonusPoint: '',
       memAccumulate: '',
       memCouponUse: '',
@@ -36,6 +37,7 @@ export default {
       this.memMail = this.memberInfo.email
       this.memTel = this.memberInfo.mobile
       this.memStatus = this.memberInfo.status
+      this.employedStatus = this.memberInfo.is_employed
       this.memBonusPoint = this.memberInfo.bonus_point
       this.memAccumulate = this.memberInfo.accumulate
       this.memCouponUse = this.memberInfo.coupon
@@ -133,6 +135,34 @@ export default {
               title: '請輸入電話號碼!',
               icon: 'error'
             })
+          }
+        })
+    },
+    employedStatusSwitch () {
+      let swaltitle = '設定為員工!'
+      let swalText = `是否要設定此會員[${this.memName}]為員工?`
+      if (this.employedStatus) {
+        swaltitle = '設定為非員工!'
+        swalText = `是否要設定此會員[${this.memName}]為非員工?`
+      }
+      this.$swal({
+        title: swaltitle,
+        text: swalText,
+        icon: 'warning',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            let data = {
+              'is_employed': this.employedStatus === 1 ? 0 : 1
+            }
+            this.updateAxios(data)
           }
         })
     },
