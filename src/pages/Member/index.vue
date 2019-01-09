@@ -4,7 +4,7 @@ export default {
   name: 'member',
   data () {
     return {
-      columns: ['edit', 'id', 'name', 'nickname', 'id_number', 'birthday', 'mobile', 'updated_at', 'is_employed', 'status'],
+      columns: ['edit', 'id', 'name', 'nickname', 'id_number', 'birthday', 'mobile', 'updated_at', 'tags', 'is_employed', 'status'],
       tableData: [],
       options: {
         headings: {
@@ -16,6 +16,7 @@ export default {
           birthday: '生日',
           status: '狀態',
           mobile: '電話',
+          tags: '標籤群組',
           is_employed: '員工',
           updated_at: '最後登入時間'
         },
@@ -67,11 +68,52 @@ export default {
       showDialog: false,
       filterNum: 0, // 0: 姓名 1: 信箱 2: 身分證 3:電話
       filterStr: '姓名',
-      searchFields: 'name' // 0: name, 1: email,2: id_number ,3: mobile
+      searchFields: 'name', // 0: name, 1: email,2: id_number ,3: mobile
+      // 標籤列表分類篩選
+      tagLoadingOpacity: 0.8,
+      tagFilterLoading: false,
+      tagFilterList: [],
+      // 標籤編輯
+      showTagDialog: false,
+      showTagMultiDeleteDialog: false,
+      tagTable: [],
+      tagLoading: false,
+      tagColumns: ['edit', 'name'],
+      tagOptions: {
+        headings: {
+          edit: '',
+          name: '標籤清單'
+        },
+        columnsClasses: {
+          // edit: 'width-fix',
+          // status: 'width-fix'
+        },
+        perPage: 50,
+        perPageValues: [15, 25, 100],
+        pagination: { chunk: 5, nav: 'scroll', dropdown: false, edge: false },
+        texts: {
+          // count: 'Showing {from} to {to} of {count} records|{count} records|One record',
+          // noResults: 'No matching records',
+          count: '顯示 {from} 到 {to} 筆資料 ， 總共 {count} 筆資料 |{count} 筆資料|One 筆資料',
+          noResults: '沒有資料符合',
+          first: '|<',
+          last: '>|'
+        },
+        preserveState: true,
+        sortable: ['name123', 'album'],
+        // filterable: ['title'],
+        filterable: false
+      },
+      tagCheckbtn: false,
+      tagCheckarray: [],
+      // 批次處理標籤
+      tagMultiSelect: []
     }
   },
   computed: {
     ...mapGetters('memTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus']),
+    ...mapGetters('memInfoMoudule', ['memberInfo']),
+    ...mapGetters(['tokenVal']),
     selectLength () {
       return this.checkarray.length > 0 ? this.checkarray.length : 'All'
     },
@@ -112,6 +154,11 @@ export default {
     },
     searchStrPlaceholder () {
       return `搜尋${this.filterStr}`
+    },
+    // 單一選取 memID
+    selectedMemID () {
+      if (this.selectLength === 1) return this.checkarray.join()
+      else return null
     }
   },
   mounted () {
@@ -129,6 +176,8 @@ export default {
   methods: {
     // 資料 vuex
     ...mapActions('memTableMoudule', ['getDatatable', 'getRequestParams', 'setParamsStatus']),
+    ...mapActions('memInfoMoudule', ['getInfo']),
+    ...mapActions(['token_update', 'remove_cookie']),
     checkAll () {
       let allDataId = []
       this.datatables.forEach(function (item, index, array) {
@@ -322,6 +371,433 @@ export default {
       // // check clear
       // this.uncheckAll()
       this.refreshData(obj)
+    },
+    // 標籤
+    filterOpen () {
+      this.tagFilterLoading = true
+      const token = this.tokenVal
+      const url = `${process.env.API_HOST}v1/member/tag`
+      this.axios.get(url, {
+        headers: {
+          'Authorization': `${token}`
+        }
+      }).then((res) => {
+        this.tagFilterList = res.data.data
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '操作太多次',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+        this.tagFilterLoading = false
+      })
+    },
+    openOptionTagList () {
+      this.filterOpen()
+    },
+    filterType (tagID) {
+      const obj = {
+        page: null,
+        tag_id: tagID
+      }
+      this.refreshData(obj)
+    },
+    tagCheckAll () {
+      let allDataId = []
+      this.tagTable.forEach(function (item, index, array) {
+        allDataId.push(item.id)
+      })
+      this.tagCheckarray = allDataId
+    },
+    tagUncheckAll () {
+      this.tagCheckarray = []
+    },
+    addTagToMember () {
+      let IDs = this.tagCheckarray.join(',')
+      let memID = this.checkarray.join(',')
+      this.$swal({
+        title: '加入已選擇的標籤群組!',
+        icon: 'warning',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      }).then((value) => {
+        if (value) {
+          this.addTagToMemberAxios(IDs, memID)
+        }
+      })
+    },
+    addTag () {
+      this.$swal({
+        title: '新增標籤!',
+        content: {
+          element: 'input',
+          attributes: {
+            placeholder: '輸入標籤名稱',
+            type: 'text'
+          }
+        }
+      })
+        .then((value) => {
+          if (value === null) return
+          let input = value.trim()
+          if (input) {
+            this.$swal({
+              title: '新增標籤',
+              text: `${input}`,
+              icon: 'warning',
+              buttons: {
+                cancel: '取消新增!',
+                ok: {
+                  text: '確認新增!',
+                  value: true
+                }
+              }
+            })
+              .then((value) => {
+                if (value) {
+                  let data = {
+                    'tag': `${input}`,
+                    'type': 'Member'
+                  }
+                  this.createTagAxios(data)
+                }
+              })
+          } else {
+            this.$swal({
+              title: '請輸入新標籤名稱!',
+              icon: 'error'
+            })
+          }
+        })
+    },
+    editTag () {
+      let id = this.tagCheckarray.join()
+      this.$swal({
+        title: '修改標籤名稱!',
+        content: {
+          element: 'input',
+          attributes: {
+            placeholder: '輸入標籤名稱',
+            type: 'text'
+          }
+        }
+      })
+        .then((value) => {
+          if (value === null) return
+          let input = value.trim()
+          if (input) {
+            this.$swal({
+              title: '修改標籤',
+              text: `${input}`,
+              icon: 'warning',
+              buttons: {
+                cancel: '取消變更!',
+                ok: {
+                  text: '確認變更!',
+                  value: true
+                }
+              }
+            })
+              .then((value) => {
+                if (value) {
+                  let data = {
+                    'name': `${input}`
+                  }
+                  this.updateTagAxios(data, id)
+                }
+              })
+          } else {
+            this.$swal({
+              title: '請輸入新標籤名稱!',
+              icon: 'error'
+            })
+          }
+        })
+    },
+    reloadMemberInfoById () {
+      let memID = this.selectedMemID
+      if (memID != null) this.getInfo(memID)
+    },
+    refreshTaglist () {
+      // 重置tag list
+      this.tagLoading = true
+      this.tagTable = []
+      this.tagCheckarray = []
+      // get data
+      this.getTagList()
+    },
+    getTagList () {
+      const token = this.tokenVal
+      const url = `${process.env.API_HOST}v1/member/tag`
+      this.axios.get(url, {
+        headers: {
+          'Authorization': `${token}`
+        }
+      }).then((res) => {
+        let tagList = res.data.data
+        this.tagTable = tagList
+        this.tagLoading = false
+        this.$refs.tagTable.setLimit(tagList.length)
+
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '操作太多次',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+      })
+    },
+    deleteTagFromMember (memID, tagID) {
+      // 單一刪除
+      this.$swal({
+        title: '移除標籤群組!',
+        icon: 'warning',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      }).then((val) => {
+        if (val) {
+          this.deleteTagFromMemberAxios(tagID, memID)
+        }
+      })
+    },
+    multiDeleteTagFromMember () {
+      let tagID = this.tagMultiSelect.join(',')
+      let memID = this.checkarray.join(',')
+      this.deleteTagFromMemberAxios(tagID, memID)
+    },
+    deleteTag () {
+      let IDs = this.tagCheckarray.join(',')
+      this.$swal({
+        title: '刪除已選擇標籤!',
+        icon: 'warning',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            this.deleteTagAxios(IDs)
+          }
+        })
+    },
+    createTagAxios (obj) {
+      let data = obj
+      this.tagLoading = true
+      // 新增
+      let url = `${process.env.API_HOST}v1/admin/tag`
+      this.axios.post(url, data, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 更新tag list
+        this.refreshTaglist()
+
+        // 成功
+        this.$snotify.success(`新增一筆標籤`, {
+          timeout: 10000
+        })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '請求太頻繁,請於兩分鐘後再試',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+      })
+    },
+    updateTagAxios (obj, tagID) {
+      let data = obj
+      let ID = tagID
+      this.tagLoading = true
+      // 更新
+      let url = `${process.env.API_HOST}v1/admin/tag/${ID}`
+      this.axios.put(url, data, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 更新tag list
+        this.refreshTaglist()
+
+        // 成功
+        this.$snotify.success(`修改標籤資料成功`, {
+          timeout: 10000
+        })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '操作太多次',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+        // 更新memberInfo 單一
+        this.reloadMemberInfoById()
+      })
+    },
+    deleteTagAxios (IDs) {
+      let url = `${process.env.API_HOST}v1/admin/tag/${IDs}`
+      this.axios.delete(url, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 更新tag list
+        this.refreshTaglist()
+
+        // 成功
+        this.$snotify.success(`標籤刪除成功`, {
+          timeout: 10000
+        })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '操作太多次',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+        // 更新memberInfo 單一
+        this.reloadMemberInfoById()
+      })
+    },
+    addTagToMemberAxios (IDs, memIDs) {
+      let memID = this.selectedMemID
+      let data = {
+        'tag_id': IDs,
+        'id': memIDs
+      }
+      let url = `${process.env.API_HOST}v1/admin/member/attach_tag`
+      this.axios.post(url, data, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 更新tag list
+        if (memID !== null) this.refreshTaglist()
+
+        // 成功
+        this.$snotify.success(`標籤設定完成`, {
+          timeout: 10000
+        })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '請求太頻繁,請於兩分鐘後再試',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+        // 更新memberInfo 單一
+        this.reloadMemberInfoById()
+
+        // 批次處理直接跳出視窗
+        if (memID === null) this.showTagDialog = false
+      })
+    },
+    deleteTagFromMemberAxios (ID, memID) {
+      let memIDselect = this.selectedMemID
+      let params = {
+        'tag_id': ID,
+        'id': memID
+      }
+      let url = `${process.env.API_HOST}v1/admin/member/detach_tag`
+      this.axios.delete(url, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        },
+        params
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+        // 更新tag list
+        if (memIDselect !== null) this.refreshTaglist()
+        // 成功
+        this.$snotify.success(`標籤已移除成功`, {
+          timeout: 10000
+        })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '操作太多次',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+        // 更新memberInfo 單一
+        this.reloadMemberInfoById()
+
+        if (memIDselect === null) this.showTagMultiDeleteDialog = false
+      })
     }
   },
   watch: {
@@ -361,6 +837,55 @@ export default {
           .then(() => {
             this.pageNumber = 1
           })
+      }
+    },
+    // tag 新增視窗
+    async showTagDialog (val) {
+      // 初始
+      this.tagLoading = true
+      this.tagTable = []
+      this.tagCheckarray = []
+      // get data
+      let memID = this.selectedMemID
+      if (val) {
+        if (memID != null) await this.getInfo(memID)
+
+        this.getTagList()
+      } else {
+        // 2. 重置 member datatable
+        this.uncheckAll()
+        this.getDatatable()
+        // 更新vue-table-2 一樣顯示資料
+        this.$refs.table.setLimit(this.perPage)
+      }
+    },
+    showTagMultiDeleteDialog (val) {
+      if (!val) {
+        // 重置選項
+        this.tagMultiSelect = []
+        // 重置 member datatable
+        this.uncheckAll()
+        this.getDatatable()
+        // 更新vue-table-2 一樣顯示資料
+        this.$refs.table.setLimit(this.perPage)
+      }
+    },
+    tagCheckarray (val) {
+      if (val.length === 0) {
+        this.tagCheckbtn = false
+      } else {
+        this.tagCheckbtn = true
+      }
+    },
+    tagCheckbtn (val, oldval) {
+      if (!oldval) {
+        if (this.tagCheckarray.length === 0) {
+          this.tagCheckAll()
+        }
+      } else {
+        if (this.tagCheckarray.length !== 0) {
+          this.tagUncheckAll()
+        }
       }
     }
   }
