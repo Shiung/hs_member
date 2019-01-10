@@ -33,7 +33,9 @@ export default {
       systemAnniversary2Value: '',
       systemAnniversary3ID: '',
       systemAnniversary3Title: '',
-      systemAnniversary3Value: ''
+      systemAnniversary3Value: '',
+      systemAnniversaryTotalTitle: '',
+      systemAnniversaryTotalValue: []
     }
   },
   computed: {
@@ -73,6 +75,8 @@ export default {
       this.systemAnniversary3ID = this.systemInfo[8].id
       this.systemAnniversary3Title = this.systemInfo[8].name
       this.systemAnniversary3Value = this.systemInfo[8].value
+      this.systemAnniversaryTotalTitle = this.systemInfo[9].name
+      this.systemAnniversaryTotalValue = this.systemInfo[9].value.split(',')
     }
   },
   mounted () {
