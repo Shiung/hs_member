@@ -8,6 +8,7 @@ export default {
       notificationContent: '',
       notificationURL: '',
       notificationType: '',
+      notificationToppingStatus: false,
       notificationStatus: false,
       // vue dropzone
       dropzoneOptions: {
@@ -53,6 +54,7 @@ export default {
       this.notificationType = this.notificationInfo.type
       let status = this.notificationInfo.status === 1
       this.notificationStatus = status
+      this.notificationToppingStatus = this.notificationInfo.topping === 1
 
       // vue2 dropZone
       this.initImg(this.notificationInfo.images)
@@ -115,7 +117,8 @@ export default {
         'content': this.notificationContent,
         'share_url': this.notificationURL,
         'type': this.notificationType,
-        'status': this.notificationStatus ? 1 : 0
+        'status': this.notificationStatus ? 1 : 0,
+        'topping': this.notificationToppingStatus ? 1 : 0
       }
       // 更新
       let url = `${process.env.API_HOST}v1/admin/content/${this.notificationID}`

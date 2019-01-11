@@ -7,6 +7,7 @@ export default {
       bannerTitle: '',
       bannerUrl: '',
       bannerStatus: false,
+      bannerToppingStatus: false,
       // vue dropzone
       dropzoneOptions: {
         // url: 'https://httpbin.org/post', // server 位置
@@ -49,6 +50,7 @@ export default {
       this.bannerUrl = this.bannerInfo.share_url
       let status = this.bannerInfo.status === 1
       this.bannerStatus = status
+      this.bannerToppingStatus = this.bannerInfo.topping === 1
 
       // // vue2 dropZone
       this.initImg(this.bannerInfo.images)
@@ -80,7 +82,8 @@ export default {
       } else {
         return {
           ...data,
-          'status': this.bannerStatus
+          'status': this.bannerStatus,
+          'topping': this.bannerToppingStatus ? 1 : 0
         }
       }
     },

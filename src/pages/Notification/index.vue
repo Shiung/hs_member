@@ -5,7 +5,7 @@ export default {
   name: 'notification',
   data () {
     return {
-      columns: ['edit', 'title', 'content', 'created_at', 'type', 'status', 'act'],
+      columns: ['edit', 'title', 'content', 'created_at', 'type', 'topping', 'status', 'act'],
       options: {
         headings: {
           edit: '',
@@ -13,6 +13,7 @@ export default {
           title: '標題',
           content: '內容',
           type: '類別',
+          topping: '顯示',
           status: '狀態',
           act: '發送推播'
         },
@@ -94,6 +95,13 @@ export default {
                 break
             }
             return <span class={className}>{s}</span>
+          },
+          topping: function (h, row, index) {
+            if (row.topping === 1) {
+              let s = '置頂'
+              let className = 'badge badge-warning text-white text-capitalize'
+              return <span class={className}>{s}</span>
+            } else return null
           }
         }
       },

@@ -49,6 +49,11 @@
               </div>
             </div>
             <div class="row">  
+              <div class="col-12 d-flex flex-column mb-3" v-if="bannerID != 'new'">
+                <label class="cus">顯示置頂</label>
+                <md-switch v-model="bannerToppingStatus" class="md-primary mt-0"></md-switch>
+              </div>
+
               <div class="col-12 d-flex flex-column mb-5" v-if="bannerID != 'new'">
                 <label class="cus">狀態</label>
                 <md-switch v-model="bannerStatus" class="md-primary mt-0"></md-switch>

@@ -4,7 +4,7 @@ export default {
   name: 'banner',
   data () {
     return {
-      columns: ['edit', 'id', 'title', 'images', 'share_url', 'updated_at', 'status'],
+      columns: ['edit', 'id', 'title', 'images', 'share_url', 'updated_at', 'topping', 'status'],
       tableData: [],
       options: {
         headings: {
@@ -13,6 +13,7 @@ export default {
           title: '標題',
           images: '圖片',
           share_url: '連結',
+          topping: '顯示',
           status: '狀態',
           updated_at: '最後登入時間'
         },
@@ -53,6 +54,13 @@ export default {
           },
           share_url: function (h, row, index) {
             return <md-icon>link</md-icon>
+          },
+          topping: function (h, row, index) {
+            if (row.topping === 1) {
+              let s = '置頂'
+              let className = 'badge badge-warning text-white text-capitalize'
+              return <span class={className}>{s}</span>
+            } else return null
           }
         }
       },

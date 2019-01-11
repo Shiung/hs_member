@@ -78,6 +78,11 @@
           </div>
 
           <div class="row">  
+            <div class="col-12 d-flex flex-column mb-3" v-if="notificationID != 'new'">
+              <label class="cus">顯示置頂</label>
+              <md-switch v-model="notificationToppingStatus" class="md-primary mt-0"></md-switch>
+            </div>
+
             <div class="col-12 d-flex flex-column mb-5" v-if="notificationID != 'new'">
               <label class="cus">上架狀態</label>
               <md-switch v-model="notificationStatus" class="md-primary mt-0"></md-switch>
