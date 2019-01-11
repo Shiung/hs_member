@@ -12,6 +12,10 @@ export default {
       couponContent: '',
       couponPoint: '',
       couponValue: '',
+      couponPublishedLimitStatus: false,
+      couponPublished: '', // 優惠劵發行量(vuex DB)
+      couponPublishedEdit: '', // 優惠劵發行量(edit)
+      couponStock: '', // 優惠劵剩餘庫存(vuex DB)
       couponStatus: false,
       coverageAllStatus: false,
       // vue datetime
@@ -86,7 +90,9 @@ export default {
       loadingShow: false,
       readMoreShow: true,
       selectOpenCount: 0,
-      selectNoneVale: false
+      selectNoneVale: false,
+      // 設定發行量視窗
+      showPublishDialog: false
     }
   },
   computed: {
@@ -98,6 +104,10 @@ export default {
     pageTitle () {
       if (this.couponID === 'new') return '新增優惠劵'
       else return '編輯優惠劵'
+    },
+    // 優惠劵發行量設定最小值
+    couponPublishedRecord () {
+      return parseInt(this.couponPublished) + 1
     }
   },
   methods: {
@@ -111,6 +121,8 @@ export default {
       this.couponContent = this.conponInfo.content
       this.couponPoint = this.conponInfo.point
       this.couponValue = this.conponInfo.value
+      this.couponPublished = this.conponInfo.published
+      this.couponStock = this.conponInfo.stock
       this.datetimeExpire = DateTime.fromSQL(this.conponInfo.expire_at).toISO()
       let status = this.conponInfo.status === 1
       this.couponStatus = status
@@ -564,6 +576,74 @@ export default {
           return item.id
         })
       }
+    },
+    // 優惠卷發行量儲存
+    couponPublishSave () {
+      let data = {}
+      if (this.couponPublishedLimitStatus) {
+        // 無限制
+        data['published'] = 0
+      } else if (this.couponPublishedEdit < this.couponPublishedRecord) {
+        this.$swal({
+          title: `發行量設定需要大於${this.couponPublishedRecord}`,
+          icon: 'error'
+        })
+        return
+      } else {
+        // 設定發行量數量
+        data['published'] = this.couponPublishedEdit
+      }
+      this.$swal({
+        title: `是否要更新發行量設定`,
+        icon: 'info',
+        buttons: {
+          cancel: '取消變更!',
+          ok: {
+            text: '確認變更!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            this.updateCouponPubishAxios(data)
+          }
+        })
+    },
+    updateCouponPubishAxios (obj) {
+      let data = obj
+      // 更新
+      let url = `${process.env.API_HOST}v1/admin/coupon/${this.couponID}`
+      this.axios.put(url, data, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+        let resData = res.data.data
+        // 更新發行量數據
+        this.couponPublished = resData.published
+        this.couponStock = resData.stock
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '操作太多次',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+        this.$snotify.success(`已更新發行量設定`, {
+          timeout: 10000
+        })
+        // 關閉設定視窗
+        this.showPublishDialog = false
+      })
     }
   },
   mounted () {
@@ -598,6 +678,15 @@ export default {
     coverageData (val) {
       this.selectNoneVale = false
       if (val.length === 0) this.selectNoneVale = true
+    },
+    // 發行量設定視窗
+    showPublishDialog (val) {
+      this.couponPublishedEdit = ''
+      this.couponPublishedLimitStatus = false
+      if (val) {
+        this.couponPublishedEdit = this.couponPublished
+        this.couponPublishedLimitStatus = this.couponPublished === 0
+      }
     }
   }
 }

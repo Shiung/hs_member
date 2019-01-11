@@ -12,6 +12,15 @@
           </div>
         </md-card-header>
         <md-card-content>
+          <div class="row" v-if="couponID != 'new'">
+            <div class="col-12 d-flex justify-content-end">
+              <md-button class="md-primary md-raised md-dense" @click="showPublishDialog = true">
+                <span v-if="couponPublished > 0">發行量: {{couponPublished|currency}} / 剩餘數量: {{couponStock|currency}}</span>
+                <span v-else>發行量: 無限制</span>
+                <md-tooltip md-direction="bottom">設定發行量</md-tooltip>
+              </md-button>
+            </div>
+          </div>
           <div class="row">
             <div class="col-6">
               <md-field :class="{'md-invalid' : errors.has('name')}">
@@ -72,7 +81,7 @@
           </div>
 
           <div class="row mb-5">
-            <div class="col-6">
+            <div class="col-sm-6">
               <div class="row">
                 <div class="col-12">
                   <md-field :class="{'md-invalid' : errors.has('point')}" class="cus-input-150">
@@ -92,7 +101,7 @@
               </div>
             </div>   
 
-            <div class="col-6">
+            <div class="col-sm-6">
               <!-- vue datetime -->
                 <div class="row">
                   <div class="col-12 expireDate mb-4">
@@ -229,6 +238,31 @@
     <md-dialog-actions>
       <md-button class="md-primary" @click="addCoverageSelectCancel">取消</md-button>
       <md-button class="md-primary" @click="addCoverageSelectConfirm">加入</md-button>
+    </md-dialog-actions>
+  </md-dialog>
+
+  <!-- 發行量設定 -->
+  <md-dialog :md-active.sync="showPublishDialog">
+    <md-dialog-title class="text-center">發行量設定</md-dialog-title>
+    <md-dialog-content>
+      <label class="md-caption w-100">優惠劵發行量(無限制)</label>
+      <md-switch v-model="couponPublishedLimitStatus" class="md-primary mt-0"></md-switch>
+
+      <transition name="fade" mode="out-in" appear>
+        <md-field :class="{'md-invalid' : errors.has('published')}" v-if="!couponPublishedLimitStatus">
+          <label>優惠劵發行量</label>
+          <md-input v-model.number="couponPublishedEdit" type="number" name="published" v-validate="'required|min_value:1'" autocomplete="off" :min='couponPublishedRecord'></md-input>
+          <span class="md-suffix">(剩餘數量: {{couponStock|currency}})</span>
+          <span class="md-error">發行量不得小於 {{couponPublishedRecord|currency}}</span>
+        </md-field>
+      </transition>
+      
+    </md-dialog-content>
+    
+
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="showPublishDialog = false">關閉</md-button>
+      <md-button class="md-primary" @click="couponPublishSave">儲存設定</md-button>
     </md-dialog-actions>
   </md-dialog>
 
