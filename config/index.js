@@ -12,7 +12,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/apiCross':{
-        target : 'https://t.toseek.info/api',
+        target : 'https://t.toseek.info/api', // 測試機
+        // target : 'https://api.hsvibe.com', // 主機
         changeOrigin: true,
         pathRewrite: {
           '^/apiCross': ''
@@ -59,6 +60,7 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/AdminUI/', //測試
+    // assetsPublicPath: '', //主機
 
     /**
      * Source Maps
