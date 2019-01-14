@@ -12,6 +12,7 @@ export default {
   },
   actions: {
     getInfo( context, ID ){
+      context.commit('ISLOADING', true, {root: true})
       let cookieToken = getCookie()
       const url = `${process.env.API_HOST}v1/admin/event/${ID}`
       axios.get(url, {
