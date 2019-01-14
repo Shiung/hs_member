@@ -1,5 +1,5 @@
 import axios from 'axios'
-import ParamsObj from '../assets/js/reguestParamsObj/params.js'
+// import ParamsObj from '../assets/js/reguestParamsObj/params.js'
 import router from '../router'
 import swal from 'sweetalert'
 /* eslint-disable */
@@ -54,13 +54,16 @@ export default {
     },
     getRequestParams (context, newParams) {
       let paramsObj = ''
-      if (newParams) {
-        paramsObj = new ParamsObj({
-          ...newParams
-        })
-      } else {
-        paramsObj = new ParamsObj({})
-      }
+      // 1. default 呼叫 ParamsObj 物件--------------
+      // if (newParams) {
+      //   paramsObj = new ParamsObj({
+      //     ...newParams
+      //   })
+      // } else {
+      //   paramsObj = new ParamsObj({})
+      // }
+      // 2. 使用api 列表自訂的排序---------------------
+      if (newParams) paramsObj = {...newParams}
       context.commit('SETPARAMSOBJ', paramsObj)
     },
     setParamsStatus (context, status) {
