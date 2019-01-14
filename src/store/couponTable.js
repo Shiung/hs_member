@@ -1,5 +1,5 @@
 import axios from 'axios'
-import ParamsObj from '../assets/js/reguestParamsObj/params.js'
+// import ParamsObj from '../assets/js/reguestParamsObj/params.js'
 import router from '../router'
 import swal from 'sweetalert'
 /* eslint-disable */
@@ -15,6 +15,7 @@ export default {
     count: null,
     currentPage: null,
     totalCount: null,
+    totalSort: null,
     paramsStatus: false // 記憶舊的paramsObj 狀態 下次reload 不更新
   },
   actions: {
@@ -34,6 +35,7 @@ export default {
         context.commit('CURRENTPAGES', res.data.meta.pagination.current_page)
         context.commit('COUNT', res.data.meta.pagination.count)
         context.commit('TOTALCOUNT', res.data.meta.pagination.total)
+        context.commit('TOTALSORT', res.data.max_sort)
         context.commit('TOTALPAGES', res.data.meta.pagination.total_pages)
         if (res.headers.authorization) {
           context.dispatch('token_update', res.headers.authorization, {root: true})
@@ -54,13 +56,16 @@ export default {
     },
     getRequestParams (context, newParams) {
       let paramsObj = ''
-      if (newParams) {
-        paramsObj = new ParamsObj({
-          ...newParams
-        })
-      } else {
-        paramsObj = new ParamsObj({})
-      }
+      // 1. default 呼叫 ParamsObj 物件--------------
+      // if (newParams) {
+      //   paramsObj = new ParamsObj({
+      //     ...newParams
+      //   })
+      // } else {
+      //   paramsObj = new ParamsObj({})
+      // }
+      // 2. 使用api 列表自訂的排序---------------------
+      if (newParams) paramsObj = {...newParams}
       context.commit('SETPARAMSOBJ', paramsObj)
     },
     setParamsStatus (context, status) {
@@ -86,6 +91,9 @@ export default {
     TOTALCOUNT ( state, payload ) {
       state.totalCount = payload
     },
+    TOTALSORT ( state, payload ) {
+      state.totalSort = payload
+    },
     SETPARAMSOBJ ( state, payload ) {
       state.paramsObj = payload
     },
@@ -99,6 +107,7 @@ export default {
     perPage: state => state.perPage,
     count: state => state.count,
     totalCount: state => state.totalCount,
+    totalSort: state => state.totalSort,
     currentPage: state => state.currentPage,
     totalPages: state => state.totalPages,
     paramsObj: state => state.paramsObj,

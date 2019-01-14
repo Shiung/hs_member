@@ -7,10 +7,11 @@ export default {
   name: 'coupon',
   data () {
     return {
-      columns: ['edit', 'name', 'date', 'tags', 'point', 'value', 'status'],
+      columns: ['edit', 'sort', 'name', 'date', 'tags', 'point', 'value', 'status'],
       options: {
         headings: {
           edit: '#',
+          sort: '排序',
           name: '標題',
           date: '有效期限',
           tags: '標籤群組',
@@ -112,11 +113,15 @@ export default {
       tagCheckbtn: false,
       tagCheckarray: [],
       // 批次處理標籤
-      tagMultiSelect: []
+      tagMultiSelect: [],
+      // sort 變更設定
+      showSortDialog: false,
+      // sortCount: 48,
+      sortSelected: ''
     }
   },
   computed: {
-    ...mapGetters('couponTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus']),
+    ...mapGetters('couponTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus', 'totalSort']),
     ...mapGetters('couponInfoMoudule', ['conponInfo']),
     ...mapGetters(['tokenVal']),
     selectLength () {
@@ -700,6 +705,56 @@ export default {
 
         if (couponIDselected === null) this.showTagMultiDeleteDialog = false
       })
+    },
+    // 設定sort
+    sortChange () {
+      let originSort = this.selectObject[0].sort
+      let newSort = this.sortSelected
+      let data = {
+        'source': originSort, // 原本位置
+        'target': newSort // 變動位置
+      }
+      let url = `${process.env.API_HOST}v1/admin/coupon/sort`
+      this.axios.put(url, data, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 成功
+        this.$snotify.success(`排序設定完成`, {
+          timeout: 10000
+        })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '請求太頻繁,請於兩分鐘後再試',
+            icon: 'error'
+          })
+        } else if (error.response.status === 400) {
+          this.$swal({
+            title: '排序儲存異常!!!',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+        // 1.關閉視窗
+        this.showSortDialog = false
+        // 重整list 2-A 全部重整至初始list 狀態
+        // this.refreshData(null)
+        // 重整list 2-B 重整datatable getRequestParams不變動
+        this.uncheckAll()
+        this.getDatatable()
+        // 更新vue-table-2 一樣顯示資料
+        this.$refs.couponTable.setLimit(this.perPage)
+      })
     }
   },
   watch: {
@@ -789,6 +844,11 @@ export default {
           this.tagUncheckAll()
         }
       }
+    },
+    // sort 跳窗
+    showSortDialog (val) {
+      // 重置 以選項目
+      this.sortSelected = ''
     }
   }
 }

@@ -64,6 +64,14 @@
                       </md-menu-content> 
                     </md-menu>
                   </transition>
+
+                  <!-- 調整sort位置 -->
+                  <transition name="selectOption" mode="out-in" appear>
+                    <md-button v-if="checkarray.length === 1" class="md-icon-button md-dense md-raised md-primary" @click="showSortDialog = true">
+                      <md-icon>swap_vert</md-icon>
+                      <md-tooltip md-direction="bottom">顯示排序設定</md-tooltip>
+                    </md-button>
+                  </transition>
               </div>
                 
               <div class="d-flex align-items-center justify-content-end">
@@ -112,6 +120,11 @@
               slot-scope="props" 
               @click.prevent="editChoose(props.row.id)">{{props.row.name}}</a>
 
+            <!-- 排序順序 -->
+            <template slot="sort" slot-scope="props">
+              <span>{{totalSort-props.row.sort+1}}</span>
+            </template>  
+              
             <!-- 標籤群組 -->
             <template slot="tags" slot-scope="props">
               <md-chip 
@@ -299,5 +312,24 @@
     </md-dialog>
 
 
+    <!-- sort 位置變更 -->
+    <md-dialog :md-active.sync="showSortDialog">
+      <md-dialog-title class="text-center">列表排序設定</md-dialog-title>
+      <md-dialog-content>
+        <div class="d-flex align-items-center text-center mb-4" v-if="selectObject">優惠劵: <span class="badge badge-secondary mx-2">{{selectObject[0].name}}</span></div>
+        <md-field v-if="selectObject">
+          <label for="sortSelected">選擇顯示順位</label>
+          <md-select v-model="sortSelected" name="sortSelected" id="sortSelected" md-dense>
+            <md-option v-for="item in totalSort" :key="item" :value="totalSort-item+1" :disabled="(totalSort-item+1 === selectObject[0].sort)" >列表顯示順位: {{item}} {{totalSort-item+1 === selectObject[0].sort ? '(目前順位)' : null}}</md-option>  
+          </md-select>
+        </md-field>
+      </md-dialog-content>
+      
+
+      <md-dialog-actions>
+        <md-button class="md-primary" @click="showSortDialog = false">關閉</md-button>
+        <md-button class="md-primary" @click="sortChange">變更設定</md-button>
+      </md-dialog-actions>
+    </md-dialog>
   </div>
 </div>
