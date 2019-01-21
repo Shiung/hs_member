@@ -5,7 +5,7 @@ export default {
   name: 'businessCounter',
   data () {
     return {
-      columns: ['edit', 'business_id', 'name', 'full_name', 'vat', 'pos_id', 'updated_at'],
+      columns: ['edit', 'business_id', 'name', 'full_name', 'vat', 'pos_id', 'updated_at', 'status'],
       options: {
         headings: {
           edit: '',
@@ -16,7 +16,8 @@ export default {
           full_name: '廳別全名',
           // account_name: '帳號',
           name: '廳別名稱',
-          updated_at: '更新時間'
+          updated_at: '更新時間',
+          status: '狀態'
         },
         columnsClasses: {
           // act: 'width-fix',
@@ -47,6 +48,11 @@ export default {
           updated_at: function (h, row, index) {
             if (!row.updated_at) return null
             return DateTime.fromSQL(row.updated_at).setLocale('zh-TW').toFormat('yyyy/MM/dd HH:mm:ss')
+          },
+          status: function (h, row, index) {
+            let s = row.status === 1 ? 'on' : 'off'
+            let className = s === 'on' ? 'badge badge-success text-capitalize' : 'badge badge-secondary text-capitalize'
+            return <span class={className}>{s}</span>
           }
         }
       },
