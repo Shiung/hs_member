@@ -12,7 +12,7 @@ export default {
           id: 'ID',
           name: '會員名稱',
           nickname: '暱稱',
-          id_number: '身分證字號',
+          id_number: '帳號',
           birthday: '生日',
           status: '狀態',
           mobile: '電話',
@@ -203,7 +203,7 @@ export default {
           break
         case 2:
           this.filterNum = 2
-          this.filterStr = '身分證'
+          this.filterStr = '帳號'
           this.searchFields = 'id_number'
           break
         case 3:

@@ -6,12 +6,13 @@ export default {
   name: 'eventCsv',
   data () {
     return {
-      columns: ['edit', 'id', 'id_number', 'name'],
+      columns: ['edit', 'id', 'id_number', 'mobile', 'name'],
       options: {
         headings: {
           edit: '',
           id: '序號',
-          id_number: '身分證字號',
+          id_number: '帳號',
+          mobile: '電話',
           name: '名稱'
         },
         columnsClasses: {
@@ -211,7 +212,7 @@ export default {
       this.$snotify.error('超過上傳數量(最多1個檔案)')
     },
     sendingEvent (file, xhr, formData) {
-      formData.append('search_field', 'id_number')
+      formData.append('search_field', 'mobile')
       this.$store.commit('ISLOADING', true) // 更新loading
     },
     uploadSuccess (file, response) {

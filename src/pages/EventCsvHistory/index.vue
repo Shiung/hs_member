@@ -4,12 +4,13 @@ export default {
   name: 'eventCsvHistory',
   data () {
     return {
-      columns: ['id', 'id_number', 'name', 'point', 'updated_at'],
+      columns: ['id', 'id_number', 'name', 'mobile', 'point', 'updated_at'],
       options: {
         headings: {
           id: '序號',
-          id_number: '身分證字號',
+          id_number: '帳號',
           name: '名稱',
+          mobile: '電話',
           point: '點數',
           updated_at: '時間'
         },
@@ -44,6 +45,9 @@ export default {
           },
           id_number: function (h, row, index) {
             return row.member.data[0].id_number
+          },
+          mobile: function (h, row, index) {
+            return row.member.data[0].mobile
           },
           name: function (h, row, index) {
             return row.member.data[0].name

@@ -4,11 +4,12 @@ export default {
   name: 'eventCsvOverSendList',
   data () {
     return {
-      columns: ['id', 'id_number', 'name', 'status'],
+      columns: ['id', 'id_number', 'mobile', 'name', 'status'],
       options: {
         headings: {
           id: '序號',
-          id_number: '身分證字號',
+          id_number: '帳號',
+          mobile: '電話',
           name: '名稱',
           status: '狀態'
         },

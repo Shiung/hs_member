@@ -4,10 +4,10 @@ export default {
   name: 'eventCsvUselessList',
   data () {
     return {
-      columns: ['id_number', 'status'],
+      columns: ['mobile', 'status'],
       options: {
         headings: {
-          id_number: 'CSV匯入ID',
+          mobile: 'CSV匯入電話',
           status: '原因'
         },
         columnsClasses: {
