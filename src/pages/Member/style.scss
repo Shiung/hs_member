@@ -1,3 +1,6 @@
 .member{
-  
+  // 停用按鈕
+  .normalList,.trashList{
+    cursor: pointer;
+  }
 }

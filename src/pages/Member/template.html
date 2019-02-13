@@ -7,6 +7,12 @@
                 <div class="md-title">會員清單</div>
             </md-card-header>
             <md-card-content>
+              <div class="row mb-3">
+                <div class="col-12 d-flex align-items-center justify-content-center">
+                  <div class="normalList bookmark" :class="{'router-link-exact-active' : !trashStatus}" @click="setTrashStatus(false)">會員清單</div>
+                  <div class="trashList bookmark" :class="{'router-link-exact-active' : trashStatus}" @click="setTrashStatus(true)">會員停用清單</div>
+                </div>
+              </div>
               <div class="row sticky-top select-options-top">
                 <div class="col-12 d-flex align-items-center justify-content-between flex-wrap-reverse">
                     <div class='d-flex align-items-center justify-content-between select-options'>
@@ -23,6 +29,13 @@
                             <md-icon>refresh</md-icon>
                             <md-tooltip md-direction="bottom">refresh</md-tooltip>
                         </md-button>
+
+                        <!-- 回覆黑名單選項 -->
+                        <md-button class="md-icon-button md-dense md-raised md-primary" v-if="checkarray.length === 1 && trashStatus" @click="returnTrashMem">
+                            <md-icon>how_to_reg</md-icon>
+                            <md-tooltip md-direction="bottom">恢復啟用會員</md-tooltip>
+                        </md-button>
+                        <!-- 回覆黑名單選項 -->
                         <!-- 尚未開通功能 -->
                         <!-- <transition name="selectOption" mode="out-in" appear>
                           <md-badge :md-content="selectLength" md-dense v-if="checkarray.length > 0">
@@ -42,7 +55,7 @@
                         </transition>  -->
                         <!-- 尚未開通功能 -->
                         <transition name="selectOption" mode="out-in" appear>
-                          <md-button  v-if="checkarray.length === 1" class="md-icon-button md-dense md-raised md-primary" @click="viewMemDetail(null)">
+                          <md-button  v-if="checkarray.length === 1 && !trashStatus" class="md-icon-button md-dense md-raised md-primary" @click="viewMemDetail(null)">
                             <md-icon>visibility</md-icon>
                             <md-tooltip md-direction="bottom">查看會員資料</md-tooltip>
                           </md-button>
@@ -50,14 +63,14 @@
 
                         <!-- 單次修改標籤 -->
                         <transition name="selectOption" mode="out-in" appear>
-                          <md-button v-if="checkarray.length === 1" class="md-icon-button md-dense md-raised md-primary" @click="showTagDialog = true">
+                          <md-button v-if="checkarray.length === 1 && !trashStatus" class="md-icon-button md-dense md-raised md-primary d-none" @click="showTagDialog = true">
                             <md-icon>bookmark</md-icon>
                             <md-tooltip md-direction="bottom">標籤設定</md-tooltip>
                           </md-button>
                         </transition>
                         <!-- 批次加入標籤 -->
                         <transition name="selectOption" mode="out-in" appear></transition>  
-                          <md-menu md-size="auto" md-align-trigger md-direction="bottom-start"  v-if="selectLength > 1">
+                          <md-menu md-size="auto" md-align-trigger md-direction="bottom-start"  v-if="selectLength > 1 && !trashStatus" class="d-none">
                             <md-button class="md-icon-button md-dense md-raised md-primary" md-menu-trigger>
                                 <md-icon>bookmark</md-icon>
                                 <md-tooltip md-direction="bottom">標籤批次操作</md-tooltip>
@@ -103,7 +116,7 @@
                         </md-button>
                       </div>
 
-                      <md-menu md-size="medium" md-align-trigger @md-opened="filterOpen" class="ml-2">
+                      <md-menu md-size="medium" md-align-trigger @md-opened="filterOpen" class="ml-2 d-none" v-if="!trashStatus">
                         <md-button md-menu-trigger class="md-icon-button md-dense md-raised md-primary">
                           <md-icon>tune</md-icon>
                           <md-tooltip md-direction="bottom">標籤群組篩選</md-tooltip>

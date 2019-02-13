@@ -111,7 +111,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('memTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus']),
+    ...mapGetters('memTableMoudule', ['datatables', 'perPage', 'count', 'totalPages', 'totalCount', 'currentPage', 'paramsObj', 'paramsStatus', 'trashStatus']),
     ...mapGetters('memInfoMoudule', ['memberInfo']),
     ...mapGetters(['tokenVal']),
     selectLength () {
@@ -175,7 +175,7 @@ export default {
   },
   methods: {
     // 資料 vuex
-    ...mapActions('memTableMoudule', ['getDatatable', 'getRequestParams', 'setParamsStatus']),
+    ...mapActions('memTableMoudule', ['getDatatable', 'getRequestParams', 'setParamsStatus', 'setTrashStatus']),
     ...mapActions('memInfoMoudule', ['getInfo']),
     ...mapActions(['token_update', 'remove_cookie']),
     checkAll () {
@@ -263,6 +263,13 @@ export default {
       })
     },
     viewMemDetail (iduse) {
+      if (this.trashStatus) {
+        this.$swal({
+          title: '帳號已被停用',
+          icon: 'error'
+        })
+        return
+      }
       let id = ''
       if (iduse) id = iduse
       else id = this.checkarray.join()
@@ -798,6 +805,43 @@ export default {
 
         if (memIDselect === null) this.showTagMultiDeleteDialog = false
       })
+    },
+    // 黑名單回覆會員
+    returnTrashMem () {
+      let id = this.checkarray.join()
+      this.returnTrashMemAxios(id)
+    },
+    returnTrashMemAxios (id) {
+      let url = `${process.env.API_HOST}v1/admin/member/restore/${id}`
+      this.axios.post(url, null, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 更新mem list
+        this.refreshData()
+
+        // 成功
+        this.$snotify.success(`已經回復會員 ID: ${id}`, {
+          timeout: 10000
+        })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '請求太頻繁,請於兩分鐘後再試',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+      })
     }
   },
   watch: {
@@ -887,6 +931,10 @@ export default {
           this.tagUncheckAll()
         }
       }
+    },
+    // vuex trashswitch 狀態
+    trashStatus () {
+      this.refreshData()
     }
   }
 }

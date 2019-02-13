@@ -15,12 +15,15 @@ export default {
     count: null,
     currentPage: null,
     totalCount: null,
-    paramsStatus: false // 記憶舊的paramsObj 狀態 下次reload 不更新
+    paramsStatus: false, // 記憶舊的paramsObj 狀態 下次reload 不更新
+    trashStatus: false // 黑名單資料切換
   },
   actions: {
     getDatatable( context ){
+      let trashUrl = ''
+      if (context.state.trashStatus) trashUrl = '/trash'
       let cookieToken = getCookie()
-      const url = `${process.env.API_HOST}v1/admin/member`
+      const url = `${process.env.API_HOST}v1/admin/member${trashUrl}`
       context.commit('ISLOADING', true, {root: true})
       let params = context.state.paramsObj
       axios.get(url, {
@@ -65,6 +68,9 @@ export default {
     },
     setParamsStatus (context, status) {
       context.commit('PARAMSSTATUS', status)
+    },
+    setTrashStatus (context, status) {
+      context.commit('TRASHSTATUS', status)
     }
   },
   mutations: {
@@ -91,6 +97,9 @@ export default {
     },
     PARAMSSTATUS ( state, payload ) {
       state.paramsStatus = payload
+    },
+    TRASHSTATUS ( state, payload ) {
+      state.trashStatus = payload
     }
   },
   // 運用getters 可以在其他頁面 用 mapGetters 方式 取代compute 抓取store 的方式
@@ -102,7 +111,8 @@ export default {
     currentPage: state => state.currentPage,
     totalPages: state => state.totalPages,
     paramsObj: state => state.paramsObj,
-    paramsStatus: state => state.paramsStatus
+    paramsStatus: state => state.paramsStatus,
+    trashStatus: state => state.trashStatus
   }
 }
 

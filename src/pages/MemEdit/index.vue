@@ -8,6 +8,8 @@ export default {
       memNick: '',
       memIDnum: '',
       memBirthday: '',
+      device: '',
+      gender: '',
       memMail: '',
       memTel: '',
       memStatus: '',
@@ -23,6 +25,16 @@ export default {
     ...mapGetters(['tokenVal']),
     memberID () {
       return this.$route.params.id
+    },
+    genderType () {
+      switch (this.gender) {
+        case 0:
+          return '女'
+        case 1:
+          return '男'
+        default:
+          return '不透露'
+      }
     }
   },
   methods: {
@@ -41,6 +53,8 @@ export default {
       this.memBonusPoint = this.memberInfo.bonus_point
       this.memAccumulate = this.memberInfo.accumulate
       this.memCouponUse = this.memberInfo.coupon
+      this.device = this.memberInfo.device_type
+      this.gender = this.memberInfo.gender
     },
     cancel () {
       this.$router.push({name: 'member'})
@@ -217,6 +231,60 @@ export default {
         this.$snotify.success(`簡訊已發送`, {
           timeout: 10000
         })
+      }).catch((error) => {
+        if (error.response.status === 401) {
+          this.remove_cookie()
+          this.$router.replace({name: 'login'})
+        } else if (error.response.status === 429) {
+          this.$swal({
+            title: '請求太頻繁,請於兩分鐘後再試',
+            icon: 'error'
+          })
+        } else console.log(error.response)
+      }).then(() => {
+      })
+    },
+    // 停用帳號 (軟刪除)
+    memberTrash () {
+      let acount = this.memIDnum
+      this.$swal({
+        title: '停用帳號',
+        text: `是否要停用此帳號"${acount}"`,
+        icon: 'warning',
+        buttons: {
+          cancel: '取消!',
+          ok: {
+            text: '確認!',
+            value: true
+          }
+        }
+      })
+        .then((value) => {
+          if (value) {
+            let id = this.memberID
+            this.trashAxios(id, acount)
+          }
+        })
+    },
+    trashAxios (id, acount) {
+      let url = `${process.env.API_HOST}v1/admin/member/${id}`
+      this.axios.delete(url, {
+        headers: {
+          'Authorization': this.tokenVal,
+          'Accept': 'application/json'
+        }
+      }).then((res) => {
+        if (res.headers.authorization) {
+          this.token_update(res.headers.authorization)
+        }
+
+        // 成功
+        this.$snotify.error(`會員帳號${acount}已被停用`, {
+          timeout: 10000
+        })
+
+        // 導會會員清單頁面
+        this.$router.replace({name: 'member'})
       }).catch((error) => {
         if (error.response.status === 401) {
           this.remove_cookie()
