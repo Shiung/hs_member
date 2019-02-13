@@ -213,9 +213,11 @@
                   <div class='d-flex align-items-center justify-content-between select-options'>
                       <md-checkbox class="checkbtnArea" v-model="tagCheckbtn" style="margin:0 0 0 10px" indeterminate></md-checkbox>
                   </div>
+
+                  <div>標籤清單</div>
                     
                   <div class="d-flex align-items-center justify-content-end">
-                      <transition name="selectOption" mode="out-in" appear>
+                      <!-- <transition name="selectOption" mode="out-in" appear>
                         <md-badge :md-content="tagCheckarray.length" md-dense v-if="tagCheckarray.length > 0">
                           <md-button  class="md-icon-button" @click="addTagToCoupon">
                             <md-icon>check</md-icon>
@@ -223,27 +225,26 @@
                           </md-button>
                         </md-badge>
                        
-                      </transition>
+                      </transition> -->
                       
                       <md-button class="md-icon-button" @click="addTag">
                         <md-icon>add</md-icon>
                         <md-tooltip md-direction="bottom">建立新的標籤</md-tooltip>
                       </md-button>
-                      <transition name="selectOption" mode="out-in" appear>
+                      <!-- <transition name="selectOption" mode="out-in" appear>
                         <md-button v-if="tagCheckarray.length == 1" class="md-icon-button" @click="editTag">
                           <md-icon>edit</md-icon>
                           <md-tooltip md-direction="bottom">修改標籤名稱</md-tooltip>
                         </md-button>
-                      </transition>  
-                      <transition name="selectOption" mode="out-in" appear>
+                      </transition>   -->
+                      <!-- <transition name="selectOption" mode="out-in" appear>
                         <md-badge :md-content="tagCheckarray.length" md-dense v-if="tagCheckarray.length > 0">
                           <md-button  class="md-icon-button" @click="deleteTag">
                             <md-icon>delete</md-icon>
                             <md-tooltip md-direction="bottom">刪除標籤</md-tooltip>
                           </md-button>
                         </md-badge>
-                        
-                      </transition>
+                      </transition> -->
                       
                   </div>
                 </div>
@@ -256,6 +257,7 @@
               :columns="tagColumns" 
               :options="tagOptions"
               ref="tagTable"
+              style="margin-top:-25px;"
             >
               <!-- 選單 -->
               <md-checkbox 
@@ -266,6 +268,23 @@
                 :value="props.row.id" 
                 style="margin:0;"
               ></md-checkbox>
+
+              <!-- 功能 -->
+              <div
+                slot="action" 
+                slot-scope="props"
+                class="d-flex justify-content-end"
+              >
+                <md-button class="md-icon-button md-dense" @click="editTag(props.row.id)">
+                  <md-icon>edit</md-icon>
+                  <md-tooltip md-direction="bottom">修改標籤名稱</md-tooltip>
+                </md-button>
+                <md-button  class="md-icon-button md-dense" @click="deleteTag(props.row.id)">
+                  <md-icon>delete</md-icon>
+                  <md-tooltip md-direction="bottom">刪除標籤</md-tooltip>
+                </md-button>
+              </div>
+             
             </v-client-table>
 
 
@@ -279,8 +298,13 @@
       
 
       <md-dialog-actions>
+        <md-badge :md-content="tagCheckarray.length" md-dense>
+          <md-button  class="md-primary" @click="addTagToCoupon">
+            儲存
+            <md-tooltip md-direction="left">加入標籤分類到所選擇的優惠劵</md-tooltip>
+          </md-button>
+        </md-badge>
         <md-button class="md-primary" @click="showTagDialog = false">關閉</md-button>
-        <!-- <md-button class="md-primary">儲存</md-button> -->
       </md-dialog-actions>
     </md-dialog>
 

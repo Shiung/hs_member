@@ -84,11 +84,12 @@ export default {
       tagTable: [],
       tagLoading: false,
       tagLoadingOpacity: 0.8,
-      tagColumns: ['edit', 'name'],
+      tagColumns: ['edit', 'name', 'action'],
       tagOptions: {
         headings: {
           edit: '',
-          name: '標籤清單'
+          name: '',
+          action: ''
         },
         columnsClasses: {
           // edit: 'width-fix',
@@ -390,8 +391,8 @@ export default {
           }
         })
     },
-    editTag () {
-      let id = this.tagCheckarray.join()
+    editTag (id) {
+      // let id = this.tagCheckarray.join()
       this.$swal({
         title: '修改標籤名稱!',
         content: {
@@ -498,8 +499,8 @@ export default {
       let couponID = this.checkarray.join(',')
       this.deleteTagFromCouponAxios(tagID, couponID)
     },
-    deleteTag () {
-      let IDs = this.tagCheckarray.join(',')
+    deleteTag (IDs) {
+      // let IDs = this.tagCheckarray.join(',')
       this.$swal({
         title: '刪除已選擇標籤!',
         icon: 'warning',
@@ -799,7 +800,7 @@ export default {
     // tag 新增視窗
     async showTagDialog (val) {
       // 初始
-      this.tagLoading = true
+      // this.tagLoading = true // 關閉因為有loading 重複使用的問題 getInfo 有 tag loading 也有導致異常
       this.tagTable = []
       this.tagCheckarray = []
       // get data
