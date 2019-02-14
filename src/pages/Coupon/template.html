@@ -75,9 +75,10 @@
               </div>
                 
               <div class="d-flex align-items-center justify-content-end">
-                <md-menu md-size="medium" md-align-trigger @md-opened="filterOpen">
-                  <md-button md-menu-trigger class="md-icon-button md-dense md-raised md-primary">
-                    <md-icon>tune</md-icon>
+                <md-menu md-size="medium" md-align-trigger @md-opened="filterOpen" md-direction="bottom-end">
+                  <md-button md-menu-trigger class="md-dense md-raised md-primary">
+                    <!-- <md-icon>tune</md-icon> -->
+                    <div>{{tagFilterState}}</div>
                     <md-tooltip md-direction="bottom">標籤群組篩選</md-tooltip>
                   </md-button>
                   <md-menu-content>

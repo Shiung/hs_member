@@ -163,6 +163,18 @@ export default {
     selectedCoupnID () {
       if (this.selectLength === 1) return this.checkarray.join()
       else return null
+    },
+    tagFilterState () {
+      if (this.paramsObj.tag_id) {
+        if (this.tagFilterList.length > 0) {
+          let currentParamTagId = this.paramsObj.tag_id
+          let selected = this.tagFilterList.filter(function (tag) {
+            return tag.id === currentParamTagId
+          })
+          return selected[0].name
+        }
+        return '依標籤篩選'
+      } else return '依標籤篩選'
     }
   },
   mounted () {
@@ -176,6 +188,8 @@ export default {
     this.getDatatable()
     // 更新vue-table-2 一樣顯示資料
     this.$refs.couponTable.setLimit(this.perPage)
+    // 初始標籤列表 給篩選狀態使用
+    this.filterOpen()
   },
   methods: {
     // 資料 vuex

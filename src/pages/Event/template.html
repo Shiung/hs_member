@@ -22,7 +22,7 @@
                       <md-icon>refresh</md-icon>
                       <md-tooltip md-direction="bottom">refresh</md-tooltip>
                   </md-button>
-                  <md-menu md-size="medium" md-align-trigger>
+                  <!-- <md-menu md-size="medium" md-align-trigger>
                     <md-button md-menu-trigger class="md-icon-button md-dense md-raised md-primary">
                       <md-icon>tune</md-icon>
                       <md-tooltip md-direction="bottom">條件篩選</md-tooltip>
@@ -33,7 +33,7 @@
                       <md-menu-item @click="filterType('status',1)">啟用</md-menu-item>
                       <md-menu-item @click="filterType('status',0)">停用</md-menu-item>
                     </md-menu-content>
-                  </md-menu>
+                  </md-menu> -->
                   <md-button class="md-icon-button md-dense md-raised md-primary" @click="addNew">
                     <md-icon>add</md-icon>
                     <md-tooltip md-direction="bottom">add</md-tooltip>
@@ -46,15 +46,36 @@
                   </transition>  
               </div>
                 
-              <!-- <div class="d-flex align-items-center justify-content-end">
-                <div class="search-box d-flex">
+              <div class="d-flex align-items-center justify-content-end">
+               <!--  <div class="search-box d-flex">
                   <input class="search-txt" type="text" name="" placeholder="search..." v-model.trim="searchStr">
                   <md-button class="md-icon-button md-dense md-raised md-primary flex-shrink-0 mx-0" @click="searchAct">
                     <md-icon>search</md-icon>
                     <md-tooltip md-direction="bottom">search</md-tooltip>
                   </md-button>
-                </div>
-              </div> -->
+                </div> -->
+
+                <md-menu md-size="medium" md-align-trigger md-direction="bottom-end" class="mr-2">
+                  <md-button md-menu-trigger class="md-dense md-raised md-primary">
+                    <div>{{typeFilterState}}</div>
+                    <md-tooltip md-direction="bottom">類別條件篩選</md-tooltip>
+                  </md-button>
+                  <md-menu-content>
+                    <md-menu-item class="active" @click="filterType('type',0)">手動</md-menu-item>
+                    <md-menu-item @click="filterType('type',1)">自動</md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+                <md-menu md-size="medium" md-align-trigger md-direction="bottom-end">
+                  <md-button md-menu-trigger class="md-dense md-raised md-primary">
+                    <div>{{statusFilterState}}</div>
+                    <md-tooltip md-direction="bottom">狀態條件篩選</md-tooltip>
+                  </md-button>
+                  <md-menu-content>
+                    <md-menu-item @click="filterType('status',1)">啟用</md-menu-item>
+                    <md-menu-item @click="filterType('status',0)">未啟用</md-menu-item>
+                  </md-menu-content>
+                </md-menu>
+              </div>
             </div>
       
       

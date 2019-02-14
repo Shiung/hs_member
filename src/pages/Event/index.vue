@@ -126,6 +126,27 @@ export default {
         let to = from + count - 1
         return `顯示 ${from} 到 ${to} 筆資料 ，  總共 ${totalCount} 筆資料`
       }
+    },
+    // 過濾器
+    typeFilterState () {
+      switch (this.paramsObj.search) {
+        case 'type:0':
+          return `手動`
+        case 'type:1':
+          return `自動`
+        default:
+          return '依類別篩選'
+      }
+    },
+    statusFilterState () {
+      switch (this.paramsObj.search) {
+        case 'status:0':
+          return `未啟用`
+        case 'status:1':
+          return `啟用`
+        default:
+          return '依狀態篩選'
+      }
     }
   },
   methods: {
