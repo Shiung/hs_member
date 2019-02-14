@@ -63,6 +63,10 @@
                     <label>信箱</label>
                     <md-input v-model="memMail"  name="mail" autocomplete="off" readonly></md-input>
                   </md-field> -->
+                  <md-button class="md-icon-button md-dense md-raised md-primary" style="margin-top:-5px;" @click="mailChange">
+                    <md-icon>build</md-icon>
+                    <md-tooltip md-direction="bottom">修改</md-tooltip>
+                  </md-button>
                 </div>
                 <div class="col-xl-3 col-lg-6 col-md-12  form-group">
                   <label class="cus w-100 mb-0">電話</label>
@@ -85,6 +89,10 @@
                 <div class="col-lg-3 col-md-4 col-sm-6 col-12  form-group">
                   <label class="cus w-100 mb-0">性別</label>
                   {{genderType}}
+                  <md-button class="md-icon-button md-dense md-raised md-primary" style="margin-top:-5px;" @click="showGenderDialog = true">
+                    <md-icon>build</md-icon>
+                    <md-tooltip md-direction="bottom">修改</md-tooltip>
+                  </md-button>
                 </div>
               </div>
               <div class="row mb-5">
@@ -201,4 +209,23 @@
           </md-card>
       </div>  
   </div>
+
+
+  <!-- 性別選擇 -->
+  <md-dialog :md-active.sync="showGenderDialog">
+    <md-dialog-title class="text-center">修改此會員[{{memName}}]的性別!</md-dialog-title>
+    <md-dialog-content>
+      <div class="col-12 d-flex">
+        <md-radio v-model="radioGender" value="0" class="md-primary">女</md-radio>
+        <md-radio v-model="radioGender" value="1" class="md-primary">男</md-radio>
+        <md-radio v-model="radioGender" value="2" class="md-primary">不透露</md-radio>
+      </div>
+      
+    </md-dialog-content>
+    <md-dialog-actions>
+      <md-button class="md-primary" @click="showGenderDialog = false">關閉</md-button>
+      <md-button class="md-primary" @click="genderChange">變更設定</md-button>
+    </md-dialog-actions>
+  </md-dialog>
+
 </div>

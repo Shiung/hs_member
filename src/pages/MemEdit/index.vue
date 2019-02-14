@@ -17,7 +17,10 @@ export default {
       memBonusPoint: '',
       memAccumulate: '',
       memCouponUse: '',
-      list: {}
+      list: {},
+      // 修改性別
+      showGenderDialog: false,
+      radioGender: ''
     }
   },
   computed: {
@@ -102,6 +105,83 @@ export default {
           if (value) {
             let data = {
               'status': 2
+            }
+            this.updateAxios(data)
+          }
+        })
+    },
+    mailChange () {
+      this.$swal({
+        title: `修改此會員[${this.memName}]信箱!`,
+        // text: `是否要修改此會員[${this.memName}]的電話?`,
+        content: {
+          element: 'input',
+          attributes: {
+            placeholder: '輸入新的信箱',
+            type: 'text'
+          }
+        },
+        icon: 'warning'
+      })
+        .then((value) => {
+          if (value === null) return
+          let input = value.trim()
+          if (input) {
+            this.$swal({
+              title: '信箱變更',
+              text: `${input}`,
+              icon: 'warning',
+              buttons: {
+                cancel: '取消變更!',
+                ok: {
+                  text: '確認變更!',
+                  value: true
+                }
+              }
+            })
+              .then((value) => {
+                if (value) {
+                  let data = {
+                    'email': input
+                  }
+                  this.updateAxios(data)
+                }
+              })
+          } else {
+            this.$swal({
+              title: '請輸入新的信箱!',
+              icon: 'error'
+            })
+          }
+        })
+    },
+    genderChange () {
+      this.showGenderDialog = false
+      let selectGender = Number(this.radioGender)
+      let genderName = ''
+      switch (selectGender) {
+        case 0:
+          genderName = '女'
+          break
+        case 1:
+          genderName = '男'
+          break
+        case 2:
+          genderName = '不透露'
+          break
+        default:
+          genderName = '錯邊'
+          break
+      }
+      this.$swal({
+        title: `修改此會員[${this.memName}]的性別!`,
+        text: `性別確定修改成"${genderName}"`,
+        icon: 'warning'
+      })
+        .then((value) => {
+          if (value) {
+            let data = {
+              'gender': selectGender
             }
             this.updateAxios(data)
           }
