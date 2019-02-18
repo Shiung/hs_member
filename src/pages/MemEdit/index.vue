@@ -317,7 +317,12 @@ export default {
           this.$router.replace({name: 'login'})
         } else if (error.response.status === 429) {
           this.$swal({
-            title: '請求太頻繁,請於兩分鐘後再試',
+            title: '操作太多次',
+            icon: 'error'
+          })
+        } else if (error.response.status === 400) {
+          this.$swal({
+            title: '已發送過,請於兩分鐘後再試',
             icon: 'error'
           })
         } else console.log(error.response)
