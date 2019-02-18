@@ -205,8 +205,9 @@
                   @click.prevent="viewMemDetail(props.row.id)">{{props.row.name}} <br> {{props.row.nickname ? `(${props.row.nickname})` : null }}</a>
                 <!-- 設備 -->
                 <template slot="device_type" slot-scope="props">
-                  <span class="badge badge-dark badge-pill" v-if="props.row.device_type === 'ios'">ios</span>
-                  <span class="badge badge-info badge-pill" v-else-if="props.row.device_type === 'android'">android</span>
+                  <!-- <span class="badge badge-info badge-pill" v-if="props.row.device_type === 'ios'">ios</span>
+                  <span class="badge badge-info badge-pill" v-else-if="props.row.device_type === 'android'">android</span> -->
+                  <span class="badge badge-info badge-pill" v-if="props.row.device_type">{{props.row.device_type}}</span>
                 </template> 
 
                 <!-- 標籤群組 -->
