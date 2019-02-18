@@ -4,7 +4,7 @@ export default {
   name: 'member',
   data () {
     return {
-      columns: ['edit', 'id', 'name', 'nickname', 'id_number', 'birthday', 'mobile', 'updated_at', 'tags', 'is_employed', 'status'],
+      columns: ['edit', 'id', 'name', 'id_number', 'birthday', 'mobile', 'updated_at', 'device_type', 'status'], // , 'tags', 'is_employed'
       tableData: [],
       options: {
         headings: {
@@ -18,6 +18,7 @@ export default {
           mobile: '電話',
           tags: '標籤群組',
           is_employed: '員工',
+          device_type: '登入設備',
           updated_at: '最後登入時間'
         },
         columnsClasses: {
@@ -66,9 +67,9 @@ export default {
       sortName: null,
       // 過濾 搜尋
       showDialog: false,
-      filterNum: 0, // 0: 姓名 1: 信箱 2: 身分證 3:電話
-      filterStr: '姓名',
-      searchFields: 'name', // 0: name, 1: email,2: id_number ,3: mobile
+      filterNum: 3, // 0: 姓名 1: 信箱 2: 身分證 3:電話
+      filterStr: '電話',
+      searchFields: 'mobile', // 0: name, 1: email,2: id_number ,3: mobile
       // 標籤列表分類篩選
       tagLoadingOpacity: 0.8,
       tagFilterLoading: false,

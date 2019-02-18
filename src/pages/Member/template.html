@@ -148,7 +148,7 @@
                 >
                 <!-- header -->
                 <span slot="h__name" class="d-flex justify-content-between align-items-center">
-                會員名稱 
+                會員名稱 (暱稱)
                   <span 
                     class="VueTables__sort-icon float-right sorticon sort" 
                     @click="sort('name')" 
@@ -202,7 +202,12 @@
                   style="cursor: pointer;"
                   slot="name" 
                   slot-scope="props" 
-                  @click.prevent="viewMemDetail(props.row.id)">{{props.row.name}}</a>
+                  @click.prevent="viewMemDetail(props.row.id)">{{props.row.name}} <br> {{props.row.nickname ? `(${props.row.nickname})` : null }}</a>
+                <!-- 設備 -->
+                <template slot="device_type" slot-scope="props">
+                  <span class="badge badge-dark badge-pill" v-if="props.row.device_type === 'ios'">ios</span>
+                  <span class="badge badge-info badge-pill" v-else-if="props.row.device_type === 'android'">android</span>
+                </template> 
 
                 <!-- 標籤群組 -->
                 <template slot="tags" slot-scope="props">
