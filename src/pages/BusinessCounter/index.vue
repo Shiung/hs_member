@@ -5,11 +5,11 @@ export default {
   name: 'businessCounter',
   data () {
     return {
-      columns: ['edit', 'business_id', 'name', 'full_name', 'vat', 'pos_id', 'updated_at', 'status'],
+      columns: ['edit', 'id', 'business_id', 'name', 'full_name', 'vat', 'pos_id', 'updated_at', 'status'],
       options: {
         headings: {
           edit: '',
-          // id: 'ID',
+          id: '廳別ID',
           business_id: '商家ID',
           vat: '統編',
           pos_id: 'POS ID / 帳號',
