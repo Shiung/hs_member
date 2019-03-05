@@ -290,6 +290,12 @@ export default {
             title: '操作太多次',
             icon: 'error'
           })
+        } else if (error.response.status === 400) {
+          this.$swal({
+            title: '電話已有重複，請輸入新電話',
+            icon: 'error'
+          })
+          this.getInfo(ID) // reload 會員資料
         } else console.log(error.response)
       }).then(() => {
       })
