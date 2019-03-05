@@ -10,7 +10,7 @@ export default {
   state: {
     datas: [],
     paramsObj: {},
-    perPage: 15,
+    perPage: 50, // 單頁 50筆 
     totalPages: null,
     count: null,
     currentPage: null,
@@ -56,10 +56,13 @@ export default {
       let paramsObj = ''
       if (newParams) {
         paramsObj = new ParamsObj({
-          ...newParams
+          ...newParams,
+          limit: 50 // 單頁50筆資料
         })
       } else {
-        paramsObj = new ParamsObj({})
+        paramsObj = new ParamsObj({
+          limit: 50 // 單頁50筆資料
+        })
       }
       context.commit('SETPARAMSOBJ', paramsObj)
     },

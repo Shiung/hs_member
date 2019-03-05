@@ -56,6 +56,23 @@
             :options="options"
             ref="businessTable"
           >
+            <!-- header -->
+            <span slot="h__id" class="d-flex justify-content-between align-items-center">
+              ID
+              <span 
+                class="VueTables__sort-icon float-right sorticon sort" 
+                @click="sort('id')" 
+                :class="{'sort-up': paramsObj.sortedBy == 'asc' && paramsObj.orderBy == 'id', 'sort-down': paramsObj.sortedBy == 'desc' && paramsObj.orderBy == 'id'}">
+              </span>
+            </span>
+            <span slot="h__status" class="d-flex justify-content-between align-items-center">
+              狀態
+              <span 
+                class="VueTables__sort-icon float-right sorticon sort" 
+                @click="sort('status')" 
+                :class="{'sort-up': paramsObj.sortedBy == 'asc' && paramsObj.orderBy == 'status', 'sort-down': paramsObj.sortedBy == 'desc' && paramsObj.orderBy == 'status'}">
+              </span>
+            </span>
             <!-- 選單 -->
             <md-checkbox 
               slot="edit" 

@@ -172,6 +172,30 @@ export default {
       // 關閉搜尋頁面光箱
       this.showDialog = false
       this.pageNumber = ''
+    },
+    sort (val) {
+      let params = this.paramsObj
+      let obj = {}
+      let orderBy = {}
+      switch (val) {
+        case 'id':
+          orderBy = {orderBy: 'id'}
+          break
+        case 'status':
+          orderBy = {orderBy: 'status'}
+          break
+        default:
+          break
+      }
+      if (params.sortedBy === '' || params.sortedBy === 'desc') {
+        let sortedBy = {sortedBy: 'asc'}
+        obj = Object.assign(orderBy, sortedBy, ...params)
+      } else {
+        let sortedBy = {sortedBy: 'desc'}
+        obj = Object.assign(orderBy, sortedBy, ...params)
+      }
+      // // vuex
+      this.refreshData(obj)
     }
   },
   mounted () {
